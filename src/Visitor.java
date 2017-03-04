@@ -2,6 +2,8 @@
 //AUTHOR::Kevin.P.Barnett
 //DATE::Feb.25.2017
 
+import java.util.ArrayList;
+
 public class Visitor
 {
     private String first_name;
@@ -10,6 +12,7 @@ public class Visitor
     private double balance;
     private String phone_number;
     private int visitor_ID;
+    private ArrayList<Book_Loan> borrowed_books = new ArrayList<Book_Loan>();
 
     public Visitor(String first_name, String last_name, String address,
                    double balance, String phone_number, int visitor_ID) {
@@ -19,6 +22,7 @@ public class Visitor
         this.balance = balance;
         this.phone_number = phone_number;
         this.visitor_ID = visitor_ID;
+        this.borrowed_books = borrowed_books;
     }
 
     public String getFirst_name() {
@@ -67,5 +71,13 @@ public class Visitor
 
     public void setVisitor_ID(int visitor_ID) {
         this.visitor_ID = visitor_ID;
+    }
+
+    public ArrayList<Book_Loan> getBorrowed_books() {
+        return borrowed_books;
+    }
+
+    public void add_book(Visitor visitor,Book_Loan book) {
+        visitor.borrowed_books.add(book);
     }
 }
