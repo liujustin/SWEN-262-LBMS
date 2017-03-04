@@ -1,21 +1,15 @@
 //FILE::Client_Access_Point.java
 //AUTHOR::Kevin.P.Barnett
+//AUTHOR::Adam Nowak
 //DATE::Feb.25.2017
-
-import Executable_Commands.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Scanner;
 
-/*
-    I have no idea what I'm supposed to be doing with this class but I did something
-            - Adam
- */
 
 public class Client_Access_Point extends Observable {
-    Command c;
 
     /*
     This Function allows the employee to issue a command via scanner
@@ -38,16 +32,24 @@ public class Client_Access_Point extends Observable {
         At the moment, cannot parse commands which contain any sort of brackets
      */
     public static ArrayList parseCommand(String command) {
+
+        //deletes the semicolon at the end of the command
         command = command.replace(command.substring(command.length() - 1), "");
+
+        // parses the command differently depending on which command is being invoked.
+
         if (command.startsWith("borrow")) {
             ArrayList<Object> parsedcommand = new ArrayList<>();
-            int n = 0;
+            int n = 0; // points at the first character of an object before it is added into arraylist
             for (int i = 0; i < command.length(); i++) {
                 if (command.charAt(i) == ',') {
                     parsedcommand.add(command.substring(n, i));
                     i++;
                     n = i;
                 }
+
+                //checks to see if a list of ids is inputed and puts all of them within another arraylist
+
                 if (command.charAt(i) == '{') {
                     i++;
                     n = i;
@@ -72,14 +74,15 @@ public class Client_Access_Point extends Observable {
             ArrayList<String> parsedcommand = new ArrayList<>(Arrays.asList(command.split(",")));
             return parsedcommand;
             }
+                /*
+        call super.update when done parsing
+         */
+
     }
 
     public static void main(String[] args) {
         System.out.println(parseCommand(getCommand()));
     }
-        /*
-        call super.update when done parsing
-         */
 
 
     /*
@@ -91,13 +94,15 @@ public class Client_Access_Point extends Observable {
 
         http://www.se.rit.edu/~swen-262/projects/design_project/ProjectDescription/LBMS-client-request-format.html
      */
+
+    /*
     public void handler(ArrayList<String> parsedString) {
 
 
         switch (parsedString.get(0)) {
 
             case "register":
-                c = new Register_Command(/*parsedString.get(1), ...*/);
+                c = new Register_Command(/*parsedString.get(1), .../);
 
             case "arrive":
                 c = new Begin_Visit_Command();
@@ -138,5 +143,5 @@ public class Client_Access_Point extends Observable {
 
         c.execute();
     }
-
+        */
 }
