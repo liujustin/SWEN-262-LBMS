@@ -2,20 +2,19 @@
 //AUTHOR::Kevin.P.Barnett
 //DATE::Feb.25.2017
 
+import java.util.HashMap;
+
 public class LBMS_BookKeeper
 {
-    public Visitor registerVisitor(String firstName, String lastName, String address, String phoneNumber)
-    {
+    private HashMap<String, Book> bookRegistry;
 
+    public LBMS_BookKeeper()
+    {
+        this.bookRegistry = new HashMap<>();
     }
 
-    private void startup()
+    public Book buyBook()
     {
-
-    }
-
-    private void shutdown()
-    {
-
+        return null;
     }
 }
