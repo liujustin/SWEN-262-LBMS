@@ -8,6 +8,16 @@ import java.util.Observer;
 public class Client_Access_Command implements Observer
 {
 
+    private void startup()
+    {
+
+    }
+
+    private void shutdown()
+    {
+
+    }
+
     @Override
     public void update(Observable o, Object arg)
     {
