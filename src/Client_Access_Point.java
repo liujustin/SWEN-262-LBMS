@@ -20,7 +20,7 @@ public class Client_Access_Point extends Observable {
     /*
     This Function allows the employee to issue a command via scanner
      */
-    public String getCommand() {
+    public static String getCommand() {
         String command;
         System.out.println("Please enter a command.");
         Scanner scan1 = new Scanner(System.in);
@@ -37,12 +37,50 @@ public class Client_Access_Point extends Observable {
         Parses the Command the user inputs from getCommand()
         At the moment, cannot parse commands which contain any sort of brackets
      */
-    public ArrayList parseCommand(String command) {
+    public static ArrayList parseCommand(String command) {
         command = command.replace(command.substring(command.length() - 1), "");
-        ArrayList<String> parsedcommand = new ArrayList<>(Arrays.asList(command.split(",")));
-        return parsedcommand;
-
+        if (command.startsWith("borrow")) {
+            ArrayList<Object> parsedcommand = new ArrayList<>();
+            int n = 0;
+            for (int i = 0; i < command.length(); i++) {
+                if (command.charAt(i) == ',') {
+                    parsedcommand.add(command.substring(n, i));
+                    i++;
+                    n = i;
+                }
+                if (command.charAt(i) == '{') {
+                    i++;
+                    n = i;
+                    ArrayList<String> parsedids = new ArrayList<>();
+                    for ( ; i < command.length(); i++) {
+                        if (command.charAt(i) == ',') {
+                            parsedids.add(command.substring(n, i ));
+                            i++;
+                            n = i;
+                        }
+                        if (command.charAt(i) == '}') {
+                            parsedids.add(command.substring(n, i ));
+                            parsedcommand.add(parsedids);
+                            break;
+                        }
+                    }
+                }
+            }
+            return parsedcommand;
+        }
+        else {
+            ArrayList<String> parsedcommand = new ArrayList<>(Arrays.asList(command.split(",")));
+            return parsedcommand;
+            }
     }
+
+    public static void main(String[] args) {
+        System.out.println(parseCommand(getCommand()));
+    }
+        /*
+        call super.update when done parsing
+         */
+
 
     /*
         Executes the command that was parsed by parseCommand.
