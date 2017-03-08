@@ -59,44 +59,25 @@ public class Client_Access_Point extends Observable {
                 i += 2;
                 n = i;
             }
+            else if (command.charAt(i) == ',' && command.charAt(i + 1) == '"'){
+                parsedcommand.add(command.substring(n,i));
+                i += 2;
+                n = i;
+                for ( ; i < command.length() - 2; i++) {
+                    if (command.charAt(i) == '"'){
+                        parsedcommand.add(command.substring(n,i));
+                        i++;
+                        n = i;
+                        break;
+                    }
+                }
+            }
             else if (command.charAt(i) == ',') {
                 parsedcommand.add(command.substring(n, i));
                 i++;
                 n = i;
             }
-            if (command.charAt(i) == '[' && command.charAt(i + 1) == ','){
-                parsedcommand.add(command.substring(n, i));
-                i += 2;
-                n = i;
-                ArrayList<String> parsedbracket = new ArrayList<>();
-                for ( ; i < command.length(); i++) {
-                    if (command.charAt(i) == ',') {
-                        parsedbracket.add(command.substring(n, i ));
-                        i++;
-                        n = i;
-                    }
-                    if (command.charAt(i) == ']') {
-                        parsedbracket.add(command.substring(n, i ));
-                        parsedcommand.add(parsedbracket);
-                        n = i;
-                        break outerloop;
-                    }
-                    if (command.charAt(i) == '[' && command.charAt(i + 1) == ',' ){
-                        parsedcommand.add(command.substring(n,i));
-                        i += 2;
-                        n = i;
-                    }
-                }
-            }
 
-            else if (command.charAt(i) == '['){
-                i++;
-                n = i;
-            }
-            if (command.charAt(i) == ']'){
-                parsedcommand.add(command.substring(n,i));
-                break;
-            }
             if (command.charAt(i) == '{') {
                 i++;
                 n = i;
@@ -113,10 +94,6 @@ public class Client_Access_Point extends Observable {
                         if ( command.endsWith("}")){
                             break outerloop;
                         }
-                        if ( command.charAt(i + 1) == ',' && command.charAt(i + 2) == '['){
-                            i++;
-                            n = i;
-                        }
                         else if( command.charAt(i + 1) == ','){
                             i += 2;
                             n = i;
@@ -130,7 +107,7 @@ public class Client_Access_Point extends Observable {
          *  This is due to the objects being inputted when a comma is found
          * and the last character of a command doesn't include a comma.
          */
-        if(!command.endsWith("]") && !command.endsWith("}")){
+        if(!command.endsWith("}")){
 
             parsedcommand.add(command.substring(n, command.length()));
         }
