@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 //http://www.se.rit.edu/~swen-262/projects/design_project/ProjectDescription/LBMS-client-request-format.html
 
-public class Client_Access_Point extends Observable {
+public class Client_Access_Point{
 
 
 
