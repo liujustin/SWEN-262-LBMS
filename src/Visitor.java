@@ -80,4 +80,10 @@ public class Visitor
     public void add_book(Visitor visitor,Book_Loan book) {
         visitor.borrowed_books.add(book);
     }
+
+    public void remove_book(Visitor visitor,Book_Loan book){
+            if(visitor.borrowed_books.contains(book)){
+                visitor.borrowed_books.remove(book);
+            }
+    }
 }
