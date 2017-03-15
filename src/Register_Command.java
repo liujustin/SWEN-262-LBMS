@@ -1,9 +1,9 @@
-package Executable_Commands;
+import Executable_Commands.Command;
 
 /**
  * Created by adamn on 3/2/2017.
  */
-public class Book_Purchase_Command implements Command {
+public class Register_Command implements Command {
     @Override
     public void execute() {
 

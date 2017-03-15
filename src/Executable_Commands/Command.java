@@ -8,6 +8,5 @@ public interface Command {
     /*
     Execute function to execute a command.
      */
-
-    public void execute();
+    void execute();
 }
