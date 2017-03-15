@@ -42,7 +42,7 @@ public class LBMS_BookKeeper
             e.printStackTrace();
         }
 
-        System.out.println(this.bookRegistry.get());
+        //System.out.println(this.bookRegistry.get());
     }
 
     public Book buyBook()
