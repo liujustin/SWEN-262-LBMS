@@ -144,7 +144,7 @@ public class Client_Access_Point{
                 return null;
             }
         }
-        if(parsedcommand.get(0).equals("arrive")
+        else if(parsedcommand.get(0).equals("arrive")
                 || parsedcommand.get(0).equals("depart")
                 || parsedcommand.get(0).equals("borrowed")) {
 
@@ -158,7 +158,7 @@ public class Client_Access_Point{
                 return null;
             }
         }
-        if(parsedcommand.get(0).equals("info")){
+        else if(parsedcommand.get(0).equals("info")){
             if (parsedcommand.size() <= 6) {
                 if (parsedcommand.size() < 3) {
                     commandsize = parsedcommand.size();
@@ -183,7 +183,7 @@ public class Client_Access_Point{
                 }
             }
         }
-        if(parsedcommand.get(0).equals("borrow")){
+        else if(parsedcommand.get(0).equals("borrow")){
             if(parsedcommand.size() < 3){
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
@@ -205,7 +205,7 @@ public class Client_Access_Point{
                 return null;
             }
         }
-        if(parsedcommand.get(0).equals("return")){
+        else if(parsedcommand.get(0).equals("return")){
             if(parsedcommand.size() < 4){
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
@@ -231,7 +231,7 @@ public class Client_Access_Point{
                 return null;
             }
         }
-        if(parsedcommand.get(0).equals("pay")){
+        else if(parsedcommand.get(0).equals("pay")){
             if(parsedcommand.size() < 3){
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
@@ -253,7 +253,7 @@ public class Client_Access_Point{
                 return null;
             }
         }
-        if(parsedcommand.get(0).equals("search")) {
+        else if(parsedcommand.get(0).equals("search")) {
             if (parsedcommand.size() < 4) {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
@@ -276,7 +276,33 @@ public class Client_Access_Point{
                 return null;
             }
         }
-        if(parsedcommand.get(0).equals("advance")){
+        else if(parsedcommand.get(0).equals("buy")){
+            if(parsedcommand.size() < 4){
+                commandsize = parsedcommand.size();
+                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
+                while(commandsize < 4){
+                    if(commandsize == 1){
+                        errormessage+= "quantity, ";
+                        commandsize++;
+                    }
+                    if(commandsize == 2){
+                        errormessage+= "id, ";
+                        commandsize++;
+                    }
+                    if(commandsize == 3){
+                        errormessage+= "ids}";
+                        commandsize++;
+                    }
+                }
+                try {
+                    throw new Error(errormessage);
+                }catch(Error e){
+                    System.out.println(e.getMessage());
+                }
+                return null;
+            }
+        }
+        else if(parsedcommand.get(0).equals("advance")){
             if(parsedcommand.size() < 2){
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {number-of-days}";
                 try {
@@ -287,7 +313,7 @@ public class Client_Access_Point{
                 return null;
             }
         }
-        if(parsedcommand.get(0).equals("report")){
+        else if(parsedcommand.get(0).equals("report")){
             if(parsedcommand.size() < 2){
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {days}";
                 try {
@@ -298,6 +324,87 @@ public class Client_Access_Point{
                 return null;
             }
         }
+        else if(parsedcommand.get(0).equals("datetime")){
+            return parsedcommand;
+        }else{
+            errormessage = "Requested command doesn't exist.";
+            try {
+                throw new Error(errormessage);
+            }catch(Error e){
+                System.out.println(e.getMessage());
+            }
+            return null;
+        }
         return parsedcommand;
+    }
+    /**
+     * Takes in parsedcommand arraylist and modifies the object so they match
+     * the correct data type.
+     * i.e. Visitor id was a string and now it is a integer.
+     *
+     * @param parsedcommand
+     * @return Arraylist of objects
+     */
+    public ArrayList enhancedparsedcommand(ArrayList parsedcommand) {
+
+        ArrayList<Object> newparsedcommand = new ArrayList<>();
+        int i;
+        if(parsedcommand == null){
+            return null;
+        }
+        if(parsedcommand.get(0).equals("register")
+                || parsedcommand.get(0).equals("info")
+                || parsedcommand.get(0).equals("search")){
+            newparsedcommand = parsedcommand;
+        }
+        if(parsedcommand.get(0).equals("arrive")
+                || parsedcommand.get(0).equals("depart")
+                || parsedcommand.get(0).equals("borrowed")
+                || parsedcommand.get(0).equals("borrow")
+                || parsedcommand.get(0).equals("return")
+                || parsedcommand.get(0).equals("report")){
+
+            for( i = 0 ; i <= parsedcommand.size() - 1; i++){
+                if(i == 1){
+                    newparsedcommand.add(Integer.parseInt((String) parsedcommand.get(i)));
+                }else{
+                    newparsedcommand.add(parsedcommand.get(i));
+                }
+            }
+        }
+        if(parsedcommand.get(0).equals("pay")){
+            for( i = 0 ; i <= parsedcommand.size() - 1; i++){
+                if(i == 1){
+                    newparsedcommand.add(Integer.parseInt((String) parsedcommand.get(i)));
+                }
+                else if(i == 2){
+                    newparsedcommand.add(Double.parseDouble((String) parsedcommand.get(i)));
+                }else{
+                    newparsedcommand.add(parsedcommand.get(i));
+                }
+            }
+        }
+        if(parsedcommand.get(0).equals("buy")){
+            for( i = 0 ; i <= parsedcommand.size() - 1; i++){
+                if(i == 1){
+                    newparsedcommand.add(Double.parseDouble((String) parsedcommand.get(i)));
+                }else{
+                    newparsedcommand.add(parsedcommand.get(i));
+                }
+            }
+        }
+        if(parsedcommand.get(0).equals("advance")){
+            for( i = 0 ; i <= parsedcommand.size() - 1; i++){
+                if(i == 1){
+                    newparsedcommand.add(Integer.parseInt((String) parsedcommand.get(i)));
+                }
+                else if(i == 2) {
+                    newparsedcommand.add(Integer.parseInt((String) parsedcommand.get(i)));
+                }else{
+                    newparsedcommand.add(parsedcommand.get(i));
+                }
+            }
+        }
+        return newparsedcommand;
     }
 }
