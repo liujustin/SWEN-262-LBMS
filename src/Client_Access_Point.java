@@ -181,25 +181,6 @@ public class Client_Access_Point{
                     }
                     return null;
                 }
-                if (parsedcommand.get(1).equals("*") || parsedcommand.get(2).equals("*")) {
-                    errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                    if (parsedcommand.get(1).equals("*")) {
-                        errormessage += "title";
-                    }
-                    if (parsedcommand.get(1).equals("*") && parsedcommand.get(2).equals("*")) {
-                        errormessage += ", authors";
-                    }
-                    if (!parsedcommand.get(1).equals("*") && parsedcommand.get(2).equals("*")) {
-                        errormessage += "authors";
-                    }
-                    errormessage += "}";
-                    try {
-                        throw new Error(errormessage);
-                    } catch (Error e) {
-                        System.out.println(e.getMessage());
-                    }
-                    return null;
-                }
             }
         }
         if(parsedcommand.get(0).equals("borrow")){
@@ -273,47 +254,26 @@ public class Client_Access_Point{
             }
         }
         if(parsedcommand.get(0).equals("search")) {
-            if (parsedcommand.size() <= 6) {
-                if (parsedcommand.size() < 4) {
-                    commandsize = parsedcommand.size();
-                    errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                    while (commandsize < 4) {
-                        if (commandsize == 1) {
-                            errormessage += "title, ";
-                            commandsize++;
-                        }
-                        if (commandsize == 3) {
-                            errormessage += "isbn}";
-                            commandsize++;
-                        }
+            if (parsedcommand.size() < 4) {
+                commandsize = parsedcommand.size();
+                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
+                while (commandsize < 4) {
+                    if (commandsize == 1) {
+                        errormessage += "title, ";
                         commandsize++;
                     }
-                    try {
-                        throw new Error(errormessage);
-                    } catch (Error e) {
-                        System.out.println(e.getMessage());
+                    if (commandsize == 3) {
+                        errormessage += "isbn}";
+                        commandsize++;
                     }
-                    return null;
+                    commandsize++;
                 }
-                if (parsedcommand.get(1).equals("*") || parsedcommand.get(3).equals("*")) {
-                    errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                    if (parsedcommand.get(1).equals("*")) {
-                        errormessage += "title";
-                    }
-                    if (parsedcommand.get(1).equals("*") && parsedcommand.get(3).equals("*")) {
-                        errormessage += ", isbn";
-                    }
-                    if (!parsedcommand.get(1).equals("*") && parsedcommand.get(3).equals("*")) {
-                        errormessage += "isbn";
-                    }
-                    errormessage += "}";
-                    try {
-                        throw new Error(errormessage);
-                    } catch (Error e) {
-                        System.out.println(e.getMessage());
-                    }
-                    return null;
+                try {
+                    throw new Error(errormessage);
+                } catch (Error e) {
+                    System.out.println(e.getMessage());
                 }
+                return null;
             }
         }
         if(parsedcommand.get(0).equals("advance")){
