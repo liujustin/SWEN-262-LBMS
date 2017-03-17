@@ -354,7 +354,8 @@ public class Client_Access_Point{
         }
         if(parsedcommand.get(0).equals("register")
                 || parsedcommand.get(0).equals("info")
-                || parsedcommand.get(0).equals("search")){
+                || parsedcommand.get(0).equals("search")
+                || parsedcommand.get(0).equals("datetime")){
             newparsedcommand = parsedcommand;
         }
         if(parsedcommand.get(0).equals("arrive")
