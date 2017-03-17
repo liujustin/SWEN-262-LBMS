@@ -2,25 +2,15 @@
 //AUTHOR::Kevin.P.Barnett
 //DATE::Feb.25.2017
 
-import java.util.Observable;
-import java.util.Observer;
+public class Client_Access_Command {
+    public Command command;
 
-public class Client_Access_Command implements Observer
-{
-
-    private void startup()
-    {
-
+    public void receiveCommand(Command command){
+        this.command = command;
     }
 
-    private void shutdown()
-    {
-
+    public void executeCommand(){
+        this.command.execute();
     }
 
-    @Override
-    public void update(Observable o, Object arg)
-    {
-
-    }
 }
