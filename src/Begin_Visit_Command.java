@@ -11,6 +11,10 @@ public class Begin_Visit_Command implements Command {
     }
 
     public void execute() {
-        //this.sys.Begin_Visit(v);
+        try {
+            this.sys.beginVisit(v.getVisitor_ID());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
