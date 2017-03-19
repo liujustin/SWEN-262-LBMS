@@ -29,14 +29,13 @@ public class Client_Access_Point{
         return command;
     }
 
-
-
     /**
      * Parses the Command the user inputs from getCommand()
      *
      * @param command
      * @return Arraylist of objects
      */
+
     public ArrayList parseCommand(String command) {
         int commandsize;
         String errormessage;
@@ -102,10 +101,13 @@ public class Client_Access_Point{
                 }
             }
         }
-        /* if statement that handles adding the last string of the arraylist.
+
+        /*
+         * if statement that handles adding the last string of the arraylist.
          *  This is due to the objects being inputted when a comma is found
          * and the last character of a command doesn't include a comma.
          */
+
         if(!command.endsWith("}")){
 
             parsedcommand.add(command.substring(n, command.length()));
@@ -114,6 +116,7 @@ public class Client_Access_Point{
         /*
         * Parameter error handling until end of function.
         */
+
         if(parsedcommand.get(0).equals("register")){
             if(parsedcommand.size() < 5){
                 commandsize = parsedcommand.size();
@@ -324,8 +327,12 @@ public class Client_Access_Point{
                 return null;
             }
         }
-        else if(parsedcommand.get(0).equals("datetime")){
+        else if(parsedcommand.get(0).equals("datetime") || parsedcommand.get(0).equals("shutdown")){
             return parsedcommand;
+            /*
+             * Else statement handles an error where request command doesn't exist.
+             *
+             */
         }else{
             errormessage = "Requested command doesn't exist.";
             try {
@@ -337,6 +344,7 @@ public class Client_Access_Point{
         }
         return parsedcommand;
     }
+
     /**
      * Takes in parsedcommand arraylist and modifies the object so they match
      * the correct data type.
@@ -345,6 +353,7 @@ public class Client_Access_Point{
      * @param parsedcommand
      * @return Arraylist of objects
      */
+
     public ArrayList enhancedparsedcommand(ArrayList parsedcommand) {
 
         ArrayList<Object> newparsedcommand = new ArrayList<>();
@@ -355,7 +364,8 @@ public class Client_Access_Point{
         if(parsedcommand.get(0).equals("register")
                 || parsedcommand.get(0).equals("info")
                 || parsedcommand.get(0).equals("search")
-                || parsedcommand.get(0).equals("datetime")){
+                || parsedcommand.get(0).equals("datetime")
+                || parsedcommand.get(0).equals("shutdown")){
             newparsedcommand = parsedcommand;
         }
         if(parsedcommand.get(0).equals("arrive")
