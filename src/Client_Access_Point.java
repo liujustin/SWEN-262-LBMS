@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class Client_Access_Point{
-
+public class Client_Access_Point {
 
 
     /**
@@ -29,14 +28,13 @@ public class Client_Access_Point{
         return command;
     }
 
-
-
     /**
      * Parses the Command the user inputs from getCommand()
      *
      * @param command
      * @return Arraylist of objects
      */
+
     public ArrayList parseCommand(String command) {
         int commandsize;
         String errormessage;
@@ -50,28 +48,27 @@ public class Client_Access_Point{
         ArrayList<Object> parsedcommand = new ArrayList<>();
         int n = 0; // used to point at the first character of an object before it is added into arraylist
 
-        outerloop: // The main loop that parses the input command
+        outerloop:
+        // The main loop that parses the input command
 
         for (int i = 0; i < command.length() - 1; i++) {
-            if (command.charAt(i) == ',' && command.charAt(i + 1) == ' '){
-                parsedcommand.add(command.substring(n ,i));
+            if (command.charAt(i) == ',' && command.charAt(i + 1) == ' ') {
+                parsedcommand.add(command.substring(n, i));
                 i += 2;
                 n = i;
-            }
-            else if (command.charAt(i) == ',' && command.charAt(i + 1) == '"'){
-                parsedcommand.add(command.substring(n,i));
+            } else if (command.charAt(i) == ',' && command.charAt(i + 1) == '"') {
+                parsedcommand.add(command.substring(n, i));
                 i += 2;
                 n = i;
-                for ( ; i < command.length() - 2; i++) {
-                    if (command.charAt(i) == '"'){
-                        parsedcommand.add(command.substring(n,i));
+                for (; i < command.length() - 2; i++) {
+                    if (command.charAt(i) == '"') {
+                        parsedcommand.add(command.substring(n, i));
                         i++;
                         n = i;
                         break;
                     }
                 }
-            }
-            else if (command.charAt(i) == ',') {
+            } else if (command.charAt(i) == ',') {
                 parsedcommand.add(command.substring(n, i));
                 i++;
                 n = i;
@@ -81,7 +78,7 @@ public class Client_Access_Point{
                 i++;
                 n = i;
                 ArrayList<String> parsedids = new ArrayList<>();
-                for ( ; i < command.length(); i++) {
+                for (; i < command.length(); i++) {
                     if (command.charAt(i) == ',') {
                         parsedids.add(command.substring(n, i));
                         i++;
@@ -90,10 +87,9 @@ public class Client_Access_Point{
                     if (command.charAt(i) == '}') {
                         parsedids.add(command.substring(n, i));
                         parsedcommand.add(parsedids);
-                        if ( command.endsWith("}")){
+                        if (command.endsWith("}")) {
                             break outerloop;
-                        }
-                        else if( command.charAt(i + 1) == ','){
+                        } else if (command.charAt(i + 1) == ',') {
                             i += 2;
                             n = i;
                         }
@@ -102,11 +98,14 @@ public class Client_Access_Point{
                 }
             }
         }
-        /* if statement that handles adding the last string of the arraylist.
+
+        /*
+         * if statement that handles adding the last string of the arraylist.
          *  This is due to the objects being inputted when a comma is found
          * and the last character of a command doesn't include a comma.
          */
-        if(!command.endsWith("}")){
+
+        if (!command.endsWith("}")) {
 
             parsedcommand.add(command.substring(n, command.length()));
         }
@@ -114,37 +113,37 @@ public class Client_Access_Point{
         /*
         * Parameter error handling until end of function.
         */
-        if(parsedcommand.get(0).equals("register")){
-            if(parsedcommand.size() < 5){
+
+        if (parsedcommand.get(0).equals("register")) {
+            if (parsedcommand.size() < 5) {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while(commandsize < 5){
-                    if(commandsize == 1){
-                        errormessage+= "first name, ";
+                while (commandsize < 5) {
+                    if (commandsize == 1) {
+                        errormessage += "first name, ";
                         commandsize++;
                     }
-                    if(commandsize == 2){
-                        errormessage+= "last name, ";
+                    if (commandsize == 2) {
+                        errormessage += "last name, ";
                         commandsize++;
                     }
-                    if(commandsize == 3){
-                        errormessage+= "address, ";
+                    if (commandsize == 3) {
+                        errormessage += "address, ";
                         commandsize++;
                     }
-                    if(commandsize == 4){
-                        errormessage+= "phone number}";
+                    if (commandsize == 4) {
+                        errormessage += "phone number}";
                         commandsize++;
                     }
                 }
                 try {
                     throw new Error(errormessage);
-                }catch(Error e){
+                } catch (Error e) {
                     System.out.println(e.getMessage());
                 }
                 return null;
             }
-        }
-        else if(parsedcommand.get(0).equals("arrive")
+        } else if (parsedcommand.get(0).equals("arrive")
                 || parsedcommand.get(0).equals("depart")
                 || parsedcommand.get(0).equals("borrowed")) {
 
@@ -157,8 +156,7 @@ public class Client_Access_Point{
                 }
                 return null;
             }
-        }
-        else if(parsedcommand.get(0).equals("info")){
+        } else if (parsedcommand.get(0).equals("info")) {
             if (parsedcommand.size() <= 6) {
                 if (parsedcommand.size() < 3) {
                     commandsize = parsedcommand.size();
@@ -182,78 +180,74 @@ public class Client_Access_Point{
                     return null;
                 }
             }
-        }
-        else if(parsedcommand.get(0).equals("borrow")){
-            if(parsedcommand.size() < 3){
+        } else if (parsedcommand.get(0).equals("borrow")) {
+            if (parsedcommand.size() < 3) {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while(commandsize < 3){
-                    if(commandsize == 1){
-                        errormessage+= "Visitor ID, ";
+                while (commandsize < 3) {
+                    if (commandsize == 1) {
+                        errormessage += "Visitor ID, ";
                         commandsize++;
                     }
-                    if(commandsize == 2){
-                        errormessage+= "id}";
+                    if (commandsize == 2) {
+                        errormessage += "id}";
                         commandsize++;
                     }
                 }
                 try {
                     throw new Error(errormessage);
-                }catch(Error e){
+                } catch (Error e) {
                     System.out.println(e.getMessage());
                 }
                 return null;
             }
-        }
-        else if(parsedcommand.get(0).equals("return")){
-            if(parsedcommand.size() < 4){
+        } else if (parsedcommand.get(0).equals("return")) {
+            if (parsedcommand.size() < 4) {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while(commandsize < 4){
-                    if(commandsize == 1){
-                        errormessage+= "Visitor ID, ";
+                while (commandsize < 4) {
+                    if (commandsize == 1) {
+                        errormessage += "Visitor ID, ";
                         commandsize++;
                     }
-                    if(commandsize == 2){
-                        errormessage+= "id, ";
+                    if (commandsize == 2) {
+                        errormessage += "id, ";
                         commandsize++;
                     }
-                    if(commandsize == 3){
-                        errormessage+= "ids}";
+                    if (commandsize == 3) {
+                        errormessage += "ids}";
                         commandsize++;
                     }
                 }
                 try {
                     throw new Error(errormessage);
-                }catch(Error e){
+                } catch (Error e) {
                     System.out.println(e.getMessage());
                 }
                 return null;
             }
-        }
-        else if(parsedcommand.get(0).equals("pay")){
-            if(parsedcommand.size() < 3){
+        } else if (parsedcommand.get(0).equals("pay")) {
+            if (parsedcommand.size() < 3) {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while(commandsize < 3){
-                    if(commandsize == 1){
-                        errormessage+= "Visitor ID, ";
+                while (commandsize < 3) {
+                    if (commandsize == 1) {
+                        errormessage += "Visitor ID, ";
                         commandsize++;
                     }
-                    if(commandsize == 2){
-                        errormessage+= "amount}";
+                    if (commandsize == 2) {
+                        errormessage += "amount}";
                         commandsize++;
                     }
                 }
                 try {
                     throw new Error(errormessage);
-                }catch(Error e){
+                } catch (Error e) {
                     System.out.println(e.getMessage());
                 }
                 return null;
             }
-        }
-        else if(parsedcommand.get(0).equals("search")) {
+        } else if (parsedcommand.get(0).equals("search")) {
             if (parsedcommand.size() < 4) {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
@@ -275,137 +269,66 @@ public class Client_Access_Point{
                 }
                 return null;
             }
-        }
-        else if(parsedcommand.get(0).equals("buy")){
-            if(parsedcommand.size() < 4){
+        } else if (parsedcommand.get(0).equals("buy")) {
+            if (parsedcommand.size() < 4) {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while(commandsize < 4){
-                    if(commandsize == 1){
-                        errormessage+= "quantity, ";
+                while (commandsize < 4) {
+                    if (commandsize == 1) {
+                        errormessage += "quantity, ";
                         commandsize++;
                     }
-                    if(commandsize == 2){
-                        errormessage+= "id, ";
+                    if (commandsize == 2) {
+                        errormessage += "id, ";
                         commandsize++;
                     }
-                    if(commandsize == 3){
-                        errormessage+= "ids}";
+                    if (commandsize == 3) {
+                        errormessage += "ids}";
                         commandsize++;
                     }
                 }
                 try {
                     throw new Error(errormessage);
-                }catch(Error e){
+                } catch (Error e) {
                     System.out.println(e.getMessage());
                 }
                 return null;
             }
-        }
-        else if(parsedcommand.get(0).equals("advance")){
-            if(parsedcommand.size() < 2){
+        } else if (parsedcommand.get(0).equals("advance")) {
+            if (parsedcommand.size() < 2) {
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {number-of-days}";
                 try {
                     throw new Error(errormessage);
-                }catch(Error e){
+                } catch (Error e) {
                     System.out.println(e.getMessage());
                 }
                 return null;
             }
-        }
-        else if(parsedcommand.get(0).equals("report")){
-            if(parsedcommand.size() < 2){
+        } else if (parsedcommand.get(0).equals("report")) {
+            if (parsedcommand.size() < 2) {
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {days}";
                 try {
                     throw new Error(errormessage);
-                }catch(Error e){
+                } catch (Error e) {
                     System.out.println(e.getMessage());
                 }
                 return null;
             }
-        }
-        else if(parsedcommand.get(0).equals("datetime")){
+        } else if (parsedcommand.get(0).equals("datetime") || parsedcommand.get(0).equals("shutdown")) {
             return parsedcommand;
-        }else{
+            /*
+             * Else statement handles an error where request command doesn't exist.
+             *
+             */
+        } else {
             errormessage = "Requested command doesn't exist.";
             try {
                 throw new Error(errormessage);
-            }catch(Error e){
+            } catch (Error e) {
                 System.out.println(e.getMessage());
             }
             return null;
         }
         return parsedcommand;
-    }
-    /**
-     * Takes in parsedcommand arraylist and modifies the object so they match
-     * the correct data type.
-     * i.e. Visitor id was a string and now it is a integer.
-     *
-     * @param parsedcommand
-     * @return Arraylist of objects
-     */
-    public ArrayList enhancedparsedcommand(ArrayList parsedcommand) {
-
-        ArrayList<Object> newparsedcommand = new ArrayList<>();
-        int i;
-        if(parsedcommand == null){
-            return null;
-        }
-        if(parsedcommand.get(0).equals("register")
-                || parsedcommand.get(0).equals("info")
-                || parsedcommand.get(0).equals("search")
-                || parsedcommand.get(0).equals("datetime")){
-            newparsedcommand = parsedcommand;
-        }
-        if(parsedcommand.get(0).equals("arrive")
-                || parsedcommand.get(0).equals("depart")
-                || parsedcommand.get(0).equals("borrowed")
-                || parsedcommand.get(0).equals("borrow")
-                || parsedcommand.get(0).equals("return")
-                || parsedcommand.get(0).equals("report")){
-
-            for( i = 0 ; i <= parsedcommand.size() - 1; i++){
-                if(i == 1){
-                    newparsedcommand.add(Integer.parseInt((String) parsedcommand.get(i)));
-                }else{
-                    newparsedcommand.add(parsedcommand.get(i));
-                }
-            }
-        }
-        if(parsedcommand.get(0).equals("pay")){
-            for( i = 0 ; i <= parsedcommand.size() - 1; i++){
-                if(i == 1){
-                    newparsedcommand.add(Integer.parseInt((String) parsedcommand.get(i)));
-                }
-                else if(i == 2){
-                    newparsedcommand.add(Double.parseDouble((String) parsedcommand.get(i)));
-                }else{
-                    newparsedcommand.add(parsedcommand.get(i));
-                }
-            }
-        }
-        if(parsedcommand.get(0).equals("buy")){
-            for( i = 0 ; i <= parsedcommand.size() - 1; i++){
-                if(i == 1){
-                    newparsedcommand.add(Double.parseDouble((String) parsedcommand.get(i)));
-                }else{
-                    newparsedcommand.add(parsedcommand.get(i));
-                }
-            }
-        }
-        if(parsedcommand.get(0).equals("advance")){
-            for( i = 0 ; i <= parsedcommand.size() - 1; i++){
-                if(i == 1){
-                    newparsedcommand.add(Integer.parseInt((String) parsedcommand.get(i)));
-                }
-                else if(i == 2) {
-                    newparsedcommand.add(Integer.parseInt((String) parsedcommand.get(i)));
-                }else{
-                    newparsedcommand.add(parsedcommand.get(i));
-                }
-            }
-        }
-        return newparsedcommand;
     }
 }
