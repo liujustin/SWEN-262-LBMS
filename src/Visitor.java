@@ -11,11 +11,11 @@ public class Visitor
     private String address;
     private double balance;
     private String phone_number;
-    private int visitor_ID;
+    private long visitor_ID;
     private ArrayList<Book_Loan> borrowed_books = new ArrayList<Book_Loan>();
 
     public Visitor(String first_name, String last_name, String address,
-                   double balance, String phone_number, int visitor_ID) {
+                   double balance, String phone_number, long visitor_ID) {
         this.first_name = first_name;
         this.last_name = last_name;
         this.address = address;
@@ -65,7 +65,7 @@ public class Visitor
         this.phone_number = phone_number;
     }
 
-    public int getVisitor_ID() {
+    public long getVisitor_ID() {
         return visitor_ID;
     }
 
@@ -77,13 +77,26 @@ public class Visitor
         return borrowed_books;
     }
 
-    public void add_book(Visitor visitor,Book_Loan book) {
-        visitor.borrowed_books.add(book);
+    public void add_book(Book_Loan book) {
+        this.borrowed_books.add(book);
     }
 
     public void remove_book(Visitor visitor,Book_Loan book){
             if(visitor.borrowed_books.contains(book)){
                 visitor.borrowed_books.remove(book);
             }
+    }
+
+    public String toString()
+    {
+        String visitorString = String.format("%s:%s:%s:%f:%s:%d",
+                                             this.first_name,
+                                             this.last_name,
+                                             this.address,
+                                             this.balance,
+                                             this.phone_number,
+                                             this.visitor_ID);
+
+        return visitorString;
     }
 }
