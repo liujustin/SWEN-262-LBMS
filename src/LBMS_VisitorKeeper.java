@@ -11,8 +11,8 @@ import java.util.Scanner;
 
 public class LBMS_VisitorKeeper
 {
-    private HashMap<Integer, Visitor> visitorRegistry;
-    private HashMap<Integer, Date> activeVisitor;
+    private HashMap<Long, Visitor> visitorRegistry;
+    private HashMap<Long, Date> activeVisitor;
 
     public LBMS_VisitorKeeper()
     {
@@ -28,10 +28,10 @@ public class LBMS_VisitorKeeper
 
             while(loadVisitorReg.hasNextLine())
             {
-                String[] visitor = loadVisitorReg.nextLine().split(",");
-                Visitor tempVisitor = new Visitor(visitor[0], visitor[1], visitor[2], Double.parseDouble(visitor[3]), visitor[4], Integer.parseInt(visitor[5]));
+                String[] visitor = loadVisitorReg.nextLine().split(":");
+                Visitor tempVisitor = new Visitor(visitor[0], visitor[1], visitor[2], Double.parseDouble(visitor[3]), visitor[4], Long.parseLong(visitor[5]));
 
-                this.visitorRegistry.put(Integer.parseInt(visitor[5]), tempVisitor);
+                this.visitorRegistry.put(Long.parseLong(visitor[5]), tempVisitor);
             }
         }
         catch(Exception e)
@@ -40,12 +40,22 @@ public class LBMS_VisitorKeeper
         }
     }
 
+    public HashMap<Long, Visitor> getVisitorRegistry()
+    {
+        return this.visitorRegistry;
+    }
+
+    public HashMap<Long, Date> getActiveVisitor()
+    {
+        return this.activeVisitor;
+    }
+
     public Visitor registerVisitor(String firstName, String lastName, String address, String phoneNumber)
     {
-        Integer newID = 999999999; //Start with an id of 1000000000 so the unique id is at least 10 digits
+        Long newID = 999999999L; //Start with an id of 1000000000 so the unique id is at least 10 digits
 
-        for(Integer key: this.visitorRegistry.keySet())
-            newID = Math.max(newID, key);
+        //for(Long key: this.visitorRegistry.keySet())
+        //    newID = Math.max(newID, key);
 
         newID += 1;
 
@@ -56,7 +66,7 @@ public class LBMS_VisitorKeeper
         return temporaryNewVisitor;
     }
 
-    public void beginVisit(Integer visitorID) throws Exception
+    public void beginVisit(Long visitorID) throws Exception
     {
         if(this.visitorRegistry.containsKey(visitorID))
         {
@@ -69,7 +79,7 @@ public class LBMS_VisitorKeeper
             throw new Exception("arrive,invalid-id;");
     }
 
-    public void endVisit(Integer visitorID) throws Exception
+    public void endVisit(Long visitorID) throws Exception
     {
         if(this.activeVisitor.containsKey(visitorID))
            this.activeVisitor.remove(visitorID);
@@ -91,5 +101,30 @@ public class LBMS_VisitorKeeper
         {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args)
+    {
+        LBMS_VisitorKeeper mainTest = new LBMS_VisitorKeeper();
+
+        //Validate that Visitor File was Read Correctly//
+        System.out.println(mainTest.getVisitorRegistry().get(2365153268L));
+        System.out.println(mainTest.getVisitorRegistry().get(4561235867L));
+
+        //Validate Registering User//
+        System.out.println(mainTest.registerVisitor("Hubert", "Humphrey", "200 East Landia Street", "3194912816"));
+
+        //Validate Begining Visit//
+        try{mainTest.beginVisit(4561235867L);}
+        catch(Exception e){e.printStackTrace();}
+        System.out.println(mainTest.getActiveVisitor().size());
+
+        //Validate End Visit//
+        try{mainTest.endVisit(4561235867L);}
+        catch(Exception e){e.printStackTrace();}
+        System.out.println(mainTest.getActiveVisitor().size());
+
+        //Validate Shutting Down//
+        mainTest.shutdown();
     }
 }
