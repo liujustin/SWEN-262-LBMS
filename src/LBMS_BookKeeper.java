@@ -4,6 +4,8 @@
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -11,7 +13,7 @@ import java.util.Scanner;
 public class LBMS_BookKeeper
 {
     private final String bookListURI = "book.txt";
-    private HashMap<String, Book> purchasedBooks;
+    private HashMap<Book, Integer> purchasedBooks;
     private HashMap<String, Book> bookRegistry;
 
     public LBMS_BookKeeper()
@@ -22,14 +24,14 @@ public class LBMS_BookKeeper
 
     private void getBookList()
     {
-        Scanner reader;
+        Scanner bookListReader;
         try
         {
-            reader = new Scanner(new File(this.bookListURI));
+            bookListReader = new Scanner(new File(this.bookListURI));
 
-            while(reader.hasNextLine())
+            while(bookListReader.hasNextLine())
             {
-                String[] tempLine = reader.nextLine().split(",\"|\",\\{|},\"|\",");
+                String[] tempLine = bookListReader.nextLine().split(",\"|\",\\{|},\"|\",");
 
                 Book tempBook = new Book(tempLine[0],
                                          tempLine[1],
@@ -52,11 +54,21 @@ public class LBMS_BookKeeper
         {
             e.printStackTrace();
         }
+
+        PrintStream purchasedBooksReader;
+        try
+        {
+            purchasedBooksReader = new PrintStream(new FileOutputStream(new File("purchasedBooks.log")));
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public Book buyBook()
     {
-        return null;
+
     }
 
     public void borrowBook(Visitor visitor, String bookList) throws Exception
