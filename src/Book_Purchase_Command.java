@@ -3,13 +3,17 @@
  */
 public class Book_Purchase_Command implements Command {
 
-    private Book boughtBook;
+    private int quantity;
+    private String bookID;
+    private String books;
 
-    public Book_Purchase_Command(Book book){
-        this.boughtBook = book;
+    public Book_Purchase_Command(int quantity, String bookID, String books) {
+        this.quantity = quantity;
+        this.bookID = bookID;
+        this.books = books;
     }
 
     public void execute() {
-        //this.boughtBook.buyBook();
+        //Main.bk.buyBook(this.quantity,this.bookID,this.books);
     }
 }

@@ -3,16 +3,14 @@
  */
 public class End_Visit_Command implements Command {
     private Visitor v;
-    private LBMS_VisitorKeeper sys;
 
-    public End_Visit_Command(Visitor v, LBMS_VisitorKeeper sys){
+    public End_Visit_Command(Visitor v){
         this.v = v;
-        this.sys = sys;
     }
 
     public void execute() {
         try {
-            this.sys.endVisit(v.getVisitor_ID());
+            Main.vk.endVisit(v.getVisitor_ID());
         } catch (Exception e) {
             e.printStackTrace();
         }
