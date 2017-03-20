@@ -12,12 +12,12 @@ public class Book
     private String bookName;
     private String bookPublisher;
     private String publishDate;
-    private Boolean borrowingStatus;
+    private boolean borrowingStatus;
     private String bookID;
     private List<String> authors = new ArrayList<String>();
 
     //Initial Constructor for each book
-    public Book(String bookIsbn, String bookName, String bookPublisher, String publishDate, Boolean borrowingStatus){
+    public Book(String bookIsbn, String bookName, String bookPublisher, String publishDate){
         if ((bookIsbn.length()) > 0 && (bookIsbn.matches("^[0-9]*$"))) {
             this.bookIsbn = bookIsbn;
         }
@@ -30,7 +30,7 @@ public class Book
         if ((publishDate.length() > 0)) {
             this.publishDate = publishDate;
         }
-        this.borrowingStatus = borrowingStatus;
+        this.borrowingStatus = true;
     }
 
     public void setAuthors(ArrayList<String> authors) {
@@ -41,6 +41,13 @@ public class Book
 
     public void setBookID(String bookID) {
         this.bookID = bookID;
+    }
+
+    public void setBorrowing(boolean borrowingStatus) {
+        if (borrowingStatus){
+            this.borrowingStatus = false;
+        }
+        this.borrowingStatus = true;
     }
 
     public String getBookIsbn() {
@@ -59,7 +66,7 @@ public class Book
         return publishDate;
     }
 
-    public Boolean getBorrowingStatus() {
+    public boolean getBorrowingStatus() {
         return borrowingStatus;
     }
 
