@@ -2,6 +2,7 @@
 //AUTHOR::Kevin.P.Barnett , Adam Nowak
 //DATE::Feb.25.2017
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -330,5 +331,52 @@ public class Client_Access_Point {
             return null;
         }
         return parsedcommand;
+    }
+    public Command ConcreteCommand(ArrayList parsedcommand){
+        if(parsedcommand.get(0).toString()== "register") {
+            Command c = new Register_Command(,parsedcommand.get(1), parsedcommand.get(2), parsedcommand.get(3), parsedcommand.get(4));
+        }
+        if(parsedcommand.get(0).toString()== "arrive") {
+            Command c = new Begin_Visit_Command(parsedcommand.get(1));
+        }
+        if(parsedcommand.get(0).toString()== "depart") {
+                Command c = new End_Visit_Command(parsedcommand.get(1));
+        }
+        if(parsedcommand.get(0).toString()== "info") {
+            ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
+            Command c = new Book_Search_Command(parsedcommand.get(1).toString(), innerarraylist, parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), parsedcommand.get(5).toString());
+        }
+        if(parsedcommand.get(0).toString() == "borrow") {
+            ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
+            Command c = new Borrow_Command(, parsedcommand.get(1), innerarraylist);
+        }
+        if(parsedcommand.get(0).toString() == "borrowed") {
+            Command c = new Find_Borrowed_Command(, parsedcommand.get(1));
+        }
+        if(parsedcommand.get(0).toString() == "return") {
+            ArrayList innerarraylist = (ArrayList) parsedcommand.get(3);
+            Command c = new Return_Command(parsedcommand.get(1).toString(), parsedcommand.get(2).toString(), innerarraylist);
+        }
+        if((parsedcommand.get(0).toString() == "pay") {
+            Command c = new Pay_Fine_Command(,parsedcommand.get(1).toString(),Double.parseDouble(parsedcommand.get(2).toString()) );
+        }
+        if(parsedcommand.get(0).toString() == "search") {
+            ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
+            Command c = new Book_Store_Command(,parsedcommand.get(1).toString(),innerarraylist, parsedcommand.get(3).toString(),parsedcommand.get(4).toString(),parsedcommand.get(5).toString());
+        }
+        if(parsedcommand.get(0).toString() == "buy") {
+            ArrayList innerarraylist = (ArrayList) parsedcommand.get(3);
+            Command c = new Book_Purchase_Command(parsedcommand.get(1),parsedcommand.get(2),innerarraylist);
+        }
+        if(parsedcommand.get(0).toString() == "advance") {
+            Command c = new Advance_Time_Command(Integer.parseInt(parsedcommand.get(1),Integer.parseInt(parsedcommand.get(2)));
+        }
+        if(parsedcommand.get(0).toString() == "datetime") {
+            Command c = new Current_Time_Command();
+        }
+        if(parsedcommand.get(0).toString() == "report") {
+            Command c = new Library_Report_Command(Integer.parseInt(parsedcommand.get(1)));
+        }
+        return c;
     }
 }
