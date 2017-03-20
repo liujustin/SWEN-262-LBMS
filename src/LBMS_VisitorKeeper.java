@@ -5,6 +5,8 @@
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -63,6 +65,11 @@ public class LBMS_VisitorKeeper
 
         this.visitorRegistry.put(newID, temporaryNewVisitor);
 
+        DateFormat DF = new SimpleDateFormat("yyyy/MM/dd");
+        Date d = new Date();
+
+        System.out.println("register," + newID + "," + DF.format(d));
+
         return temporaryNewVisitor;
     }
 
@@ -70,8 +77,16 @@ public class LBMS_VisitorKeeper
     {
         if(this.visitorRegistry.containsKey(visitorID))
         {
-            if(! this.activeVisitor.containsKey(visitorID))
+            if(! this.activeVisitor.containsKey(visitorID)) {
+
+                DateFormat DF = new SimpleDateFormat("yyyy/MM/dd");
+                DateFormat time = new SimpleDateFormat("HH:mm:ss");
+                Date d = new Date();
+
+                System.out.println("arrive,"+ visitorID + "," + DF.format(d)+ "," +time.format(d));
+
                 this.activeVisitor.put(visitorID, new Date());
+            }
             else
                 throw new Exception("arrive,duplicate;");
         }
@@ -81,8 +96,14 @@ public class LBMS_VisitorKeeper
 
     public void endVisit(Long visitorID) throws Exception
     {
-        if(this.activeVisitor.containsKey(visitorID))
-           this.activeVisitor.remove(visitorID);
+        if(this.activeVisitor.containsKey(visitorID)) {
+            this.activeVisitor.remove(visitorID);
+            DateFormat DF = new SimpleDateFormat("yyyy/MM/dd");
+            DateFormat time = new SimpleDateFormat("HH:mm:ss");
+            Date d = new Date();
+
+            System.out.println("depart," + visitorID + "," + DF.format(d) + "," + time.format(d));
+        }
         else
             throw new Exception("depart,invalid-id;");
     }
