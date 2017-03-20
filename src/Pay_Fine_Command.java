@@ -2,13 +2,15 @@
  * Created by adamn on 3/2/2017.
  */
 public class Pay_Fine_Command implements Command {
-    private Book_Loan b;
+    private Visitor v;
+    private Double amount;
 
-    public Pay_Fine_Command(Book_Loan b){
-        this.b = b;
+    public Pay_Fine_Command(Visitor v, Double amount){
+        this.v = v;
+        this.amount = amount;
     }
 
     public void execute() {
-        //this.b.Pay_Fine();
+        //pay fine goes here
     }
 }

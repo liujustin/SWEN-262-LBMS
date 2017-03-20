@@ -2,13 +2,15 @@
  * Created by adamn on 3/2/2017.
  */
 public class Advance_Time_Command implements Command {
-    private LBMS_StatisticsKeeper timeKeeper;
+    private int days;
+    private int hours;
 
-    public Advance_Time_Command(LBMS_StatisticsKeeper timeKeeper){
-        this.timeKeeper = timeKeeper;
+    public Advance_Time_Command(int days, int hours) {
+        this.days = days;
+        this.hours = hours;
     }
 
     public void execute() {
-        //this.timeKeeper.Advance_Time();
+        //Main.sk.Advance_Time(this.days,this.hours);
     }
 }

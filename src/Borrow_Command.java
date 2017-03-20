@@ -1,17 +1,23 @@
+import java.util.ArrayList;
+
 /**
  * Created by adamn on 3/2/2017.
  */
 public class Borrow_Command implements Command {
 
     private Visitor borrower;
-    private Book_Loan book;
+    private String books;
 
-    public Borrow_Command(Visitor v, Book_Loan b){
+    public Borrow_Command(Visitor v, String b){
         this.borrower = v;
-        this.book = b;
+        this.books = b;
     }
 
     public void execute(){
-        this.borrower.add_book(this.borrower,this.book);
+        try {
+            Main.bk.borrowBook(this.borrower,this.books);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
