@@ -333,25 +333,26 @@ public class Client_Access_Point {
         return parsedcommand;
     }
     public Command ConcreteCommand(ArrayList parsedcommand){
+
         if(parsedcommand.get(0).toString()== "register") {
-            Command c = new Register_Command(,parsedcommand.get(1), parsedcommand.get(2), parsedcommand.get(3), parsedcommand.get(4));
+            Command c = new Register_Command(parsedcommand.get(1).toString(), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString());
         }
         if(parsedcommand.get(0).toString()== "arrive") {
-            Command c = new Begin_Visit_Command(parsedcommand.get(1));
+            Command c = new Begin_Visit_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)));
         }
         if(parsedcommand.get(0).toString()== "depart") {
-                Command c = new End_Visit_Command(parsedcommand.get(1));
+                Command c = new End_Visit_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)));
         }
         if(parsedcommand.get(0).toString()== "info") {
             ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
-            Command c = new Book_Search_Command(parsedcommand.get(1).toString(), innerarraylist, parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), parsedcommand.get(5).toString());
+            //Command c = new Book_Search_Command(parsedcommand.get(1).toString(), innerarraylist, parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), parsedcommand.get(5).toString());
         }
         if(parsedcommand.get(0).toString() == "borrow") {
             ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
-            Command c = new Borrow_Command(, parsedcommand.get(1), innerarraylist);
+            Command c = new Borrow_Command(Main.vk.getVisitorRegistry().get((parsedcommand.get(1))),innerarraylist.toString());
         }
         if(parsedcommand.get(0).toString() == "borrowed") {
-            Command c = new Find_Borrowed_Command(, parsedcommand.get(1));
+            Command c = new Find_Borrowed_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)));
         }
         if(parsedcommand.get(0).toString() == "return") {
             ArrayList innerarraylist = (ArrayList) parsedcommand.get(3);
