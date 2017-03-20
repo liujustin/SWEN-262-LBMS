@@ -3,17 +3,18 @@
  */
 public class Return_Command implements Command {
     private Visitor v;
-    private Book_Loan b;
-    private LBMS_BookKeeper sys;
+    private String bookID;
+    private String books;
 
-    public Return_Command(Visitor v, Book_Loan b,LBMS_BookKeeper sys){
+    public Return_Command(Visitor v, String bookID, String books){
         this.v = v;
-        this.b = b;
-        this.sys = sys;
+        this.bookID = bookID;
+        this.books = books;
+
     }
 
     @Override
     public void execute() {
-        //this.sys.Return_Book(this.b,this.v);
+       // Main.bk.Return_Book(v.getVisitor_ID(),this.bookID,this.books);
     }
 }

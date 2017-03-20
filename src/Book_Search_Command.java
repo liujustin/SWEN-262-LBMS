@@ -2,13 +2,21 @@
  * Created by adamn on 3/2/2017.
  */
 public class Book_Search_Command implements Command {
-    private Book book;
+    private String title;
+    private String authors;
+    private String isbn;
+    private String publisher;
+    private String sort_order;
 
-    public Book_Search_Command(Book b){
-        this.book = b;
+    public Book_Search_Command(String title, String authors, String isbn, String publisher, String sort_order) {
+        this.title = title;
+        this.authors = authors;
+        this.isbn = isbn;
+        this.publisher = publisher;
+        this.sort_order = sort_order;
     }
 
     public void execute() {
-        this.book.getBookID();
+        //Main.bk.search(this.title,this.authors,this.isbn,this.publisher,this.sort_order);
     }
 }
