@@ -22,7 +22,7 @@ public class Client_Access_Point {
         Scanner scan1 = new Scanner(System.in);
         command = scan1.nextLine().toString();
         while (command.charAt(command.length() - 1) != ';') {
-            System.out.println("Please finish entering command.");
+            System.out.println("partial-request;");
             Scanner line = new Scanner(System.in);
             command = command + line.nextLine().toString();
         }

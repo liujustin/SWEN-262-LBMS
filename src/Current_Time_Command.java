@@ -9,6 +9,6 @@ public class Current_Time_Command implements Command {
     }
 
     public void execute() {
-        //this.sys.Get_Time();
+        this.sys.Get_Time();
     }
 }
