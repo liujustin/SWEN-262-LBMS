@@ -1,5 +1,5 @@
 //FILE::Book_Loan.java
-//AUTHOR::Kevin.P.Barnett
+//AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 
 public class Book_Loan
@@ -16,34 +16,66 @@ public class Book_Loan
         this.active_balance = active_balance;
     }
 
+    /**
+     *
+     * @return loaned_to
+     */
     public Visitor getLoaned_to() {
         return loaned_to;
     }
 
+    /**
+     *
+     * @param loaned_to
+     */
     public void setLoaned_to(Visitor loaned_to) {
         this.loaned_to = loaned_to;
     }
 
+    /**
+     *
+     * @return book
+     */
     public Book getBook() {
         return book;
     }
 
+    /**
+     *
+     * @param book
+     */
     public void setBook(Book book) {
         this.book = book;
     }
 
+    /**
+     *
+     * @return balance
+     */
     public double getBalance() {
         return balance;
     }
 
+    /**
+     *
+     * @param balance
+     */
     public void setBalance(double balance) {
         this.balance = balance;
     }
 
+    /**
+     *
+     * @return active_balance
+     */
     public boolean isActive_balance() {
         return active_balance;
     }
 
+    /**
+     *
+     * @param active_balance
+     */
     public void setActive_balance(boolean active_balance) {
         this.active_balance = active_balance;
     }

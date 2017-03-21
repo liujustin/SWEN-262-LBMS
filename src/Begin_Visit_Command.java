@@ -1,6 +1,6 @@
-/**
- * Created by adamn on 3/2/2017.
- */
+//FILE::Book_Loan.java
+//AUTHOR::Kevin.P.Barnett
+//DATE::Feb.25.2017
 public class Begin_Visit_Command implements Command {
     private Long  vID;
 
@@ -9,7 +9,7 @@ public class Begin_Visit_Command implements Command {
     }
 
 
-
+    @Override
     public void execute() {
         try {
             Main.vk.beginVisit(this.vID);
