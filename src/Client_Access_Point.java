@@ -137,11 +137,7 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                try {
-                    throw new Error(errormessage);
-                } catch (Error e) {
-                    System.out.println(e.getMessage());
-                }
+                System.out.println(errormessage);
                 return null;
             }
         } else if (parsedcommand.get(0).equals("arrive")
@@ -150,11 +146,7 @@ public class Client_Access_Point {
 
             if (parsedcommand.size() < 2) {
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {Visitor ID}";
-                try {
-                    throw new Error(errormessage);
-                } catch (Error e) {
-                    System.out.println(e.getMessage());
-                }
+                System.out.println(errormessage);
                 return null;
             }
         } else if (parsedcommand.get(0).equals("info")) {
@@ -173,11 +165,7 @@ public class Client_Access_Point {
                         }
                         commandsize++;
                     }
-                    try {
-                        throw new Error(errormessage);
-                    } catch (Error e) {
-                        System.out.println(e.getMessage());
-                    }
+                    System.out.println(errormessage);
                     return null;
                 }
             }
@@ -195,11 +183,7 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                try {
-                    throw new Error(errormessage);
-                } catch (Error e) {
-                    System.out.println(e.getMessage());
-                }
+                System.out.println(errormessage);
                 return null;
             }
         } else if (parsedcommand.get(0).equals("return")) {
@@ -220,11 +204,7 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                try {
-                    throw new Error(errormessage);
-                } catch (Error e) {
-                    System.out.println(e.getMessage());
-                }
+                System.out.println(errormessage);
                 return null;
             }
         } else if (parsedcommand.get(0).equals("pay")) {
@@ -241,11 +221,7 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                try {
-                    throw new Error(errormessage);
-                } catch (Error e) {
-                    System.out.println(e.getMessage());
-                }
+                System.out.println(errormessage);
                 return null;
             }
         } else if (parsedcommand.get(0).equals("search")) {
@@ -263,11 +239,7 @@ public class Client_Access_Point {
                     }
                     commandsize++;
                 }
-                try {
-                    throw new Error(errormessage);
-                } catch (Error e) {
-                    System.out.println(e.getMessage());
-                }
+                System.out.println(errormessage);
                 return null;
             }
         } else if (parsedcommand.get(0).equals("buy")) {
@@ -288,111 +260,96 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                try {
-                    throw new Error(errormessage);
-                } catch (Error e) {
-                    System.out.println(e.getMessage());
-                }
+                System.out.println(errormessage);
                 return null;
             }
         } else if (parsedcommand.get(0).equals("advance")) {
             if (parsedcommand.size() < 2) {
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {number-of-days}";
-                try {
-                    throw new Error(errormessage);
-                } catch (Error e) {
-                    System.out.println(e.getMessage());
-                }
+                System.out.println(errormessage);
                 return null;
             }
         } else if (parsedcommand.get(0).equals("report")) {
             if (parsedcommand.size() < 2) {
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {days}";
-                try {
-                    throw new Error(errormessage);
-                } catch (Error e) {
-                    System.out.println(e.getMessage());
-                }
+                System.out.println(errormessage);
                 return null;
             }
         } else if (parsedcommand.get(0).equals("datetime") || parsedcommand.get(0).equals("shutdown")) {
             return parsedcommand;
+
             /*
              * Else statement handles an error where request command doesn't exist.
              *
              */
         } else {
             errormessage = "Requested command doesn't exist.";
-            try {
-                throw new Error(errormessage);
-            } catch (Error e) {
-                System.out.println(e.getMessage());
-            }
+            System.out.println(errormessage);
             return null;
         }
         return parsedcommand;
     }
     public Command ConcreteCommand(ArrayList parsedcommand){
 
-        if(parsedcommand.get(0).toString()== "register") {
+        if(parsedcommand.get(0).toString().equals("register")) {
             Command c = new Register_Command(parsedcommand.get(1).toString(), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString());
             return c;
         }
-        if(parsedcommand.get(0).toString()== "arrive") {
-            Command c = new Begin_Visit_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)));
+        else if(parsedcommand.get(0).toString().equals("arrive")) {
+            long a = Long.parseLong(parsedcommand.get(1).toString());
+            Command c = new Begin_Visit_Command(a);
             return c;
         }
-        if(parsedcommand.get(0).toString()== "depart") {
-            Command c = new End_Visit_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)));
+        else if(parsedcommand.get(0).toString().equals("depart")) {
+            Command c = new End_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()));
             return c;
         }
-        if(parsedcommand.get(0).toString()== "info") {
+        else if(parsedcommand.get(0).toString().equals("info")) {
             ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
             Command c = new Book_Search_Command(parsedcommand.get(1).toString(), innerarraylist.toString(),
                     parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), parsedcommand.get(5).toString());
             return c;
         }
-        if(parsedcommand.get(0).toString() == "borrow") {
+        else if(parsedcommand.get(0).toString().equals("borrow")) {
             ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
             Command c = new Borrow_Command(Main.vk.getVisitorRegistry().get((parsedcommand.get(1))),innerarraylist.toString());
             return c;
         }
-        if(parsedcommand.get(0).toString() == "borrowed") {
+        else if(parsedcommand.get(0).toString().equals("borrowed")) {
             Command c = new Find_Borrowed_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)));
             return c;
         }
-        if(parsedcommand.get(0).toString() == "return") {
+        else if(parsedcommand.get(0).toString().equals("return")) {
             ArrayList innerarraylist = (ArrayList) parsedcommand.get(3);
             Command c = new Return_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)), parsedcommand.get(2).toString(), innerarraylist.toString());
             return c;
         }
-        if((parsedcommand.get(0).toString() == "pay")) {
+        else if(parsedcommand.get(0).toString().equals("pay")){
             Command c = new Pay_Fine_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)),Double.parseDouble(parsedcommand.get(2).toString()));
             return c;
         }
-        if(parsedcommand.get(0).toString() == "search") {
+        else if(parsedcommand.get(0).toString().equals("search")) {
             ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
             Command c = new Book_Store_Command(parsedcommand.get(1).toString(),innerarraylist.toString(),
                     parsedcommand.get(3).toString(),parsedcommand.get(4).toString(),parsedcommand.get(5).toString());
             return c;
         }
-        if(parsedcommand.get(0).toString() == "buy") {
+        else if(parsedcommand.get(0).toString().equals("buy")) {
             ArrayList innerarraylist = (ArrayList) parsedcommand.get(3);
             Command c = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(1).toString()),parsedcommand.get(2).toString(),innerarraylist.toString());
             return c;
         }
-        if(parsedcommand.get(0).toString() == "advance") {
+        else if(parsedcommand.get(0).toString().equals("advance")) {
             Command c = new Advance_Time_Command(Integer.parseInt(parsedcommand.get(1).toString()),Integer.parseInt(parsedcommand.get(2).toString()));
             return c;
         }
-        if(parsedcommand.get(0).toString() == "datetime") {
+        else if(parsedcommand.get(0).toString().equals("datetime")) {
             Command c = new Current_Time_Command();
             return c;
         }
-        if(parsedcommand.get(0).toString() == "report") {
+        else{
             Command c = new Library_Report_Command(Integer.parseInt(parsedcommand.get(1).toString()));
             return c;
         }
-        return null;
     }
 }

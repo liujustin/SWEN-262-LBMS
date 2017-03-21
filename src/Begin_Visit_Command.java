@@ -2,17 +2,17 @@
  * Created by adamn on 3/2/2017.
  */
 public class Begin_Visit_Command implements Command {
-    private Visitor v;
+    private Long  vID;
 
-    public Begin_Visit_Command(Visitor v){
-        this.v = v;
+    public Begin_Visit_Command(Long vID){
+        this.vID = vID;
     }
 
 
 
     public void execute() {
         try {
-            Main.vk.beginVisit(v.getVisitor_ID());
+            Main.vk.beginVisit(this.vID);
         } catch (Exception e) {
             e.printStackTrace();
         }

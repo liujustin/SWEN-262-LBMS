@@ -12,14 +12,25 @@ public class Main {
     public static Client_Access_Command cac = new Client_Access_Command();
 
     public static void main(String[] args) {
+        System.out.println("Welcome to the Library Book Management System!");
+        System.out.println("Here are the available commands!");
+        System.out.println("Commands:");
+        System.out.println();
+        System.out.println("register, \t arrive, \t depart");
+        System.out.println("info, \t     borrow, \t borrowed");
+        System.out.println("return, \t pay, \t     search");
+        System.out.println("buy, \t     advance, \t datetime");
+        System.out.println("report, \t shutdown");
+        System.out.println();
 
         while (true){
             String command = cap.getCommand();
             ArrayList<Object> parsedCommand = cap.parseCommand(command);
-            Command concreteCommand = cap.ConcreteCommand(parsedCommand);
-            cac.receiveCommand(concreteCommand);
-            cac.executeCommand();
+            try {
+                Command concreteCommand = cap.ConcreteCommand(parsedCommand);
+                cac.receiveCommand(concreteCommand);
+                cac.executeCommand();
+            }catch(NullPointerException e){}
         }
-
     }
 }
