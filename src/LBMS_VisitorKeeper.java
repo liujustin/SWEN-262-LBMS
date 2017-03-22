@@ -56,8 +56,8 @@ public class LBMS_VisitorKeeper
     {
         Long newID = 999999999L; //Start with an id of 1000000000 so the unique id is at least 10 digits
 
-        //for(Long key: this.visitorRegistry.keySet())
-        //    newID = Math.max(newID, key);
+        for(Long key: this.visitorRegistry.keySet())
+            newID = Long.max(newID, key);
 
         newID += 1;
 

@@ -7,6 +7,6 @@ public class Current_Time_Command implements Command {
     }
 
     public void execute() {
-        Main.sk.Get_Time();
+        //Main.sk.Get_Time();
     }
 }
