@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Objects;
 
-//FILE::Book_Loan.java
+//FILE::Main.java
 //AUTHOR::Ryan Connors, Adam Nowak
 //DATE::Feb.25.2017
 public class Main {
