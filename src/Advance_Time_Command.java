@@ -12,5 +12,13 @@ public class Advance_Time_Command implements Command {
 
     public void execute() {
         //Main.sk.Advance_Time(this.days,this.hours);
+        for foo in  bar{
+        		dasdsa
+        		if af.saed{
+        			
+        		}
+        	
+        }
+
     }
 }
