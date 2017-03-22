@@ -1,5 +1,5 @@
 //FILE::Client_Access_Point.java
-//AUTHOR::Kevin.P.Barnett , Adam Nowak
+//AUTHOR::Kevin.P.Barnett , Adam Nowak, Justin Liu
 //DATE::Feb.25.2017
 
 import java.lang.reflect.Array;
