@@ -1,16 +1,22 @@
-/**
- * Created by adamn on 3/2/2017.
- */
+//FILE::Book_Loan.java
+//AUTHOR::Ryan Connors
+//DATE::Feb.25.2017
 public class End_Visit_Command implements Command {
-    private Visitor v;
 
-    public End_Visit_Command(Visitor v){
-        this.v = v;
+    private Long vID;
+
+    /**
+     *
+     * @param vID
+     */
+    public End_Visit_Command(Long vID){
+        this.vID = vID;
     }
 
+    @Override
     public void execute() {
         try {
-            Main.vk.endVisit(v.getVisitor_ID());
+            Main.vk.endVisit(this.vID);
         } catch (Exception e) {
             e.printStackTrace();
         }

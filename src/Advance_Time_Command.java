@@ -1,6 +1,7 @@
-/**
- * Created by adamn on 3/2/2017.
- */
+//FILE::Book_Loan.java
+//AUTHOR::Ryan Connors
+//DATE::Feb.25.2017
+
 public class Advance_Time_Command implements Command {
     private int days;
     private int hours;
@@ -9,7 +10,7 @@ public class Advance_Time_Command implements Command {
         this.days = days;
         this.hours = hours;
     }
-
+    @Override
     public void execute() {
         //Main.sk.Advance_Time(this.days,this.hours);
         for foo in  bar{

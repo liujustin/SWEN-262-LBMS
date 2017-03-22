@@ -1,6 +1,6 @@
-/**
- * Created by adamn on 3/2/2017.
- */
+//FILE::Book_Loan.java
+//AUTHOR:: Adam Nowak
+//DATE::Feb.25.2017
 public interface Command {
 
     /*
