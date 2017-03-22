@@ -1,4 +1,4 @@
-//FILE::Book_Loan.java
+//FILE::Book_Purchase_Command.java
 //AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 public class Book_Purchase_Command implements Command {

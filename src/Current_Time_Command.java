@@ -1,4 +1,4 @@
-//FILE::Book_Loan.java
+//FILE::Current_Time_Command.java
 //AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 public class Current_Time_Command implements Command {
