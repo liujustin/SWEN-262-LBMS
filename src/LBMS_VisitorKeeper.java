@@ -42,16 +42,32 @@ public class LBMS_VisitorKeeper
         }
     }
 
+    /**
+     *
+     * @return visitor registry
+     */
     public HashMap<Long, Visitor> getVisitorRegistry()
     {
         return this.visitorRegistry;
     }
 
+    /**
+     *
+     * @return active visitor
+     */
     public HashMap<Long, Date> getActiveVisitor()
     {
         return this.activeVisitor;
     }
 
+    /**
+     *
+     * @param firstName
+     * @param lastName
+     * @param address
+     * @param phoneNumber
+     * @return registers a new visitor to the system
+     */
     public Visitor registerVisitor(String firstName, String lastName, String address, String phoneNumber)
     {
         Long newID = 999999999L; //Start with an id of 1000000000 so the unique id is at least 10 digits
@@ -73,6 +89,11 @@ public class LBMS_VisitorKeeper
         return temporaryNewVisitor;
     }
 
+    /**
+     *
+     * @param visitorID
+     * @throws Exception
+     */
     public void beginVisit(Long visitorID) throws Exception
     {
         if(this.visitorRegistry.containsKey(visitorID))
@@ -94,6 +115,11 @@ public class LBMS_VisitorKeeper
             throw new Exception("arrive,invalid-id;");
     }
 
+    /**
+     *
+     * @param visitorID
+     * @throws Exception
+     */
     public void endVisit(Long visitorID) throws Exception
     {
         if(this.activeVisitor.containsKey(visitorID)) {
@@ -108,6 +134,10 @@ public class LBMS_VisitorKeeper
             throw new Exception("depart,invalid-id;");
     }
 
+    /**
+     * this function shuts down the system
+     *
+     */
     public void shutdown()
     {
         try

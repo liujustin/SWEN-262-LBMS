@@ -1,14 +1,21 @@
-//FILE::Client_Access_Command.java
-//AUTHOR::Kevin.P.Barnett
+//FILE::Book_Loan.java
+//AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 
 public class Client_Access_Command {
     public Command command;
 
+    /**
+     *
+     * @param command
+     */
     public void receiveCommand(Command command){
         this.command = command;
     }
 
+    /**
+     *  executes various commands
+     */
     public void executeCommand(){
         this.command.execute();
     }
