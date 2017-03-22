@@ -1,5 +1,5 @@
-//FILE::Book_Loan.java
-//AUTHOR::Ryan Connors
+//FILE::Book_Store_Command.java
+//AUTHOR::Ryan Connors, Kevin.P.Barnett
 //DATE::Feb.25.2017
 public class Book_Store_Command implements Command {
 

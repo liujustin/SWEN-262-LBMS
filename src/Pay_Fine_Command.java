@@ -1,4 +1,4 @@
-//FILE::Book_Loan.java
+//FILE::Pay_Fine_Command.java
 //AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 

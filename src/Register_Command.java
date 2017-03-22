@@ -1,4 +1,4 @@
-//FILE::Book_Loan.java
+//FILE::Register_Command.java
 //AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 public class Register_Command implements Command {

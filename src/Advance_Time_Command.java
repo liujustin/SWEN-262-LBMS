@@ -1,4 +1,4 @@
-//FILE::Book_Loan.java
+//FILE::Advance_Time_Command.java
 //AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 
@@ -13,13 +13,5 @@ public class Advance_Time_Command implements Command {
     @Override
     public void execute() {
         //Main.sk.Advance_Time(this.days,this.hours);
-        for foo in  bar{
-        		dasdsa
-        		if af.saed{
-        			
-        		}
-        	
-        }
-
     }
 }
