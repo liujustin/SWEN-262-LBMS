@@ -39,10 +39,18 @@ public class Book
         }
     }
 
+    /**
+     *
+     * @param bookID
+     */
     public void setBookID(String bookID) {
         this.bookID = bookID;
     }
 
+    /**
+     *
+     * @param borrowingStatus
+     */
     public void setBorrowing(boolean borrowingStatus) {
         if (borrowingStatus){
             this.borrowingStatus = false;
@@ -50,30 +58,58 @@ public class Book
         this.borrowingStatus = true;
     }
 
+    /**
+     *
+     * @return bookIsbn
+     */
     public String getBookIsbn() {
         return bookIsbn;
     }
 
+    /**
+     *
+     * @return bookIsbn
+     */
     public String getBookName() {
         return bookName;
     }
 
+    /**
+     *
+     * @return bookPublisher
+     */
     public String getBookPublisher() {
         return bookPublisher;
     }
 
+    /**
+     *
+     * @return publishDate
+     */
     public String getPublishDate() {
         return publishDate;
     }
 
+    /**
+     *
+     * @return borrowingstatus
+     */
     public boolean getBorrowingStatus() {
         return borrowingStatus;
     }
 
+    /**
+     *
+     * @return authors
+     */
     public List getAuthors() {
         return authors;
     }
 
+    /**
+     *
+     * @return bookID
+     */
     public String getBookID() { return bookID; }
 
 

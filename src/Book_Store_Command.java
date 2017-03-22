@@ -1,6 +1,6 @@
-/**
- * Created by adamn on 3/2/2017.
- */
+//FILE::Book_Loan.java
+//AUTHOR::Ryan Connors
+//DATE::Feb.25.2017
 public class Book_Store_Command implements Command {
 
     private String title;
@@ -9,6 +9,14 @@ public class Book_Store_Command implements Command {
     private String publisher;
     private String sort_order;
 
+    /**
+     *
+     * @param title
+     * @param authors
+     * @param isbn
+     * @param publisher
+     * @param sort_order
+     */
     public Book_Store_Command(String title, String authors, String isbn, String publisher, String sort_order) {
         this.title = title;
         this.authors = authors;
@@ -17,6 +25,7 @@ public class Book_Store_Command implements Command {
         this.sort_order = sort_order;
     }
 
+    @Override
     public void execute() {
         //Main.bk.search(this.title,this.authors,this.isbn,this.publisher,this.sort_order);
     }

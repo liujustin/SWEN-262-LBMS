@@ -16,12 +16,17 @@ public class LBMS_BookKeeper
     private HashMap<Book, Integer> purchasedBooks;
     private HashMap<String, Book> bookRegistry;
 
+
     public LBMS_BookKeeper()
     {
         this.purchasedBooks = new HashMap<>();
         this.bookRegistry = new HashMap<>();
     }
 
+    /**
+     *
+     * gets the available list of books for the library to purchase
+     */
     private void getBookList()
     {
         Scanner bookListReader;
@@ -65,6 +70,11 @@ public class LBMS_BookKeeper
         }
     }
 
+    /**
+     *
+     * @param quantity
+     * @param ISBNS
+     */
     public void buyBook(Integer quantity, ArrayList<String> ISBNS)
     {
         for(String isbn : ISBNS)
@@ -79,6 +89,14 @@ public class LBMS_BookKeeper
         }
     }
 
+    /**
+     *
+     * @param visitor
+     * @param bookList
+     * @throws Exception
+     *
+     * allows the visitor to borrow a book
+     */
     public void borrowBook(Visitor visitor, String bookList) throws Exception
     {
         String[] bookISBN = bookList.split(",");
@@ -110,6 +128,12 @@ public class LBMS_BookKeeper
             visitor.add_book(new Book_Loan(visitor, this.bookRegistry.get(isbn), 0.0, true));
     }
 
+    /**
+     *
+     * @param args
+     *
+     * main used for testing purposes
+     */
     public static void main(String[] args)
     {
         new LBMS_BookKeeper().getBookList();
