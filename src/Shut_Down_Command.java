@@ -1,4 +1,4 @@
-//FILE::Book_Loan.java
+//FILE::Shut_Down_Command.java
 //AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 public class Shut_Down_Command implements Command {

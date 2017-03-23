@@ -1,9 +1,9 @@
-//FILE::Book_Loan.java
+//FILE::Find_Borrowed_Command.java
 //AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 public class Find_Borrowed_Command implements Command {
 
-        private Visitor v;
+    private Visitor v;
 
     /**
      *
