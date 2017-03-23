@@ -1,4 +1,4 @@
-//FILE::Book_Loan.java
+//FILE::Begin_Visit_Command.java
 //AUTHOR::Kevin.P.Barnett
 //DATE::Feb.25.2017
 public class Begin_Visit_Command implements Command {

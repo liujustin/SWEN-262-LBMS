@@ -1,5 +1,5 @@
-//FILE::Book_Loan.java
-//AUTHOR::Ryan Connors
+//FILE::End_Visit_Command.java
+//AUTHOR::Kevin.P.Barnett
 //DATE::Feb.25.2017
 public class End_Visit_Command implements Command {
 

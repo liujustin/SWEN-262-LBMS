@@ -1,5 +1,5 @@
-//FILE::Book_Loan.java
-//AUTHOR::Ryan Connors
+//FILE::Book_Search_Command.java
+//AUTHOR::Ryan Connors, Kevin.P.Barnett
 //DATE::Feb.25.2017
 public class Book_Search_Command implements Command {
     private String title;
