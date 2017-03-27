@@ -340,7 +340,15 @@ public class Client_Access_Point {
             return c;
         }
         else if(parsedcommand.get(0).toString().equals("advance")) {
-            Command c = new Advance_Time_Command(Integer.parseInt(parsedcommand.get(1).toString()),Integer.parseInt(parsedcommand.get(2).toString()));
+            int day = Integer.parseInt(parsedcommand.get(1).toString());
+            int hour;
+            if(parsedcommand.size() < 3){
+                hour = 0;
+            }
+            else {
+                hour = Integer.parseInt(parsedcommand.get(2).toString());
+            }
+            Command c = new Advance_Time_Command(day,hour);
             return c;
         }
         else if(parsedcommand.get(0).toString().equals("datetime")) {
