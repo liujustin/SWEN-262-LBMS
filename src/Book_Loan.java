@@ -99,7 +99,7 @@ public class Book_Loan {
         double visitor_balance = 0;
         ArrayList loaned_books = v.getBorrowed_books();
         for(int i = 0; i > loaned_books.size(); i++) {
-            Book_Loan b = (Book_Loan) loaned_books.get(i);//get the book loan object
+            Book_Loan b = (Book_Loan) loaned_books.get(i);//get the due date of the book
             DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
             Date d = dateFormat.parse(LBMS_StatisticsKeeper.Get_Time());
             if(dateFormat.parse(b.getDue_date()).before(d)) { // check if due date is before current date
@@ -109,8 +109,8 @@ public class Book_Loan {
             calendar.setTime(d);
             calendar.add(Calendar.DAY_OF_YEAR, 7);
             Date futureDate = calendar.getTime();
-            while(futureDate.after(dateFormat.parse(b.getDue_date()))){// if the date is a week past the due date (current date + week is after the due date)
-                if( b.balance == 30) {
+            while(futureDate.after(dateFormat.parse(b.getDue_date()))){// if the date is a week past the due date  (current date + week is after the due date)
+                if( b.balance > 28) {
                     break;
                 }
                 b.balance += 2;
