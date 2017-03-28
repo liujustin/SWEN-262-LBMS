@@ -124,8 +124,8 @@ public class LBMS_BookKeeper
             throw new Exception(errorString);
         }
 
-        for(String isbn: bookISBN)
-            visitor.add_book(new Book_Loan(visitor, this.bookRegistry.get(isbn), 0.0, true));
+        //for(String isbn: bookISBN)
+           // visitor.add_book(new Book_Loan(visitor, this.bookRegistry.get(isbn), 0.0, true,));
     }
 
     /**

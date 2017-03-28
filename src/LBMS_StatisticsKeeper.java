@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class LBMS_StatisticsKeeper
 {
-	private Date date;
+	private static Date date;
 	private Calendar calendar;
 
 	public LBMS_StatisticsKeeper(){
@@ -21,7 +21,7 @@ public class LBMS_StatisticsKeeper
 	 * gets the datetime for the datetime command
 	 */
 
-	public String Get_Time() {
+	public static String Get_Time() {
 		DateFormat dateFormat = new SimpleDateFormat ("MM/dd/yyyy HH:mm:ss");
 		String output = dateFormat.format(date);
 		System.out.println(output);
@@ -42,6 +42,4 @@ public class LBMS_StatisticsKeeper
 		c.add(Calendar.HOUR_OF_DAY, hours);
 		date.setTime(c.getTimeInMillis());
 	}
-
-	
 }
