@@ -154,6 +154,11 @@ public class LBMS_VisitorKeeper
         }
     }
 
+    /**
+     *
+     * @param args
+     * main function used for testing purposes
+     */
     public static void main(String[] args)
     {
         LBMS_VisitorKeeper mainTest = new LBMS_VisitorKeeper();
