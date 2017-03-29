@@ -13,13 +13,15 @@ public class Book_Loan {
     private Visitor loaned_to;
     private Book book;
     private double balance;
+    private boolean is_active;
     private String start_date;
     private String due_date;
 
-    public Book_Loan(Visitor loaned_to, Book book, double balance, String start_date, String due_date) {
+    public Book_Loan(Visitor loaned_to, Book book, double balance, boolean is_active, String start_date, String due_date) {
         this.loaned_to = loaned_to;
         this.book = book;
         this.balance = balance;
+        this.is_active = is_active;
         this.start_date = start_date;
         this.due_date = due_date;
     }
@@ -68,8 +70,21 @@ public class Book_Loan {
 
     /**
      *
+     * @return is_active
+     */
+    public boolean getIs_Active(){ return is_active;}
+
+    /**
+     *
+     * @param is_active
+     */
+    public void setIs_Active(boolean is_active){ this.is_active = is_active;}
+
+    /**
+     *
      * @return start date
      */
+
     public String getStart_date(){ return start_date;}
 
     /**
@@ -109,8 +124,9 @@ public class Book_Loan {
             calendar.setTime(d);
             calendar.add(Calendar.DAY_OF_YEAR, 7);
             Date futureDate = calendar.getTime();
-            while(futureDate.after(dateFormat.parse(b.getDue_date()))){// if the date is a week past the due date  (current date + week is after the due date)
+            while(futureDate.after(dateFormat.parse(b.getDue_date())) && b.is_active ){// if the date is a week past the due date  (current date + week is after the due date)
                 if( b.balance > 28) {
+                    b.balance = 30;
                     break;
                 }
                 b.balance += 2;
