@@ -49,7 +49,10 @@ public class LBMS_StatisticsKeeper
 		String d2 = LBMS_StatisticsKeeper.Get_Time();
 		System.out.println("datetime," + d2);
 	}
-	public void advanceDay(int days){
+	public void advanceDay(int days)throws Exception{
+		if(days < 0 || days > 7 ) {
+			throw new Exception("advance,invalid-number-of-days," + days);
+		}
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		c.add(Calendar.DATE, days);
@@ -57,7 +60,10 @@ public class LBMS_StatisticsKeeper
 
 	}
 
-	public void advanceHour(int hours){
+	public void advanceHour(int hours)throws Exception{
+		if(hours > 23 || hours < 0 ){
+			throw new Exception("advance,invalid-number-of-hours" + hours);
+		}
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		c.add(Calendar.HOUR_OF_DAY, hours);
