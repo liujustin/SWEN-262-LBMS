@@ -135,7 +135,6 @@ public class Book_Loan {
             }
             visitor_balance += b.balance;
         }
-        v.setBalance(visitor_balance); //sets visitor balance
         return visitor_balance;
     }
 }

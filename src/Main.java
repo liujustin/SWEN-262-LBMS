@@ -37,7 +37,7 @@ public class Main {
                 Command concreteCommand = cap.ConcreteCommand(parsedCommand);
                 cac.receiveCommand(concreteCommand);
                 cac.executeCommand();
-            }catch(NullPointerException e){}
+            }catch(IndexOutOfBoundsException e){}
         }
     }
 }
