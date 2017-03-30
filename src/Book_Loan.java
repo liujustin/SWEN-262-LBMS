@@ -115,7 +115,7 @@ public class Book_Loan {
         ArrayList loaned_books = v.getBorrowed_books();
         for(int i = 0; i > loaned_books.size(); i++) {
             Book_Loan b = (Book_Loan) loaned_books.get(i);//get the due date of the book
-            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss");
+            DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy,HH:mm:ss");
             Date d = dateFormat.parse(LBMS_StatisticsKeeper.Get_Time());
             if(dateFormat.parse(b.getDue_date()).before(d)) { // check if due date is before current date
                 b.balance += 10; //if 1 day late add $10 to balance

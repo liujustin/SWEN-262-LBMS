@@ -348,6 +348,10 @@ public class Client_Access_Point {
             else {
                 hour = Integer.parseInt(parsedcommand.get(2).toString());
             }
+            if(Integer.parseInt(parsedcommand.get(1).toString()) < 0 && Integer.parseInt(parsedcommand.get(1).toString()) > 7 ){
+                return null;
+            }
+            System.out.println("advance,success;");
             Command c = new Advance_Time_Command(day,hour);
             return c;
         }

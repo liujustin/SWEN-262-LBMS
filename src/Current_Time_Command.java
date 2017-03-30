@@ -8,6 +8,6 @@ public class Current_Time_Command implements Command {
 
     @Override
     public void execute() {
-        Main.sk.Get_Time();
+        Main.sk.printTime();
     }
 }
