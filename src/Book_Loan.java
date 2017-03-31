@@ -2,8 +2,7 @@
 //AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 
-public class Book_Loan
-{
+public class Book_Loan {
     private Visitor loaned_to;
     private Book book;
     private double balance;
@@ -17,7 +16,6 @@ public class Book_Loan
     }
 
     /**
-     *
      * @return loaned_to
      */
     public Visitor getLoaned_to() {
@@ -25,7 +23,6 @@ public class Book_Loan
     }
 
     /**
-     *
      * @param loaned_to
      */
     public void setLoaned_to(Visitor loaned_to) {
@@ -33,7 +30,6 @@ public class Book_Loan
     }
 
     /**
-     *
      * @return book
      */
     public Book getBook() {
@@ -41,7 +37,6 @@ public class Book_Loan
     }
 
     /**
-     *
      * @param book
      */
     public void setBook(Book book) {
@@ -49,7 +44,6 @@ public class Book_Loan
     }
 
     /**
-     *
      * @return balance
      */
     public double getBalance() {
@@ -57,7 +51,6 @@ public class Book_Loan
     }
 
     /**
-     *
      * @param balance
      */
     public void setBalance(double balance) {
@@ -65,7 +58,6 @@ public class Book_Loan
     }
 
     /**
-     *
      * @return active_balance
      */
     public boolean isActive_balance() {
@@ -73,10 +65,19 @@ public class Book_Loan
     }
 
     /**
-     *
      * @param active_balance
      */
     public void setActive_balance(boolean active_balance) {
         this.active_balance = active_balance;
+    }
+
+    public String toString() {
+        String book_loanString = String.format("%s:%s:%s:%f:%s:%d",
+                this.loaned_to,
+                this.book,
+                this.balance,
+                this.active_balance);
+
+        return book_loanString;
     }
 }
