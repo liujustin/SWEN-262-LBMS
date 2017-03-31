@@ -355,8 +355,8 @@ public class Client_Access_Point {
             Command c = new Find_Borrowed_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)));
             return c;
         } else if (parsedcommand.get(0).toString().equals("return")) {
-            ArrayList innerarraylist = (ArrayList) parsedcommand.get(3);
-            Command c = new Return_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)), parsedcommand.get(2).toString(), innerarraylist.toString());
+            ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
+            Command c = new Return_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)),innerarraylist.toString());
             return c;
         } else if (parsedcommand.get(0).toString().equals("pay")) {
             Command c = new Pay_Fine_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)), Double.parseDouble(parsedcommand.get(2).toString()));
@@ -367,8 +367,8 @@ public class Client_Access_Point {
                     parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), parsedcommand.get(5).toString());
             return c;
         } else if (parsedcommand.get(0).toString().equals("buy")) {
-            ArrayList innerarraylist = (ArrayList) parsedcommand.get(3);
-            Command c = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(1).toString()), parsedcommand.get(2).toString(), innerarraylist.toString());
+            ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
+            Command c = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(1).toString()),innerarraylist.toString());
             return c;
         } else if (parsedcommand.get(0).toString().equals("advance")) {
             int day = Integer.parseInt(parsedcommand.get(1).toString());
