@@ -12,10 +12,16 @@ public class LBMS_StatisticsKeeper
 	/**
 	 * gets the datetime for the datetime command
 	 */
-	public void Get_Time(){
+	public String Get_Time(){
 		DateFormat df = new SimpleDateFormat("dd/MM/yy,HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
-		System.out.println("datetime," + df.format(cal.getTime()));
+		String time = ("datetime," + df.format(cal.getTime()));
+		System.out.println(time);
+		return time;
+	}
+
+	public void Generate_Report(int days){
+		date =
 	}
 
 	
