@@ -22,7 +22,8 @@ public class LBMS_StatisticsKeeper
 	 */
 
 	public String Get_Time() {
-		DateFormat dateFormat = new SimpleDateFormat ("MM/dd/yyyy HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat ("yyyy/MM/dd HH:mm:ss");
+		this.date = new Date();
 		String output = dateFormat.format(date);
 		System.out.println(output);
 		return output;
