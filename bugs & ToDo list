@@ -6,7 +6,7 @@ bugs:
 to do:
 
  + Finish implementing commands
- + Have library open at 08:00 and close at 19:00
+ + Have Visitors automatically depart when library closes
  + Refactoring code
  + GUI
  + redo/undo

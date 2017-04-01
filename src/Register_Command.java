@@ -22,7 +22,6 @@ public class Register_Command implements Command {
     }
 
     @Override
-    public void execute() {
-        Main.vk.registerVisitor(this.first,this.last,this.address,this.phone);
+    public void execute() {Main.vk.registerVisitor(this.first,this.last,this.address,this.phone);
     }
 }

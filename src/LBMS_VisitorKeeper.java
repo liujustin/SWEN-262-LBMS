@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -70,6 +71,8 @@ public class LBMS_VisitorKeeper
      */
     public Visitor registerVisitor(String firstName, String lastName, String address, String phoneNumber)
     {
+        String time = LBMS_StatisticsKeeper.Get_Time();
+
         Long newID = 999999999L; //Start with an id of 1000000000 so the unique id is at least 10 digits
 
         //for(Long key: this.visitorRegistry.keySet())
@@ -81,9 +84,7 @@ public class LBMS_VisitorKeeper
 
         this.visitorRegistry.put(newID, temporaryNewVisitor);
 
-        String d = LBMS_StatisticsKeeper.Get_Time();
-
-        System.out.println("register," + newID + "," + d.substring(0,10));
+        System.out.println("register," + newID + "," + time.substring(0,10));
 
         return temporaryNewVisitor;
     }
@@ -95,16 +96,19 @@ public class LBMS_VisitorKeeper
      */
     public void beginVisit(Long visitorID) throws Exception
     {
+        String time = LBMS_StatisticsKeeper.Get_Time();
+        if(!LBMS_StatisticsKeeper.getIsopen(time)){
+            throw new Exception("Library is currently closed.");
+        }
         if(this.visitorRegistry.containsKey(visitorID))
         {
             if(! this.activeVisitor.containsKey(visitorID)) {
 
                 DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy,HH:mm:ss");
-                String d = LBMS_StatisticsKeeper.Get_Time();
 
-                System.out.println("arrive,"+ visitorID + "," + d);
+                System.out.println("arrive,"+ visitorID + "," + time.substring(11,19));
 
-                this.activeVisitor.put(visitorID, dateFormat.parse(d));
+                this.activeVisitor.put(visitorID, dateFormat.parse(time));
             }
             else
                 throw new Exception("arrive,duplicate;");
@@ -122,9 +126,9 @@ public class LBMS_VisitorKeeper
     {
         if(this.activeVisitor.containsKey(visitorID)) {
             this.activeVisitor.remove(visitorID);
-            String d = LBMS_StatisticsKeeper.Get_Time();
+            String time = LBMS_StatisticsKeeper.Get_Time();
 
-            System.out.println("depart," + visitorID + "," + d);
+            System.out.println("depart," + visitorID + "," + time);
         }
         else
             throw new Exception("depart,invalid-id;");
@@ -149,6 +153,16 @@ public class LBMS_VisitorKeeper
             e.printStackTrace();
         }
     }
+   /* public void borrowedBooks(Visitor visitor){
+        ArrayList visitorsbooks = visitor.getBorrowed_books();
+        String response;
+        response = "borrowed," + visitorsbooks.size() + ",";
+        System.out.println(response);
+        for(int i = 0;i < visitorsbooks.size();i++ ){
+            System.out.println(visitorsbooks);
+        }
+    }
+    */
 
     /**
      *
@@ -164,7 +178,11 @@ public class LBMS_VisitorKeeper
         System.out.println(mainTest.getVisitorRegistry().get(4561235867L));
 
         //Validate Registering User//
-        System.out.println(mainTest.registerVisitor("Hubert", "Humphrey", "200 East Landia Street", "3194912816"));
+        try {
+            System.out.println(mainTest.registerVisitor("Hubert", "Humphrey", "200 East Landia Street", "3194912816"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //Validate Begining Visit//
         try{mainTest.beginVisit(4561235867L);}

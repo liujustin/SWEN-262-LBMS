@@ -3,6 +3,7 @@
 //DATE::Mar.04.2017
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,6 +14,7 @@ public class LBMS_StatisticsKeeper
 {
 	private static Date date;
 	private Calendar calendar;
+	private static boolean isopen;
 	private static int seconds = 0;
 	static Timer timer = new Timer();
 	static TimerTask task = new TimerTask() {
@@ -25,6 +27,7 @@ public class LBMS_StatisticsKeeper
 	public LBMS_StatisticsKeeper(){
 		this.calendar = Calendar.getInstance();
 		this.date = new Date();
+		this.isopen = isopen;
 
 
 
@@ -69,6 +72,30 @@ public class LBMS_StatisticsKeeper
 		date.setTime(c.getTimeInMillis());
 
 	}
+	public static boolean getIsopen(String time)throws ParseException{
+
+		time = time.substring(11,19);
+		Date time1 = new SimpleDateFormat("HH:mm:ss").parse(time);
+		Calendar calendar1 = Calendar.getInstance();
+		calendar1.setTime(time1);
+		Date currdate = calendar1.getTime();
+
+		String close = "19:00:00";
+		Date closetime = new SimpleDateFormat("HH:mm:ss").parse(close);
+		Calendar calendar2 = Calendar.getInstance();
+		calendar2.setTime(closetime);
+
+		String open = "08:00:00";
+		Date opentime = new SimpleDateFormat("HH:mm:ss").parse(open);
+		Calendar calendar3 = Calendar.getInstance();
+		calendar3.setTime(opentime);
+
+		if(currdate.after(calendar2.getTime()) || currdate.before(calendar3.getTime())){
+			return isopen = false;
+		}else{
+			return isopen = true;
+		}
+	}
 
 	/**
 	 *
@@ -84,4 +111,5 @@ public class LBMS_StatisticsKeeper
 		c.add(Calendar.HOUR_OF_DAY, hours);
 		date.setTime(c.getTimeInMillis());
 	}
+
 }
