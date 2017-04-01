@@ -69,6 +69,7 @@ public class Book_Loan {
     }
 
     /**
+     * @return active_balance
      *
      * @return is_active
      */
@@ -106,7 +107,7 @@ public class Book_Loan {
     public void setDue_date(String due_date){ this.due_date = due_date;}
 
     /**
-     *
+     * @param
      * @param v
      * @return Total fines for a visitor
      */
@@ -136,5 +137,14 @@ public class Book_Loan {
             visitor_balance += b.balance;
         }
         return visitor_balance;
+    }
+
+    public String toString() {
+        String book_loanString = String.format("%s:%s:%s:%f:%s:%d",
+                this.loaned_to,
+                this.book,
+                this.balance);
+
+        return book_loanString;
     }
 }
