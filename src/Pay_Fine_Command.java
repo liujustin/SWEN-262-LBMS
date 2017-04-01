@@ -4,21 +4,25 @@
 
 public class Pay_Fine_Command implements Command {
 
-    private Visitor v;
-    private Double amount;
+    private long visitorID;
+    private double amount;
 
     /**
      *
-     * @param v
+     * @param visitorID
      * @param amount
      */
-    public Pay_Fine_Command(Visitor v, Double amount){
-        this.v = v;
+    public Pay_Fine_Command(Long visitorID, Double amount){
+        this.visitorID = visitorID;
         this.amount = amount;
     }
 
     @Override
     public void execute() {
-        //pay fine goes here
+        try {
+            Main.vk.payFine(this.visitorID,this.amount);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
