@@ -13,10 +13,7 @@ public class Main {
     public static Client_Access_Command cac = new Client_Access_Command();
 
     /**
-     *
-     * @param args
-     * The main in which runs the system
-     *
+     * @param args The main in which runs the system
      */
     public static void main(String[] args) throws Exception {
         System.out.println("Welcome to the Library Book Management System!");
@@ -30,14 +27,16 @@ public class Main {
         System.out.println("report, \t shutdown");
         System.out.println();
 
-        while (true){
+        while (true) {
+            sk.check_Time();
             String command = cap.getCommand();
             ArrayList<Object> parsedCommand = cap.parseCommand(command);
             try {
                 Command concreteCommand = cap.ConcreteCommand(parsedCommand);
                 cac.receiveCommand(concreteCommand);
                 cac.executeCommand();
-            }catch(IndexOutOfBoundsException e){}
+            } catch (IndexOutOfBoundsException e) {
+            }
         }
     }
 }

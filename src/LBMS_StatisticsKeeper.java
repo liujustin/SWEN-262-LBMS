@@ -3,18 +3,23 @@
 //DATE::Mar.04.2017
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class LBMS_StatisticsKeeper
 {
 	private static Date date;
-	private Calendar calendar;
+	private static Calendar calendar;
+	private static boolean isOpen;
 	private static int seconds = 0;
-	static Timer timer = new Timer();
+	static Timer timers = new Timer();
 	static TimerTask task = new TimerTask() {
 		@Override
 		public void run() {
@@ -25,28 +30,63 @@ public class LBMS_StatisticsKeeper
 	public LBMS_StatisticsKeeper(){
 		this.calendar = Calendar.getInstance();
 		this.date = new Date();
+		this.isOpen = isOpen;
 	}
 
 	/**
-	 * gets the datetime for the datetime command
+	 * gets the current datetime. Used throughout the system
 	 */
-	public static String Get_Time() {
-		if(seconds == 0) {
-			timer.scheduleAtFixedRate(task, 1000, 1000);
-		}
+	public static String Get_Time(){
 		DateFormat dateFormat = new SimpleDateFormat ("YYYY/MM/dd,HH:mm:ss");
-		Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		c.add(Calendar.SECOND, seconds);
-		date.setTime(c.getTimeInMillis());
+		calendar = Calendar.getInstance();
+		long startTime = System.currentTimeMillis(); // Process start time
+
+		try {
+			Thread.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		long elapsedTime = System.currentTimeMillis() - startTime;
+		calendar.setTime(date);
+		calendar.setTimeInMillis(calendar.getTime().getTime() + elapsedTime);
+		calendar.add(Calendar.SECOND, seconds);
+		date.setTime(calendar.getTimeInMillis());
 		String output = dateFormat.format(date);
 		return output;
 	}
 
+	public static boolean check_Time(){
+		Timer timer = new Timer();
+		long interval = (1000);
+		timer.scheduleAtFixedRate(new TimerTask(){
+			public void run(){
+				String currentTime = Get_Time().split(",")[1];
+				if (currentTime.compareTo( "19:00:00") > 0 || currentTime.compareTo("08:00:00") < 0){
+					isOpen = false;
+				}
+				else {
+					isOpen = true;
+				}
+			}
+		},date,interval);
+
+		return isOpen;
+	}
+
+
+	/**
+	 * Prints the time for the datetime command
+	 */
 	public void printTime(){
 		String d2 = LBMS_StatisticsKeeper.Get_Time();
 		System.out.println("datetime," + d2);
 	}
+
+	/**
+	 *
+	 * @param days
+	 * @throws Exception
+     */
 	public void advanceDay(int days)throws Exception{
 		if(days < 0 || days > 7 ) {
 			throw new Exception("advance,invalid-number-of-days," + days);
@@ -57,13 +97,44 @@ public class LBMS_StatisticsKeeper
 		date.setTime(c.getTimeInMillis());
 	}
 
+//	public static boolean getIsopen(String time)throws ParseException{
+//
+//		time = time.substring(11,19);
+//		Date time1 = new SimpleDateFormat("HH:mm:ss").parse(time);
+//		Calendar calendar1 = Calendar.getInstance();
+//		calendar1.setTime(time1);
+//		Date currdate = calendar1.getTime();
+//
+//		String close = "19:00:00";
+//		Date closetime = new SimpleDateFormat("HH:mm:ss").parse(close);
+//		Calendar calendar2 = Calendar.getInstance();
+//		calendar2.setTime(closetime);
+//
+//		String open = "08:00:00";
+//		Date opentime = new SimpleDateFormat("HH:mm:ss").parse(open);
+//		Calendar calendar3 = Calendar.getInstance();
+//		calendar3.setTime(opentime);
+//
+//		if(currdate.after(calendar2.getTime()) || currdate.before(calendar3.getTime())){
+//			return isOpen = false;
+//		}else{
+//			return isOpen = true;
+//		}
+//	}
+
+	/**
+	 *
+	 * @param hours
+	 * @throws Exception
+     */
 	public void advanceHour(int hours)throws Exception{
 		if(hours > 23 || hours < 0 ){
 			throw new Exception("advance,invalid-number-of-hours" + hours);
 		}
-		Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		c.add(Calendar.HOUR_OF_DAY, hours);
-		date.setTime(c.getTimeInMillis());
+		calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.HOUR_OF_DAY, hours);
+		date.setTime(calendar.getTimeInMillis());
 	}
+
 }
