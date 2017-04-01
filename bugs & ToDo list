@@ -1,0 +1,17 @@
+bugs:
+
++ Register Command doesn't increment generated visitor id
+
+
+to do:
+
+ + Finish implementing commands
+ + Have library open at 08:00 and close at 19:00
+ + Refactoring code
+ + GUI
+ + redo/undo
+ + Employee/Visitor Accounts
+ + Concurrent Client Connections
+ + incorporate Proxy + State Patterns
+ + Support Google Books Web Service API
+ + Update design doc
