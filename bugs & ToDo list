@@ -1,7 +1,6 @@
 bugs:
-
 + Register Command doesn't increment generated visitor id
-+ borrowbook command has a string as a booklist parameter instead of an arraylist of strings
+
 
 to do:
 
@@ -16,13 +15,3 @@ to do:
  + Support Google Books Web Service API
  + Update design doc
 
-
-List of stuff that needs to be done on 4/1
-
-+ fix bugs
-+ make a thread in the main that keeps calling the getIsOpen function, if getIsOpen is false, remove all visitors that are visiting the library
-+ return, pay, borrowed functions
-
-
-Adam
-- return + pay functions ( probably will do more )

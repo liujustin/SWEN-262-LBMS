@@ -144,6 +144,7 @@ public class Book_Loan {
                 this.loaned_to,
                 this.book,
                 this.balance);
+          //      this.active_balance);
 
         return book_loanString;
     }

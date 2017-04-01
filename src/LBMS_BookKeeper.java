@@ -140,10 +140,7 @@ public class LBMS_BookKeeper
 
         System.out.println("borrow," + futDate.substring(0,10));
     }
-    public void returnBook(Visitor visitor, Book book, ArrayList booklist){
 
-
-    }
 
 
     /**
