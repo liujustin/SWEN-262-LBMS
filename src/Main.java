@@ -18,7 +18,7 @@ public class Main {
      * The main in which runs the system
      *
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         System.out.println("Welcome to the Library Book Management System!");
         System.out.println("Here are the available commands!");
         System.out.println("Commands:");
@@ -37,7 +37,7 @@ public class Main {
                 Command concreteCommand = cap.ConcreteCommand(parsedCommand);
                 cac.receiveCommand(concreteCommand);
                 cac.executeCommand();
-            }catch(NullPointerException e){}
+            }catch(IndexOutOfBoundsException e){}
         }
     }
 }
