@@ -99,6 +99,11 @@ public class LBMS_BookKeeper
      */
     public void borrowBook(Visitor visitor, String bookList) throws Exception
     {
+        String time = LBMS_StatisticsKeeper.Get_Time();
+        if(!LBMS_StatisticsKeeper.getIsopen(time)){
+            throw new Exception("Library is currently closed.");
+        }
+
         String[] bookISBN = bookList.split(",");
 
         if(bookISBN.length > 5 - visitor.getBorrowed_books().size())
@@ -125,7 +130,7 @@ public class LBMS_BookKeeper
         }
         Calendar calendar = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy,HH:mm:ss");
-        calendar.setTime(dateFormat.parse(LBMS_StatisticsKeeper.Get_Time()));
+        calendar.setTime(dateFormat.parse(time));
         calendar.add(Calendar.DAY_OF_YEAR, 7);
         Date futureDate = calendar.getTime();
         String futDate = dateFormat.format(futureDate);
@@ -135,6 +140,11 @@ public class LBMS_BookKeeper
 
         System.out.println("borrow," + futDate.substring(0,10));
     }
+    public void returnBook(Visitor visitor, Book book, ArrayList booklist){
+
+
+    }
+
 
     /**
      *
