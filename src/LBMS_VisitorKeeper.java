@@ -81,10 +81,9 @@ public class LBMS_VisitorKeeper
 
         this.visitorRegistry.put(newID, temporaryNewVisitor);
 
-        DateFormat DF = new SimpleDateFormat("yyyy/MM/dd");
-        Date d = new Date();
+        String d = LBMS_StatisticsKeeper.Get_Time();
 
-        System.out.println("register," + newID + "," + DF.format(d));
+        System.out.println("register," + newID + "," + d.substring(0,10));
 
         return temporaryNewVisitor;
     }
@@ -100,13 +99,12 @@ public class LBMS_VisitorKeeper
         {
             if(! this.activeVisitor.containsKey(visitorID)) {
 
-                DateFormat DF = new SimpleDateFormat("yyyy/MM/dd");
-                DateFormat time = new SimpleDateFormat("HH:mm:ss");
-                Date d = new Date();
+                DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy,HH:mm:ss");
+                String d = LBMS_StatisticsKeeper.Get_Time();
 
-                System.out.println("arrive,"+ visitorID + "," + DF.format(d)+ "," +time.format(d));
+                System.out.println("arrive,"+ visitorID + "," + d);
 
-                this.activeVisitor.put(visitorID, new Date());
+                this.activeVisitor.put(visitorID, dateFormat.parse(d));
             }
             else
                 throw new Exception("arrive,duplicate;");
@@ -124,11 +122,9 @@ public class LBMS_VisitorKeeper
     {
         if(this.activeVisitor.containsKey(visitorID)) {
             this.activeVisitor.remove(visitorID);
-            DateFormat DF = new SimpleDateFormat("yyyy/MM/dd");
-            DateFormat time = new SimpleDateFormat("HH:mm:ss");
-            Date d = new Date();
+            String d = LBMS_StatisticsKeeper.Get_Time();
 
-            System.out.println("depart," + visitorID + "," + DF.format(d) + "," + time.format(d));
+            System.out.println("depart," + visitorID + "," + d);
         }
         else
             throw new Exception("depart,invalid-id;");
@@ -154,6 +150,11 @@ public class LBMS_VisitorKeeper
         }
     }
 
+    /**
+     *
+     * @param args
+     * main function used for testing purposes
+     */
     public static void main(String[] args)
     {
         LBMS_VisitorKeeper mainTest = new LBMS_VisitorKeeper();

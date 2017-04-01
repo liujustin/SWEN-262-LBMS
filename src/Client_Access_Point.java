@@ -36,7 +36,7 @@ public class Client_Access_Point {
      * @return Arraylist of objects
      */
 
-    public ArrayList parseCommand(String command) {
+    public ArrayList parseCommand(String command){
         int commandsize;
         String errormessage;
 
@@ -137,8 +137,11 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                System.out.println(errormessage);
-                return null;
+                try {
+                    throw new Exception(errormessage);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         } else if (parsedcommand.get(0).equals("arrive")
                 || parsedcommand.get(0).equals("depart")
@@ -146,8 +149,11 @@ public class Client_Access_Point {
 
             if (parsedcommand.size() < 2) {
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {Visitor ID}";
-                System.out.println(errormessage);
-                return null;
+                try {
+                    throw new Exception(errormessage);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         } else if (parsedcommand.get(0).equals("info")) {
             if (parsedcommand.size() <= 6) {
@@ -165,8 +171,11 @@ public class Client_Access_Point {
                         }
                         commandsize++;
                     }
-                    System.out.println(errormessage);
-                    return null;
+                    try {
+                        throw new Exception(errormessage);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }
             }
         } else if (parsedcommand.get(0).equals("borrow")) {
@@ -183,8 +192,11 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                System.out.println(errormessage);
-                return null;
+                try {
+                    throw new Exception(errormessage);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         } else if (parsedcommand.get(0).equals("return")) {
             if (parsedcommand.size() < 4) {
@@ -204,8 +216,11 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                System.out.println(errormessage);
-                return null;
+                try {
+                    throw new Exception(errormessage);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         } else if (parsedcommand.get(0).equals("pay")) {
             if (parsedcommand.size() < 3) {
@@ -221,26 +236,27 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                System.out.println(errormessage);
-                return null;
+                try {
+                    throw new Exception(errormessage);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         } else if (parsedcommand.get(0).equals("search")) {
-            if (parsedcommand.size() < 4) {
+            if (parsedcommand.size() < 2) {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while (commandsize < 4) {
+                while (commandsize < 2) {
                     if (commandsize == 1) {
-                        errormessage += "title, ";
+                        errormessage += "title}";
                         commandsize++;
                     }
-                    if (commandsize == 3) {
-                        errormessage += "isbn}";
-                        commandsize++;
-                    }
-                    commandsize++;
                 }
-                System.out.println(errormessage);
-                return null;
+                try {
+                    throw new Exception(errormessage);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         } else if (parsedcommand.get(0).equals("buy")) {
             if (parsedcommand.size() < 4) {
@@ -260,20 +276,29 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                System.out.println(errormessage);
-                return null;
+                try {
+                    throw new Exception(errormessage);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         } else if (parsedcommand.get(0).equals("advance")) {
             if (parsedcommand.size() < 2) {
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {number-of-days}";
-                System.out.println(errormessage);
-                return null;
+                try {
+                    throw new Exception(errormessage);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         } else if (parsedcommand.get(0).equals("report")) {
             if (parsedcommand.size() < 2) {
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {days}";
-                System.out.println(errormessage);
-                return null;
+                try {
+                    throw new Exception(errormessage);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
             }
         } else if (parsedcommand.get(0).equals("datetime") || parsedcommand.get(0).equals("shutdown")) {
             return parsedcommand;
@@ -284,8 +309,11 @@ public class Client_Access_Point {
              */
         } else {
             errormessage = "Requested command doesn't exist.";
-            System.out.println(errormessage);
-            return null;
+            try {
+                throw new Exception(errormessage);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
         }
         return parsedcommand;
     }
@@ -348,6 +376,8 @@ public class Client_Access_Point {
             else {
                 hour = Integer.parseInt(parsedcommand.get(2).toString());
             }
+
+            System.out.println("advance,success;");
             Command c = new Advance_Time_Command(day,hour);
             return c;
         }
