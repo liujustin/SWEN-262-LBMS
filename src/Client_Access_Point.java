@@ -352,14 +352,14 @@ public class Client_Access_Point {
             Command c = new Borrow_Command(Main.vk.getVisitorRegistry().get((parsedcommand.get(1))), innerarraylist.toString());
             return c;
         } else if (parsedcommand.get(0).toString().equals("borrowed")) {
-            Command c = new Find_Borrowed_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)));
+            Command c = new Find_Borrowed_Command(Long.getLong(parsedcommand.get(1).toString()));
             return c;
         } else if (parsedcommand.get(0).toString().equals("return")) {
             ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
-            Command c = new Return_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)),innerarraylist.toString());
+            Command c = new Return_Command(Long.getLong(parsedcommand.get(1).toString()),innerarraylist);
             return c;
         } else if (parsedcommand.get(0).toString().equals("pay")) {
-            Command c = new Pay_Fine_Command(Main.vk.getVisitorRegistry().get(parsedcommand.get(1)), Double.parseDouble(parsedcommand.get(2).toString()));
+            Command c = new Pay_Fine_Command(Long.getLong(parsedcommand.get(1).toString()),Double.parseDouble(parsedcommand.get(2).toString()));
             return c;
         } else if (parsedcommand.get(0).toString().equals("search")) {
             ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
