@@ -3,18 +3,22 @@
 //DATE::Feb.25.2017
 public class Find_Borrowed_Command implements Command {
 
-    private Visitor v;
+    private long visitorID;
 
     /**
      *
-     * @param v
+     * @param visitorID
      */
-    public Find_Borrowed_Command(Visitor v){
-        this.v = v;
+    public Find_Borrowed_Command(long visitorID){
+        this.visitorID = visitorID;
     }
 
     @Override
     public void execute() {
-        Main.vk.getVisitorRegistry().get(v.getVisitor_ID()).getBorrowed_books();
+        try {
+            Main.vk.borrowedBooks(visitorID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -27,7 +27,8 @@ public class LBMS_StatisticsKeeper
 	public LBMS_StatisticsKeeper(){
 		this.calendar = Calendar.getInstance();
 		this.date = new Date();
-		this.isopen = isopen;
+
+
 	}
 
 	/**

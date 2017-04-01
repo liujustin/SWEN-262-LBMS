@@ -2,8 +2,7 @@
 //AUTHOR::Ryan Connors, Adam Nowak
 //DATE::Feb.25.2017
 
-<<<<<<< HEAD
-=======
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
->>>>>>> 5ead8fe6f26549d48eec09646796304715d5723c
 public class Book_Loan {
     private Visitor loaned_to;
     private Book book;
@@ -146,8 +144,8 @@ public class Book_Loan {
         String book_loanString = String.format("%s:%s:%s:%f:%s:%d",
                 this.loaned_to,
                 this.book,
-                this.balance,
-                this.active_balance);
+                this.balance);
+          //      this.active_balance);
 
         return book_loanString;
     }
