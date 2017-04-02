@@ -1,5 +1,5 @@
 //FILE::Register_Command.java
-//AUTHOR::Ryan Connors
+//AUTHOR::Ryan Connors, Adam Nowak
 //DATE::Feb.25.2017
 public class Register_Command implements Command {
     private String last;
@@ -22,6 +22,11 @@ public class Register_Command implements Command {
     }
 
     @Override
-    public void execute() {Main.vk.registerVisitor(this.first,this.last,this.address,this.phone);
+    public void execute() {
+        try {
+            Main.vk.registerVisitor(this.first,this.last,this.address,this.phone);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

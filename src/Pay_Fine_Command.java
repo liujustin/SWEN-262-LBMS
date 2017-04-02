@@ -1,10 +1,10 @@
 //FILE::Pay_Fine_Command.java
-//AUTHOR::Ryan Connors
+//AUTHOR::Ryan Connors, Adam Nowak
 //DATE::Feb.25.2017
 
 public class Pay_Fine_Command implements Command {
 
-    private long visitorID;
+    private Long visitorID;
     private double amount;
 
     /**

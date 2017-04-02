@@ -100,7 +100,7 @@ public class LBMS_BookKeeper
     public void borrowBook(Visitor visitor, String bookList) throws Exception
     {
         String time = LBMS_StatisticsKeeper.Get_Time();
-        if(!LBMS_StatisticsKeeper.check_Time()){
+        if(!LBMS_StatisticsKeeper.getIsOpen(LBMS_StatisticsKeeper.Get_Time())){
             throw new Exception("Library is currently closed.");
         }
 
@@ -124,7 +124,7 @@ public class LBMS_BookKeeper
             String errorString = "borrow,invalid-book-id,{";
             for(String isbn: invalidBookIDs)
                 errorString += isbn+", ";
-            errorString = errorString.subSequence(0, errorString.length()-1).toString()+"}";
+            errorString = errorString.subSequence(0, errorString.length()-1).toString()+"};";
 
             throw new Exception(errorString);
         }

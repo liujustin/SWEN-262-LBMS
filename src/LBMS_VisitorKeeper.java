@@ -1,5 +1,5 @@
 //FILE::LBMS_VisitorKeeper.java
-//AUTHOR::Kevin.P.Barnett
+//AUTHOR::Kevin.P.Barnett, Adam Nowak
 //DATE::Mar.04.2017
 
 import java.io.File;
@@ -12,7 +12,8 @@ import java.util.*;
 public class LBMS_VisitorKeeper
 {
     private HashMap<Long, Visitor> visitorRegistry;
-    private HashMap<Long, Date> activeVisitor;
+    private static HashMap<Long, Date> activeVisitor;
+    private Long newID = 999999999L;
 
     public LBMS_VisitorKeeper()
     {
@@ -39,7 +40,7 @@ public class LBMS_VisitorKeeper
             e.printStackTrace();
         }
     }
-
+    public static HashMap<Long,Date> getActiveVisitors(){ return activeVisitor;}
     /**
      *
      * @return visitor registry
@@ -66,24 +67,24 @@ public class LBMS_VisitorKeeper
      * @param phoneNumber
      * @return registers a new visitor to the system
      */
-    public Visitor registerVisitor(String firstName, String lastName, String address, String phoneNumber)
+    public Visitor registerVisitor(String firstName, String lastName, String address, String phoneNumber) throws Exception
     {
         String time = LBMS_StatisticsKeeper.Get_Time();
-
-        Long newID = 999999999L; //Start with an id of 1000000000 so the unique id is at least 10 digits
+        Long id = incrementID(); // starts visitor id as 1000000000 and increments by 1 each time register visitor is called
 
         //for(Long key: this.visitorRegistry.keySet())
         //    newID = Math.max(newID, key);
 
-        newID += 1;
-
         Visitor temporaryNewVisitor = new Visitor(firstName, lastName, address, 0.0, phoneNumber, newID);
 
-        this.visitorRegistry.put(newID, temporaryNewVisitor);
+        this.visitorRegistry.put(id, temporaryNewVisitor);
 
-        System.out.println("register," + newID + "," + time.substring(0,10));
-
+        System.out.println("register," + id + "," + time.substring(0,10));
         return temporaryNewVisitor;
+    }
+    public Long incrementID(){
+        newID++;
+        return newID;
     }
 
     /**
@@ -94,7 +95,7 @@ public class LBMS_VisitorKeeper
     public void beginVisit(Long visitorID) throws Exception
     {
         String time = LBMS_StatisticsKeeper.Get_Time();
-        if(!LBMS_StatisticsKeeper.check_Time()){
+        if(!LBMS_StatisticsKeeper.getIsOpen(LBMS_StatisticsKeeper.Get_Time())){
             throw new Exception("Library is currently closed.");
         }
         if(this.visitorRegistry.containsKey(visitorID))
@@ -159,7 +160,7 @@ public class LBMS_VisitorKeeper
      * @param ISBNS
      * @throws Exception
      */
-    public void returnBook(long visitorID, ArrayList<String> ISBNS) throws Exception {
+    public void returnBook(Long visitorID, ArrayList<String> ISBNS) throws Exception {
         String errormessage1 = "return,invalid-book-id";
         String errormessage2a = "return,overdue,";
         String errormessage2b = "";
@@ -226,7 +227,7 @@ public class LBMS_VisitorKeeper
         System.out.println("return,success");
     }
 
-    public void payFine(long visitorID, double amount)throws Exception{
+    public void payFine(Long visitorID, double amount)throws Exception{
         if (!this.visitorRegistry.containsKey(visitorID)) {
             throw new Exception("pay,invalid-visitor-id;");
         }
@@ -238,7 +239,7 @@ public class LBMS_VisitorKeeper
         visitor.setBalance(new_visitor_balance);
         System.out.println("pay,success," + visitor.getBalance() + ";");
     }
-   public void borrowedBooks(long visitorID) throws Exception{
+   public void borrowedBooks(Long visitorID) throws Exception{
        if (!this.visitorRegistry.containsKey(visitorID)) {
            throw new Exception("borrowed,invalid-visitor-id;");
        }
