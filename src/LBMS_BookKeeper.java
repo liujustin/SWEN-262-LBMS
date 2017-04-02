@@ -100,7 +100,7 @@ public class LBMS_BookKeeper
     public void borrowBook(Visitor visitor, String bookList) throws Exception
     {
         String time = LBMS_StatisticsKeeper.Get_Time();
-        if(!LBMS_StatisticsKeeper.getIsOpen(LBMS_StatisticsKeeper.Get_Time())){
+        if(!LBMS_StatisticsKeeper.getIsopen(LBMS_StatisticsKeeper.Get_Time())){
             throw new Exception("Library is currently closed.");
         }
 

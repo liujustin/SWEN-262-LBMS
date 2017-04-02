@@ -20,6 +20,7 @@ public class LBMS_StatisticsKeeper
 	private static boolean isOpen;
 	private static boolean starttimer = true;
 	private static int seconds = 0;
+	private static int skiptime = 0;
 	static Timer timer = new Timer();
 	static TimerTask task = new TimerTask() {
 		@Override
@@ -37,19 +38,23 @@ public class LBMS_StatisticsKeeper
 	 * gets the current datetime. Used throughout the system
 	 */
 	public static String Get_Time() {
+
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.SECOND, -skiptime);
 		if(starttimer) {
 			starttimer = false;
 			timer.scheduleAtFixedRate(task, 1000, 1000);
 		}
+
+		skiptime = seconds;
 		DateFormat dateFormat = new SimpleDateFormat ("MM/dd/yyyy,HH:mm:ss");
-		Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		c.add(Calendar.SECOND, seconds);
+		c.add(Calendar.SECOND, skiptime);
 		date.setTime(c.getTimeInMillis());
 		String output = dateFormat.format(date);
 		return output;
 	}
-/*
+
 	public static boolean check_Time(){
 		Timer timer = new Timer();
 		long interval = (1000);
@@ -67,7 +72,7 @@ public class LBMS_StatisticsKeeper
 
 		return isOpen;
 	}
-*/
+
 
 	/**
 	 * Prints the time for the datetime command
@@ -92,7 +97,7 @@ public class LBMS_StatisticsKeeper
 		date.setTime(c.getTimeInMillis());
 	}
 
-	public static boolean getIsOpen(String time)throws ParseException{
+	public static boolean getIsopen(String time)throws ParseException{
 
 		time = time.substring(11,19);
 		Date time1 = new SimpleDateFormat("HH:mm:ss").parse(time);

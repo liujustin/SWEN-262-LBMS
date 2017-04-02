@@ -95,7 +95,7 @@ public class LBMS_VisitorKeeper
     public void beginVisit(Long visitorID) throws Exception
     {
         String time = LBMS_StatisticsKeeper.Get_Time();
-        if(!LBMS_StatisticsKeeper.getIsOpen(LBMS_StatisticsKeeper.Get_Time())){
+        if(!LBMS_StatisticsKeeper.getIsopen(LBMS_StatisticsKeeper.Get_Time())){
             throw new Exception("Library is currently closed.");
         }
         if(this.visitorRegistry.containsKey(visitorID))
