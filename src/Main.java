@@ -28,8 +28,8 @@ public class Main {
         System.out.println();
 
         while (true) {
-            Thread library_close_thread = new Thread(new Library_Close_Thread());
-            library_close_thread.run();
+        //    Thread library_close_thread = new Thread(new Library_Close_Thread());
+         //   library_close_thread.run();
             String command = cap.getCommand();
             ArrayList<Object> parsedCommand = cap.parseCommand(command);
             try {

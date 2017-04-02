@@ -8,10 +8,10 @@ public class Library_Close_Thread implements Runnable {
     @Override
     public void run() {
         try {
-            if(!LBMS_StatisticsKeeper.getIsOpen(LBMS_StatisticsKeeper.Get_Time())){
+            if(!LBMS_StatisticsKeeper.getIsopen(LBMS_StatisticsKeeper.Get_Time())){
                 LBMS_VisitorKeeper.getActiveVisitors().clear();
             }
-        } catch (ParseException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
