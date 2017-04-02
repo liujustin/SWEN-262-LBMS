@@ -28,14 +28,15 @@ public class Main {
         System.out.println();
 
         while (true) {
-            sk.check_Time();
+            Thread library_close_thread = new Thread(new Library_Close_Thread());
+            library_close_thread.run();
             String command = cap.getCommand();
             ArrayList<Object> parsedCommand = cap.parseCommand(command);
             try {
                 Command concreteCommand = cap.ConcreteCommand(parsedCommand);
                 cac.receiveCommand(concreteCommand);
                 cac.executeCommand();
-            } catch (IndexOutOfBoundsException e) {
+            } catch (Exception e) {
             }
         }
     }

@@ -379,7 +379,6 @@ public class Client_Access_Point {
                 hour = Integer.parseInt(parsedcommand.get(2).toString());
             }
 
-            System.out.println("advance,success;");
             Command c = new Advance_Time_Command(day, hour);
             return c;
         } else if (parsedcommand.get(0).toString().equals("datetime")) {

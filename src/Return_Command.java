@@ -1,10 +1,10 @@
 import java.util.ArrayList;
 
 //FILE::Return_Command.java
-//AUTHOR::Ryan Connors
+//AUTHOR::Ryan Connors, Adam Nowak
 //DATE::Feb.25.2017
 public class Return_Command implements Command {
-    private long visitor_ID;
+    private Long visitor_ID;
     private ArrayList<String> ISBNS;
 
     public Return_Command(Long visitor_ID,ArrayList<String> ISBNS){

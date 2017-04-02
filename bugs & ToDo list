@@ -1,11 +1,10 @@
 bugs:
-+ Register Command doesn't increment generated visitor id
++ Register Command doesn't check for duplicate visitor accounts
 
 
 to do:
 
- + Finish implementing commands
- + Have Visitors automatically depart when library closes
+ + Finish implementing commands (search,info,report)
  + Refactoring code
  + GUI
  + redo/undo
