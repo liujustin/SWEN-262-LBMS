@@ -6,5 +6,5 @@ public interface Command {
     /*
     Execute function to execute a command.
      */
-    void execute();
+    String execute();
 }

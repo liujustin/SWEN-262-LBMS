@@ -18,7 +18,8 @@ public class Pay_Fine_Command implements Command {
     }
 
     @Override
-    public void execute() {
+    public String execute() {
         //pay fine goes here
+        return "";
     }
 }

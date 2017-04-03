@@ -14,11 +14,12 @@ public class End_Visit_Command implements Command {
     }
 
     @Override
-    public void execute() {
+    public String execute() {
         try {
             Main.vk.endVisit(this.vID);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "";
     }
 }

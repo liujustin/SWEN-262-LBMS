@@ -36,7 +36,7 @@ public class Client_Access_Point {
      * @return Arraylist of objects
      */
 
-    public ArrayList parseCommand(String command) {
+    public ArrayList parseCommand(String command) throws Exception {
         int commandsize;
         String errormessage;
 
@@ -267,6 +267,7 @@ public class Client_Access_Point {
             if (parsedcommand.size() < 2) {
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {number-of-days}";
                 System.out.println(errormessage);
+                throw new Exception(errormessage);
                 return null;
             }
         } else if (parsedcommand.get(0).equals("report")) {

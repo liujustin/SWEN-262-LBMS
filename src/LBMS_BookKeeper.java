@@ -128,6 +128,8 @@ public class LBMS_BookKeeper
             visitor.add_book(new Book_Loan(visitor, this.bookRegistry.get(isbn), 0.0, true));
     }
 
+    public void
+
     /**
      *
      * @param args

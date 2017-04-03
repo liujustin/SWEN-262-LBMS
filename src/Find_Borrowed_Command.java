@@ -14,7 +14,8 @@ public class Find_Borrowed_Command implements Command {
     }
 
     @Override
-    public void execute() {
+    public String execute() {
         Main.vk.getVisitorRegistry().get(v.getVisitor_ID()).getBorrowed_books();
+        return "";
     }
 }

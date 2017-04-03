@@ -13,7 +13,8 @@ public class Shut_Down_Command implements Command {
     }
 
     @Override
-    public void execute() {
+    public String execute() {
         this.sys.shutdown();
+        return "";
     }
 }

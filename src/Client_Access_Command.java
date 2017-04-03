@@ -16,8 +16,8 @@ public class Client_Access_Command {
     /**
      *  executes various commands
      */
-    public void executeCommand(){
-        this.command.execute();
+    public String executeCommand(){
+        return this.command.execute();
     }
 
 }
