@@ -4,18 +4,15 @@
 public class Book_Purchase_Command implements Command {
 
     private int quantity;
-    private String bookID;
     private String books;
 
     /**
      *
      * @param quantity
-     * @param bookID
      * @param books
      */
-    public Book_Purchase_Command(int quantity, String bookID, String books) {
+    public Book_Purchase_Command(int quantity,String books) {
         this.quantity = quantity;
-        this.bookID = bookID;
         this.books = books;
     }
     @Override
