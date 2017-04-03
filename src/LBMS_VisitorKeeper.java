@@ -1,5 +1,5 @@
 //FILE::LBMS_VisitorKeeper.java
-//AUTHOR::Kevin.P.Barnett
+//AUTHOR::Kevin.P.Barnett, Adam Nowak
 //DATE::Mar.04.2017
 
 import java.io.File;
@@ -7,14 +7,13 @@ import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class LBMS_VisitorKeeper
 {
     private HashMap<Long, Visitor> visitorRegistry;
-    private HashMap<Long, Date> activeVisitor;
+    private static HashMap<Long, Date> activeVisitor;
+    private Long newID = 999999999L;
 
     public LBMS_VisitorKeeper()
     {
@@ -41,7 +40,7 @@ public class LBMS_VisitorKeeper
             e.printStackTrace();
         }
     }
-
+    public static HashMap<Long,Date> getActiveVisitors(){ return activeVisitor;}
     /**
      *
      * @return visitor registry
@@ -68,25 +67,24 @@ public class LBMS_VisitorKeeper
      * @param phoneNumber
      * @return registers a new visitor to the system
      */
-    public Visitor registerVisitor(String firstName, String lastName, String address, String phoneNumber)
+    public Visitor registerVisitor(String firstName, String lastName, String address, String phoneNumber) throws Exception
     {
-        Long newID = 999999999L; //Start with an id of 1000000000 so the unique id is at least 10 digits
+        String time = LBMS_StatisticsKeeper.Get_Time();
+        Long id = incrementID(); // starts visitor id as 1000000000 and increments by 1 each time register visitor is called
 
         for(Long key: this.visitorRegistry.keySet())
             newID = Long.max(newID, key);
 
-        newID += 1;
-
         Visitor temporaryNewVisitor = new Visitor(firstName, lastName, address, 0.0, phoneNumber, newID);
 
-        this.visitorRegistry.put(newID, temporaryNewVisitor);
+        this.visitorRegistry.put(id, temporaryNewVisitor);
 
-        DateFormat DF = new SimpleDateFormat("yyyy/MM/dd");
-        Date d = new Date();
-
-        System.out.println("register," + newID + "," + DF.format(d));
-
+        System.out.println("register," + id + "," + time.substring(0,10));
         return temporaryNewVisitor;
+    }
+    public Long incrementID(){
+        newID++;
+        return newID;
     }
 
     /**
@@ -96,17 +94,21 @@ public class LBMS_VisitorKeeper
      */
     public void beginVisit(Long visitorID) throws Exception
     {
+        String time = LBMS_StatisticsKeeper.Get_Time();
+        if(!LBMS_StatisticsKeeper.getIsopen(LBMS_StatisticsKeeper.Get_Time())){
+            throw new Exception("Library is currently closed.");
+        }
         if(this.visitorRegistry.containsKey(visitorID))
         {
             if(! this.activeVisitor.containsKey(visitorID)) {
 
-                DateFormat DF = new SimpleDateFormat("yyyy/MM/dd");
-                DateFormat time = new SimpleDateFormat("HH:mm:ss");
-                Date d = new Date();
+                DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy,HH:mm:ss");
 
-                System.out.println("arrive,"+ visitorID + "," + DF.format(d)+ "," +time.format(d));
+                String currentTime = time.split(",")[1];
 
-                this.activeVisitor.put(visitorID, new Date());
+                System.out.println("arrive,"+ visitorID + "," + currentTime);
+
+                this.activeVisitor.put(visitorID, dateFormat.parse(time));
             }
             else
                 throw new Exception("arrive,duplicate;");
@@ -114,6 +116,7 @@ public class LBMS_VisitorKeeper
         else
             throw new Exception("arrive,invalid-id;");
     }
+
 
     /**
      *
@@ -124,11 +127,8 @@ public class LBMS_VisitorKeeper
     {
         if(this.activeVisitor.containsKey(visitorID)) {
             this.activeVisitor.remove(visitorID);
-            DateFormat DF = new SimpleDateFormat("yyyy/MM/dd");
-            DateFormat time = new SimpleDateFormat("HH:mm:ss");
-            Date d = new Date();
-
-            System.out.println("depart," + visitorID + "," + DF.format(d) + "," + time.format(d));
+            String time = LBMS_StatisticsKeeper.Get_Time().split(",")[1];
+            System.out.println("depart," + visitorID + "," + time);
         }
         else
             throw new Exception("depart,invalid-id;");
@@ -154,6 +154,112 @@ public class LBMS_VisitorKeeper
         }
     }
 
+    /**
+     *
+     * @param visitorID
+     * @param ISBNS
+     * @throws Exception
+     */
+    public void returnBook(Long visitorID, ArrayList<String> ISBNS) throws Exception {
+        String errormessage1 = "return,invalid-book-id";
+        String errormessage2a = "return,overdue,";
+        String errormessage2b = "";
+        double visitor_balance = 0;
+        if (!this.visitorRegistry.containsKey(visitorID)) {
+            throw new Exception("return,invalid-visitor-id;");
+        }
+        Visitor visitor = this.visitorRegistry.get(visitorID);
+        for (int i = 0; i < ISBNS.size(); i++) {
+            for (int j = 0; j < visitor.getBorrowed_books().size(); j++) {
+                double book_balance = 0;
+                if (ISBNS.get(i).equals(visitor.getBorrowed_books().get(j))) {
+                    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy,HH:mm:ss");
+                    Date time = dateFormat.parse(LBMS_StatisticsKeeper.Get_Time());
+                    if (time.after(dateFormat.parse(visitor.getBorrowed_books().get(j).getDue_date()))) { // check if due date is before current date
+                        book_balance += 10;
+                        visitor.getBorrowed_books().get(j).setBalance(book_balance);
+                    }
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(time);
+                    calendar.add(Calendar.DAY_OF_YEAR, 7);
+                    Date futureDate = calendar.getTime();
+                    while (futureDate.after(dateFormat.parse(visitor.getBorrowed_books().get(j).getDue_date()))) {// if the date is a week past the due date  (current date + week is after the due date)
+                        if (book_balance == 30) {
+                            book_balance = 30;
+                            visitor.getBorrowed_books().get(j).setBalance(book_balance);
+                            break;
+                        }
+                        book_balance += 2;
+                        visitor.getBorrowed_books().get(j).setBalance(book_balance);
+                        calendar.add(Calendar.DAY_OF_YEAR, 7);
+                        futureDate = calendar.getTime();
+                    }
+                    if (visitor.getBorrowed_books().get(j).getBalance() > 0) {
+                        errormessage2b += ISBNS.get(i) + ",";
+                    }
+                    visitor_balance += book_balance;
+                    break;
+                }
+                if (!ISBNS.get(i).equals(visitor.getBorrowed_books().get(j)) && j == visitor.getBorrowed_books().size()) {
+                    errormessage1 += visitorID + ",";
+                }
+            }
+        }
+        if (!errormessage1.endsWith("return,invalid-book-id")) {
+            errormessage1 = errormessage2b.substring(0, errormessage2b.length() - 1);
+            errormessage1 += ";";
+            throw new Exception(errormessage1);
+        }
+        visitor.setBalance(visitor_balance);
+        for (int i = 0; i < ISBNS.size(); i++) {
+            for (int j = 0; j < visitor.getBorrowed_books().size(); j++) {
+                if (ISBNS.get(i).equals(visitor.getBorrowed_books().get(j))) {
+                    visitor.getBorrowed_books().remove(j);
+                    j--;
+                }
+            }
+        }
+        if (visitor_balance > 0) {
+            errormessage2b = errormessage2b.substring(0, errormessage2b.length() - 1);
+            errormessage2b += ";";
+            throw new Exception(errormessage2a + "$" + visitor_balance + "," + errormessage2b);
+        }
+        System.out.println("return,success");
+    }
+
+    public void payFine(Long visitorID, double amount)throws Exception{
+        if (!this.visitorRegistry.containsKey(visitorID)) {
+            throw new Exception("pay,invalid-visitor-id;");
+        }
+        Visitor visitor = this.visitorRegistry.get(visitorID);
+        if ( amount < 0 || amount > visitor.getBalance()){
+            throw new Exception("pay,invalid-amount," + amount + "," + visitor.getBalance() + ";");
+        }
+        double new_visitor_balance = visitor.getBalance() - amount;
+        visitor.setBalance(new_visitor_balance);
+        System.out.println("pay,success," + visitor.getBalance() + ";");
+    }
+   public void borrowedBooks(Long visitorID) throws Exception{
+       if (!this.visitorRegistry.containsKey(visitorID)) {
+           throw new Exception("borrowed,invalid-visitor-id;");
+       }
+       Visitor visitor = this.visitorRegistry.get(visitorID);
+        ArrayList visitorsbooks = visitor.getBorrowed_books();
+        String response = "borrowed," + visitorsbooks.size() + ",";
+        System.out.println(response);
+        for(int i = 0;i < visitorsbooks.size();i++ ){
+            Book_Loan book = (Book_Loan) visitorsbooks.get(i);
+            System.out.println(book.getBook().getBookID() + "," + book.getBook().getBookIsbn()+ "," +
+                    book.getBook().getBookName() + "," + book.getStart_date().substring(0,10));
+        }
+    }
+
+    /**
+     *
+     * @param args
+     * main function used for testing purposes
+     */
+
     public static void main(String[] args)
     {
         LBMS_VisitorKeeper mainTest = new LBMS_VisitorKeeper();
@@ -163,7 +269,11 @@ public class LBMS_VisitorKeeper
         System.out.println(mainTest.getVisitorRegistry().get(4561235867L));
 
         //Validate Registering User//
-        System.out.println(mainTest.registerVisitor("Hubert", "Humphrey", "200 East Landia Street", "3194912816"));
+        try {
+            System.out.println(mainTest.registerVisitor("Hubert", "Humphrey", "200 East Landia Street", "3194912816"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //Validate Begining Visit//
         try{mainTest.beginVisit(4561235867L);}

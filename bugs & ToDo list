@@ -1,0 +1,16 @@
+bugs:
++ Register Command doesn't check for duplicate visitor accounts
+
+
+to do:
+
+ + Finish implementing commands (search,info,report)
+ + Refactoring code
+ + GUI
+ + redo/undo
+ + Employee/Visitor Accounts
+ + Concurrent Client Connections
+ + incorporate Proxy + State Patterns
+ + Support Google Books Web Service API
+ + Update design doc
+

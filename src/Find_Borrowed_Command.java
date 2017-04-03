@@ -1,21 +1,24 @@
 //FILE::Find_Borrowed_Command.java
-//AUTHOR::Ryan Connors
+//AUTHOR::Ryan Connors, Adam Nowak
 //DATE::Feb.25.2017
 public class Find_Borrowed_Command implements Command {
 
-    private Visitor v;
+    private Long visitorID;
 
     /**
      *
-     * @param v
+     * @param visitorID
      */
-    public Find_Borrowed_Command(Visitor v){
-        this.v = v;
+    public Find_Borrowed_Command(Long visitorID){
+        this.visitorID = visitorID;
     }
 
     @Override
-    public String execute() {
-        Main.vk.getVisitorRegistry().get(v.getVisitor_ID()).getBorrowed_books();
-        return "";
+    public void execute() {
+        try {
+            Main.vk.borrowedBooks(visitorID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

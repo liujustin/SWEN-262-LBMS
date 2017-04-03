@@ -6,9 +6,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class LBMS_BookKeeper
 {
@@ -99,6 +99,11 @@ public class LBMS_BookKeeper
      */
     public void borrowBook(Visitor visitor, String bookList) throws Exception
     {
+        String time = LBMS_StatisticsKeeper.Get_Time();
+        if(!LBMS_StatisticsKeeper.getIsopen(LBMS_StatisticsKeeper.Get_Time())){
+            throw new Exception("Library is currently closed.");
+        }
+
         String[] bookISBN = bookList.split(",");
 
         if(bookISBN.length > 5 - visitor.getBorrowed_books().size())
@@ -119,16 +124,24 @@ public class LBMS_BookKeeper
             String errorString = "borrow,invalid-book-id,{";
             for(String isbn: invalidBookIDs)
                 errorString += isbn+", ";
-            errorString = errorString.subSequence(0, errorString.length()-1).toString()+"}";
+            errorString = errorString.subSequence(0, errorString.length()-1).toString()+"};";
 
             throw new Exception(errorString);
         }
+        Calendar calendar = Calendar.getInstance();
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy,HH:mm:ss");
+        calendar.setTime(dateFormat.parse(time));
+        calendar.add(Calendar.DAY_OF_YEAR, 7);
+        Date futureDate = calendar.getTime();
+        String futDate = dateFormat.format(futureDate);
 
         for(String isbn: bookISBN)
-            visitor.add_book(new Book_Loan(visitor, this.bookRegistry.get(isbn), 0.0, true));
+            visitor.add_book(new Book_Loan(visitor, this.bookRegistry.get(isbn), 0.0, true,LBMS_StatisticsKeeper.Get_Time(),futDate));
+
+        System.out.println("borrow," + futDate.substring(0,10));
     }
 
-    public void
+
 
     /**
      *

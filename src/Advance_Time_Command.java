@@ -1,5 +1,5 @@
 //FILE::Advance_Time_Command.java
-//AUTHOR::Ryan Connors
+//AUTHOR::Ryan Connors, Justin Liu
 //DATE::Feb.25.2017
 
 public class Advance_Time_Command implements Command {
@@ -11,7 +11,12 @@ public class Advance_Time_Command implements Command {
         this.hours = hours;
     }
     @Override
-    public void execute() {
-        //Main.sk.Advance_Time(this.days,this.hours);
+    public void execute(){
+        try {
+            Main.sk.advanceDay(this.days);
+            Main.sk.advanceHour(this.hours);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 }
