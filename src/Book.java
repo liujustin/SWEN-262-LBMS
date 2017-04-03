@@ -14,7 +14,7 @@ public class Book
     private String publishDate;
     private boolean borrowingStatus;
     private String bookID;
-    private List<String> authors = new ArrayList<String>();
+    private ArrayList<String> authors = new ArrayList<String>();
 
     //Initial Constructor for each book
     public Book(String bookIsbn, String bookName, String bookPublisher, String publishDate){
@@ -34,9 +34,7 @@ public class Book
     }
 
     public void setAuthors(ArrayList<String> authors) {
-        for(String name : authors){
-            authors.add(name);
-        }
+        this.authors = authors;
     }
 
     /**
@@ -102,7 +100,7 @@ public class Book
      *
      * @return authors
      */
-    public List getAuthors() {
+    public ArrayList<String> getAuthors() {
         return authors;
     }
 

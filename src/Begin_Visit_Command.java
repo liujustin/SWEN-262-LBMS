@@ -14,7 +14,7 @@ public class Begin_Visit_Command implements Command {
         try {
             Main.vk.beginVisit(this.vID);
         } catch (Exception e) {
-            e.printStackTrace();
+            return e.getMessage();
         }
     }
 }

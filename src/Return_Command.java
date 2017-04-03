@@ -14,7 +14,8 @@ public class Return_Command implements Command {
     }
 
     @Override
-    public void execute() {
+    public String execute() {
        // Main.bk.Return_Book(v.getVisitor_ID(),this.bookID,this.books);
+        return "";
     }
 }

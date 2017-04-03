@@ -17,7 +17,7 @@ public class Borrow_Command implements Command {
     }
 
     @Override
-    public void execute(){
+    public String execute(){
         try {
             Main.bk.borrowBook(this.borrower,this.books);
         } catch (Exception e) {

@@ -26,7 +26,8 @@ public class Book_Store_Command implements Command {
     }
 
     @Override
-    public void execute() {
+    public String execute() {
         //Main.bk.search(this.title,this.authors,this.isbn,this.publisher,this.sort_order);
+        return "";
     }
 }

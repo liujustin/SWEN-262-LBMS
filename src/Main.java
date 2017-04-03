@@ -2,15 +2,59 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 //FILE::Main.java
-//AUTHOR::Ryan Connors, Adam Nowak
+//AUTHOR::Ryan Connors, Adam Nowak, Kevin Barnett
 //DATE::Feb.25.2017
 public class Main {
 
-    public static LBMS_VisitorKeeper vk = new LBMS_VisitorKeeper();
-    public static LBMS_BookKeeper bk = new LBMS_BookKeeper();
-    public static LBMS_StatisticsKeeper sk = new LBMS_StatisticsKeeper();
-    public static Client_Access_Point cap = new Client_Access_Point();
-    public static Client_Access_Command cac = new Client_Access_Command();
+    private LBMS_VisitorKeeper vk = new LBMS_VisitorKeeper();
+    private LBMS_BookKeeper bk = new LBMS_BookKeeper();
+    private LBMS_StatisticsKeeper sk = new LBMS_StatisticsKeeper();
+    private Client_Access_Point cap = new Client_Access_Point();
+    private Client_Access_Command cac = new Client_Access_Command();
+
+    public LBMS_VisitorKeeper getVk()
+    {
+        return this.vk;
+    }
+    public LBMS_BookKeeper getBk()
+    {
+        return this.bk;
+    }
+    public LBMS_StatisticsKeeper getSk()
+    {
+        return this.sk;
+    }
+
+    private void graphicsOutput(String outPut)
+    {
+        System.out.println(outPut);
+    }
+
+    public void textOutput(String outPut)
+    {
+        System.out.println(outPut);
+    }
+
+    public void startLoop(String[] args) throws Exception
+    {
+        while(true)
+        {
+            String command = cap.getCommand();
+            ArrayList<Object> parsedCommand = cap.parseCommand(command);
+
+            try
+            {
+                Command concreteCommand = cap.ConcreteCommand(parsedCommand);
+                cac.receiveCommand(concreteCommand);
+
+                if(args[0].equals("text"))
+                    textOutput(cac.executeCommand());
+                else
+                    graphicsOutput(cac.executeCommand());
+            }
+            catch(NullPointerException e){}
+        }
+    }
 
     /**
      *
@@ -29,15 +73,5 @@ public class Main {
         System.out.println("buy, \t     advance, \t datetime");
         System.out.println("report, \t shutdown");
         System.out.println();
-
-        while (true){
-            String command = cap.getCommand();
-            ArrayList<Object> parsedCommand = cap.parseCommand(command);
-            try {
-                Command concreteCommand = cap.ConcreteCommand(parsedCommand);
-                cac.receiveCommand(concreteCommand);
-                cac.executeCommand();
-            }catch(NullPointerException e){}
-        }
     }
 }

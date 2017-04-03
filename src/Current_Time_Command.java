@@ -7,7 +7,8 @@ public class Current_Time_Command implements Command {
     }
 
     @Override
-    public void execute() {
+    public String execute() {
         //Main.sk.Get_Time();
+        return "";
     }
 }
