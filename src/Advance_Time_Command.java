@@ -11,12 +11,13 @@ public class Advance_Time_Command implements Command {
         this.hours = hours;
     }
     @Override
-    public void execute(){
+    public String execute(){
         try {
             Main.sk.advanceDay(this.days);
             Main.sk.advanceHour(this.hours);
         }catch(Exception e){
             e.printStackTrace();
         }
+        return "";
     }
 }

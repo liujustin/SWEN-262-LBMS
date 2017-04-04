@@ -14,7 +14,8 @@ public class Library_Report_Command implements Command {
     }
 
     @Override
-    public void execute() {
+    public String execute() {
         //Main.sk.Generate_Report(this.days);
+        return "";
     }
 }

@@ -16,7 +16,8 @@ public class Book_Purchase_Command implements Command {
         this.books = books;
     }
     @Override
-    public void execute() {
+    public String execute() {
         //Main.bk.buyBook(this.quantity,this.bookID,this.books);
+        return "";
     }
 }

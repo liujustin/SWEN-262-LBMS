@@ -92,7 +92,7 @@ public class LBMS_VisitorKeeper
      * @param visitorID
      * @throws Exception
      */
-    public void beginVisit(Long visitorID) throws Exception
+    public String beginVisit(Long visitorID) throws Exception
     {
         String time = LBMS_StatisticsKeeper.Get_Time();
         if(!LBMS_StatisticsKeeper.getIsopen(LBMS_StatisticsKeeper.Get_Time())){
@@ -106,9 +106,9 @@ public class LBMS_VisitorKeeper
 
                 String currentTime = time.split(",")[1];
 
-                System.out.println("arrive,"+ visitorID + "," + currentTime);
-
                 this.activeVisitor.put(visitorID, dateFormat.parse(time));
+
+                return "arrive,"+ visitorID + "," + currentTime;
             }
             else
                 throw new Exception("arrive,duplicate;");
@@ -239,19 +239,19 @@ public class LBMS_VisitorKeeper
         visitor.setBalance(new_visitor_balance);
         System.out.println("pay,success," + visitor.getBalance() + ";");
     }
-   public void borrowedBooks(Long visitorID) throws Exception{
+   public String borrowedBooks(Long visitorID) throws Exception{
        if (!this.visitorRegistry.containsKey(visitorID)) {
            throw new Exception("borrowed,invalid-visitor-id;");
        }
        Visitor visitor = this.visitorRegistry.get(visitorID);
-        ArrayList visitorsbooks = visitor.getBorrowed_books();
-        String response = "borrowed," + visitorsbooks.size() + ",";
-        System.out.println(response);
-        for(int i = 0;i < visitorsbooks.size();i++ ){
+       ArrayList visitorsbooks = visitor.getBorrowed_books();
+       String response = "borrowed," + visitorsbooks.size() + ",";
+       for(int i = 0;i < visitorsbooks.size();i++ ){
             Book_Loan book = (Book_Loan) visitorsbooks.get(i);
-            System.out.println(book.getBook().getBookID() + "," + book.getBook().getBookIsbn()+ "," +
-                    book.getBook().getBookName() + "," + book.getStart_date().substring(0,10));
-        }
+            response += book.getBook().getBookID() + "," + book.getBook().getBookIsbn()+ "," +
+                    book.getBook().getBookName() + "," + book.getStart_date().substring(0,10);
+       }
+       return response;
     }
 
     /**

@@ -6,11 +6,13 @@ import java.util.Objects;
 //DATE::Feb.25.2017
 public class Main {
 
-    private LBMS_VisitorKeeper vk = new LBMS_VisitorKeeper();
-    private LBMS_BookKeeper bk = new LBMS_BookKeeper();
-    private LBMS_StatisticsKeeper sk = new LBMS_StatisticsKeeper();
+    protected static LBMS_VisitorKeeper vk = new LBMS_VisitorKeeper();
+    protected static LBMS_BookKeeper bk = new LBMS_BookKeeper();
+    protected static LBMS_StatisticsKeeper sk = new LBMS_StatisticsKeeper();
     private Client_Access_Point cap = new Client_Access_Point();
     private Client_Access_Command cac = new Client_Access_Command();
+
+    private Graphics_View graphics_view;
 
     public LBMS_VisitorKeeper getVk()
     {
@@ -35,8 +37,9 @@ public class Main {
         System.out.println(outPut);
     }
 
-    public void startLoop(String[] args) throws Exception
+    public void startLoop(String[] args, Graphics_View graphics_view) throws Exception
     {
+        this.graphics_view = graphics_view;
         while(true)
         {
             String command = cap.getCommand();
@@ -73,5 +76,9 @@ public class Main {
         System.out.println("buy, \t     advance, \t datetime");
         System.out.println("report, \t shutdown");
         System.out.println();
+
+        Main main = new Main();
+
+        Graphics_View.load(args, main);
     }
 }
