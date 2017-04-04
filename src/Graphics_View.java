@@ -9,9 +9,11 @@ import javafx.stage.Stage;
 
 public class Graphics_View extends Application
 {
-    private Main bootInstance;
+    private static Main bootInstance;
     private Stage primaryStage;
     private Scene primaryScene;
+
+    private static String[] arguments;
 
     @Override
     public void start(Stage primaryStage) throws Exception
@@ -21,11 +23,12 @@ public class Graphics_View extends Application
         Group root = new Group();
         this.primaryScene = new Scene(root);
 
-        this.bootInstance.start
+        bootInstance.startLoop(arguments, this);
     }
 
     public static void load(String[] args, Main main)
     {
+        arguments = args;
         bootInstance = main;
         Application.launch(args);
     }

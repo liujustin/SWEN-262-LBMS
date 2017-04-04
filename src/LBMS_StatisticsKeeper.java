@@ -77,9 +77,9 @@ public class LBMS_StatisticsKeeper
 	/**
 	 * Prints the time for the datetime command
 	 */
-	public void printTime(){
+	public String printTime(){
 		String d2 = LBMS_StatisticsKeeper.Get_Time();
-		System.out.println("datetime," + d2);
+		return "datetime," + d2;
 	}
 
 	/**

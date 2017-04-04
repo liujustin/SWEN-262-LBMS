@@ -18,11 +18,12 @@ public class Pay_Fine_Command implements Command {
     }
 
     @Override
-    public void execute() {
+    public String execute() {
         try {
             Main.vk.payFine(this.visitorID,this.amount);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "";
     }
 }

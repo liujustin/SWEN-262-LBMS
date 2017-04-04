@@ -14,11 +14,12 @@ public class Return_Command implements Command {
     }
 
     @Override
-    public void execute() {
+    public String execute() {
         try {
             Main.vk.returnBook(this.visitor_ID,this.ISBNS);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "";
     }
 }

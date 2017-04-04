@@ -23,5 +23,6 @@ public class Borrow_Command implements Command {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "";
     }
 }

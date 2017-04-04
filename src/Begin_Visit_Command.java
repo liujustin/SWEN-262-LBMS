@@ -10,9 +10,9 @@ public class Begin_Visit_Command implements Command {
 
 
     @Override
-    public void execute() {
+    public String execute() {
         try {
-            Main.vk.beginVisit(this.vID);
+            return Main.vk.beginVisit(this.vID);
         } catch (Exception e) {
             return e.getMessage();
         }

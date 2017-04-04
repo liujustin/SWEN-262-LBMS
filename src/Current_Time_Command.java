@@ -7,7 +7,7 @@ public class Current_Time_Command implements Command {
     }
 
     @Override
-    public void execute() {
-        Main.sk.printTime();
+    public String execute() {
+        return Main.sk.printTime();
     }
 }

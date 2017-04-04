@@ -22,11 +22,12 @@ public class Register_Command implements Command {
     }
 
     @Override
-    public void execute() {
+    public String execute() {
         try {
             Main.vk.registerVisitor(this.first,this.last,this.address,this.phone);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return "";
     }
 }

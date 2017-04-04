@@ -14,11 +14,11 @@ public class Find_Borrowed_Command implements Command {
     }
 
     @Override
-    public void execute() {
+    public String execute() {
         try {
-            Main.vk.borrowedBooks(visitorID);
+            return Main.vk.borrowedBooks(visitorID);
         } catch (Exception e) {
-            e.printStackTrace();
+            return e.getMessage();
         }
     }
 }
