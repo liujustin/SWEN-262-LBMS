@@ -4,6 +4,7 @@
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 
@@ -330,63 +331,49 @@ public class Client_Access_Point {
         return parsedcommand;
     }
 
-    public Command ConcreteCommand(ArrayList parsedcommand) {
+    public Command ConcreteCommand(ArrayList parsedcommand)
+    {
+        Command cmd;
+        switch(parsedcommand.get(0).toString())
+        {
+            case "register": cmd = new Register_Command(parsedcommand.get(1).toString(), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString());
+                break;
+            case "arrive": cmd = new Begin_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()));
+                break;
+            case "depart": cmd = new End_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()));
+                break;
+            case "info":  cmd = new Book_Search_Command(parsedcommand.get(1).toString(), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), parsedcommand.get(5).toString());
+                break;
+            case "borrow": cmd = new Borrow_Command(Main.vk.getVisitorRegistry().get((parsedcommand.get(1))), parsedcommand.get(2).toString());
+                break;
+            case "borrowed": cmd = new Find_Borrowed_Command(Long.getLong(parsedcommand.get(1).toString()));
+                break;
+            case "return": cmd = new Return_Command(Long.getLong(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2));
+                break;
+            case "pay": cmd = new Pay_Fine_Command(Long.getLong(parsedcommand.get(1).toString()),Double.parseDouble(parsedcommand.get(2).toString()));
+                break;
+            case "search": cmd = new Book_Store_Command(parsedcommand);
+                break;
+            case "buy": cmd = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(1).toString()),parsedcommand.get(2).toString());
+                break;
+            case "advance":
+                int day = Integer.parseInt(parsedcommand.get(1).toString());
+                int hour;
+                if(parsedcommand.size() < 3)
+                    hour = 0;
+                else
+                    hour = Integer.parseInt(parsedcommand.get(2).toString());
 
-        if (parsedcommand.get(0).toString().equals("register")) {
-            Command c = new Register_Command(parsedcommand.get(1).toString(), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString());
-            return c;
-        } else if (parsedcommand.get(0).toString().equals("arrive")) {
-            long a = Long.parseLong(parsedcommand.get(1).toString());
-            Command c = new Begin_Visit_Command(a);
-            return c;
-        } else if (parsedcommand.get(0).toString().equals("depart")) {
-            Command c = new End_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()));
-            return c;
-        } else if (parsedcommand.get(0).toString().equals("info")) {
-            ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
-            Command c = new Book_Search_Command(parsedcommand.get(1).toString(), innerarraylist.toString(),
-                    parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), parsedcommand.get(5).toString());
-            return c;
-        } else if (parsedcommand.get(0).toString().equals("borrow")) {
-            ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
-            Command c = new Borrow_Command(Main.vk.getVisitorRegistry().get((parsedcommand.get(1))), innerarraylist.toString());
-            return c;
-        } else if (parsedcommand.get(0).toString().equals("borrowed")) {
-            Command c = new Find_Borrowed_Command(Long.getLong(parsedcommand.get(1).toString()));
-            return c;
-        } else if (parsedcommand.get(0).toString().equals("return")) {
-            ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
-            Command c = new Return_Command(Long.getLong(parsedcommand.get(1).toString()),innerarraylist);
-            return c;
-        } else if (parsedcommand.get(0).toString().equals("pay")) {
-            Command c = new Pay_Fine_Command(Long.getLong(parsedcommand.get(1).toString()),Double.parseDouble(parsedcommand.get(2).toString()));
-            return c;
-        } else if (parsedcommand.get(0).toString().equals("search")) {
-            ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
-            Command c = new Book_Store_Command(parsedcommand.get(1).toString(), innerarraylist.toString(),
-                    parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), parsedcommand.get(5).toString());
-            return c;
-        } else if (parsedcommand.get(0).toString().equals("buy")) {
-            ArrayList innerarraylist = (ArrayList) parsedcommand.get(2);
-            Command c = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(1).toString()),innerarraylist.toString());
-            return c;
-        } else if (parsedcommand.get(0).toString().equals("advance")) {
-            int day = Integer.parseInt(parsedcommand.get(1).toString());
-            int hour;
-            if (parsedcommand.size() < 3) {
-                hour = 0;
-            } else {
-                hour = Integer.parseInt(parsedcommand.get(2).toString());
-            }
+                cmd = new Advance_Time_Command(day, hour);
+                break;
+            case "datetime": cmd = new Current_Time_Command();
+                break;
+            case "report": cmd = new Library_Report_Command(Integer.parseInt(parsedcommand.get(1).toString()));
+                break;
 
-            Command c = new Advance_Time_Command(day, hour);
-            return c;
-        } else if (parsedcommand.get(0).toString().equals("datetime")) {
-            Command c = new Current_Time_Command();
-            return c;
-        } else {
-            Command c = new Library_Report_Command(Integer.parseInt(parsedcommand.get(1).toString()));
-            return c;
+            default: return null;
         }
+
+        return cmd;
     }
 }

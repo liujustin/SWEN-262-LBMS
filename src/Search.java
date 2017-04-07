@@ -1,43 +1,77 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Predicate;
 
 public class Search
 {
-    public ArrayList<Book> searchByAuthor(String title, ArrayList<String> authors, HashMap<Book, Integer> booksForPurchase)
+    private static boolean containsAllAuthors(ArrayList<String> authors, Book b)
     {
-        ArrayList<Book> searchedBooks = new ArrayList<>();
-        for(Book b:booksForPurchase.keySet())
-        {
-            if((b.getBookName().equals(title) || title.equals("*")))
-            {
-                Boolean allIn = true;
-                for(String author : authors)
-                    allIn &= b.getAuthors().contains(author);
+        if(authors.get(0).equals("*"))
+            return true;
 
-                if(allIn)
-                    searchedBooks.add(b);
-            }
-        }
-        return searchedBooks;
+        Boolean allIn = true;
+        for(String author : authors)
+            allIn &= b.getAuthors().contains(author);
+
+        return allIn;
     }
 
-    public ArrayList<Book> searchByISBN(String isbn, HashMap<String, Book> booksForPurchase)
+    public static ArrayList<Book> search(String title, HashMap<String, Book> booksForPurchase)
     {
         ArrayList<Book> searchedBooks = new ArrayList<>();
 
-        searchedBooks.add(booksForPurchase.get(isbn));
-
-        return searchedBooks;
-    }
-
-    public ArrayList<Book> searchByPublisher(String title, String publisher, HashMap<Book, Integer> booksForPurchase)
-    {
-        ArrayList<Book> searchedBooks = new ArrayList<>();
-        for(Book b:booksForPurchase.keySet())
-        {
-            if((b.getBookName().equals(title) || title.equals("*")) && b.getBookPublisher().contains(publisher))
+        for(Book b: booksForPurchase.values())
+            if(b.getBookName().equals(title) || title.equals("*"))
                 searchedBooks.add(b);
-        }
+
         return searchedBooks;
     }
+
+    public static ArrayList<Book> search(String title, ArrayList<String> authors, HashMap<String, Book> booksForPurchase)
+    {
+        ArrayList<Book> tempBookBuffer = search(title, booksForPurchase);
+        ArrayList<Book> searchedBooks = new ArrayList<>();
+
+        for(Book b: tempBookBuffer)
+            if(containsAllAuthors(authors, b))
+                searchedBooks.add(b);
+
+        return searchedBooks;
+    }
+
+    public static ArrayList<Book> search(String title, ArrayList<String> authors, String isbn, HashMap<String, Book> booksForPurchase)
+    {
+        ArrayList<Book> tempBookBuffer = search(title, authors, booksForPurchase);
+        ArrayList<Book> searchedBooks = new ArrayList<>();
+
+        for(Book b: tempBookBuffer)
+            if(b.getBookIsbn().equals(isbn) || b.getBookIsbn().equals("*"))
+                searchedBooks.add(b);
+
+        return searchedBooks;
+    }
+
+    public static ArrayList<Book> search(String title, ArrayList<String> authors, String isbn, String publisher, HashMap<String, Book> booksForPurchase)
+    {
+        ArrayList<Book> tempBookBuffer = search(title, authors, isbn, booksForPurchase);
+        ArrayList<Book> searchedBooks = new ArrayList<>();
+
+        for(Book b: tempBookBuffer)
+            if(b.getBookPublisher().equals(publisher) || b.getBookPublisher().equals("*"))
+                searchedBooks.add(b);
+
+        return searchedBooks;
+    }
+
+    /*
+    public ArrayList<Book> searchBySortOrder(String title, ArrayList<String> authors, String isbn, String publisher, String, sortOrder, HashMap<String, Book> booksForPurchase)
+    {
+        ArrayList<Book> tempBookBuffer = searchByPublisher(title, authors, isbn, publisher, booksForPurchase);
+        ArrayList<Book> searchedBooks = new ArrayList<>();
+
+        tempBookBuffer.sort(C);
+
+        return searchedBooks;
+    }
+    */
 }
