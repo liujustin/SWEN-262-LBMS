@@ -12,7 +12,7 @@ import java.util.*;
 
 public class LBMS_BookKeeper
 {
-    private final String bookListURI = "book.txt";
+    private final String bookListURI = "books.txt";
     private HashMap<Book, Integer> purchasedBooks;
     private HashMap<String, Book> bookRegistry;
 
@@ -21,6 +21,7 @@ public class LBMS_BookKeeper
     {
         this.purchasedBooks = new HashMap<>();
         this.bookRegistry = new HashMap<>();
+        getBookList();
     }
 
     /**
@@ -139,6 +140,11 @@ public class LBMS_BookKeeper
             visitor.add_book(new Book_Loan(visitor, this.bookRegistry.get(isbn), 0.0, true,LBMS_StatisticsKeeper.Get_Time(),futDate));
 
         System.out.println("borrow," + futDate.substring(0,10));
+    }
+
+    public HashMap<String, Book> getBooksForPurchase()
+    {
+        return this.bookRegistry;
     }
 
 

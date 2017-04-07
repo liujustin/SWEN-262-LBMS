@@ -5,6 +5,7 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringJoiner;
 
 public class Book
 {
@@ -111,5 +112,16 @@ public class Book
     public String getBookID() { return bookID; }
 
 
+    private String buildAuthorString()
+    {
+        String out = "";
+        for(String author: this.authors)
+            out += author+",";
+        return out;
+    }
 
+    public String toString()
+    {
+        return String.format("%s,%s,%s,{%s},%s\n", this.bookID, this.bookIsbn, this.bookName, buildAuthorString(), this.publishDate);
+    }
 }
