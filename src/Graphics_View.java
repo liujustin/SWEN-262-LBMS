@@ -56,7 +56,9 @@ public class Graphics_View extends Application
         login.setPrefSize(100,100);
         Button exit = new Button("Exit");
         exit.setPrefSize(100,100);
-        my_box.getChildren().addAll(login,exit);
+        Button create = new Button("Create Account");
+        create.setPrefSize(100,100);
+        my_box.getChildren().addAll(login,create,exit);
         return my_box;
     }
     private HBox usernameField(){
