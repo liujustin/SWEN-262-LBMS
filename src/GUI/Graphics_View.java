@@ -8,6 +8,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -83,7 +84,7 @@ public class Graphics_View extends Application
         Label psswd = new Label("Password:");
         psswd.setFont(Font.font(14));
         psswd.setPrefSize(75,50);
-        TextField psswdInput = new TextField();
+        PasswordField psswdInput = new PasswordField();
         psswdInput.setPrefSize(200,50);
         my_box.setSpacing(gap);
         my_box.getChildren().addAll(psswd,psswdInput);
