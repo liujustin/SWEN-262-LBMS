@@ -122,6 +122,6 @@ public class Book
 
     public String toString()
     {
-        return String.format("%s,%s,%s,{%s},%s\n", this.bookID, this.bookIsbn, this.bookName, buildAuthorString(), this.publishDate);
+        return String.format("%s,%s,{%s},%s\n", this.bookIsbn, this.bookName, buildAuthorString(), this.publishDate);
     }
 }

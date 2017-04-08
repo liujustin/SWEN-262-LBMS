@@ -4,6 +4,23 @@ import java.util.function.Predicate;
 
 public class Search
 {
+    private static ArrayList<Book> lastSearched;
+
+    public static void initializeSearch()
+    {
+        lastSearched = new ArrayList<>();
+    }
+
+    public static void setLastSearched(ArrayList<Book> lastSearchedBooks)
+    {
+        lastSearched = lastSearchedBooks;
+    }
+
+    public static ArrayList<Book> getLastSearched()
+    {
+        return lastSearched;
+    }
+
     private static boolean containsAllAuthors(ArrayList<String> authors, Book b)
     {
         if(authors.get(0).equals("*"))
