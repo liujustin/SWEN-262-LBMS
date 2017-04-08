@@ -1,20 +1,15 @@
 package Network;
 
-import Books.LBMS_BookKeeper;
 import GUI.Graphics_View;
-import Time.LBMS_StatisticsKeeper;
-import Client.Visitor.LBMS_VisitorKeeper;
 
 import java.util.ArrayList;
 
 //FILE::Network.Main.java
-//AUTHOR::Ryan Connors, Adam Nowak, Kevin Barnett
+//AUTHOR::Ryan Connors, Adam Nowak, Kevin Barnett, Justin Liu
 //DATE::Feb.25.2017
+
 public class Main {
 
-//    protected static LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
-//    protected static LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
-//    protected static LBMS_StatisticsKeeper statisticsKeeper = LBMS_StatisticsKeeper.getInstance();
     private Client_Access_Point clientPoint = new Client_Access_Point();
     private Client_Access_Command clientCommand = new Client_Access_Command();
     private Graphics_View graphics_view;
@@ -55,7 +50,7 @@ public class Main {
     /**
      *
      * @param args
-     * The main in which runs the system
+     * The main method that prints to the console and presents the user with commands.
      *
      */
     public static void main(String[] args) {
