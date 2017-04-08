@@ -29,11 +29,14 @@ public class Graphics_View extends Application
         Group root = new Group();
         this.primaryScene = new Scene(root);
 
-        bootInstance.startLoop(arguments, this);
+//        bootInstance.startLoop(arguments, this);
 
         BorderPane mainWindow = new BorderPane();
         mainWindow.setPrefSize(400,100);
         mainWindow.setCenter(order());
+        time timer = new time();
+        HBox currentTime = timer.start();
+        mainWindow.setBottom(currentTime);
         Scene scene = new Scene(mainWindow);
         primaryStage.setTitle("LBMS");
         primaryStage.setScene(scene);

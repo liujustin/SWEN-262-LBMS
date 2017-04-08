@@ -8,7 +8,7 @@ public class Main {
 
     protected static LBMS_VisitorKeeper vk = new LBMS_VisitorKeeper();
     protected static LBMS_BookKeeper bk = new LBMS_BookKeeper();
-    protected static LBMS_StatisticsKeeper sk = new LBMS_StatisticsKeeper();
+    protected static LBMS_StatisticsKeeper sk = LBMS_StatisticsKeeper.getInstance();
     private Client_Access_Point cap = new Client_Access_Point();
     private Client_Access_Command cac = new Client_Access_Command();
 
@@ -38,7 +38,7 @@ public class Main {
     }
 
     public void startLoop(String[] args, Graphics_View graphics_view) throws Exception
-    {
+    { 
         this.graphics_view = graphics_view;
         while(true)
         {

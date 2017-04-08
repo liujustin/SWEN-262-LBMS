@@ -37,7 +37,7 @@ public class Client_Access_Point {
      * @return Arraylist of objects
      */
 
-    public ArrayList parseCommand(String command) {
+    public ArrayList<Object> parseCommand(String command) {
         int commandsize;
         String errormessage;
         Object firstindex;
