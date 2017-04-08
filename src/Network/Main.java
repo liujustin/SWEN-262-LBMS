@@ -12,26 +12,13 @@ import java.util.ArrayList;
 //DATE::Feb.25.2017
 public class Main {
 
-    protected static LBMS_VisitorKeeper vk = new LBMS_VisitorKeeper();
-    protected static LBMS_BookKeeper bk = new LBMS_BookKeeper();
-    protected static LBMS_StatisticsKeeper sk = LBMS_StatisticsKeeper.getInstance();
-    private Client_Access_Point cap = new Client_Access_Point();
-    private Client_Access_Command cac = new Client_Access_Command();
-
+//    protected static LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
+//    protected static LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
+//    protected static LBMS_StatisticsKeeper statisticsKeeper = LBMS_StatisticsKeeper.getInstance();
+    private Client_Access_Point clientPoint = new Client_Access_Point();
+    private Client_Access_Command clientCommand = new Client_Access_Command();
     private Graphics_View graphics_view;
 
-    public LBMS_VisitorKeeper getVk()
-    {
-        return this.vk;
-    }
-    public LBMS_BookKeeper getBk()
-    {
-        return this.bk;
-    }
-    public LBMS_StatisticsKeeper getSk()
-    {
-        return this.sk;
-    }
 
     private void graphicsOutput(String outPut)
     {
@@ -48,18 +35,18 @@ public class Main {
         this.graphics_view = graphics_view;
         while(true)
         {
-            String command = cap.getCommand();
-            ArrayList<Object> parsedCommand = cap.parseCommand(command);
+            String command = clientPoint.getCommand();
+            ArrayList<Object> parsedCommand = clientPoint.parseCommand(command);
 
             try
             {
-                Command concreteCommand = cap.ConcreteCommand(parsedCommand);
-                cac.receiveCommand(concreteCommand);
+                Command concreteCommand = clientPoint.ConcreteCommand(parsedCommand);
+                clientCommand.receiveCommand(concreteCommand);
 
                 if(args[0].equals("text"))
-                    textOutput(cac.executeCommand());
+                    textOutput(clientCommand.executeCommand());
                 else
-                    graphicsOutput(cac.executeCommand());
+                    graphicsOutput(clientCommand.executeCommand());
             }
             catch(NullPointerException e){}
         }

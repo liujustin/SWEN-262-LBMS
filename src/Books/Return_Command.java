@@ -1,5 +1,6 @@
 package Books;
 
+import Client.Visitor.LBMS_VisitorKeeper;
 import Network.Command;
 import Network.Main;
 
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 //AUTHOR::Ryan Connors, Adam Nowak
 //DATE::Feb.25.2017
 public class Return_Command implements Command {
+    LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
     private Long visitor_ID;
     private ArrayList<String> ISBNS;
 
@@ -21,7 +23,7 @@ public class Return_Command implements Command {
     @Override
     public String execute() {
         try {
-            Main.vk.returnBook(this.visitor_ID,this.ISBNS);
+            visitorKeeper.returnBook(this.visitor_ID,this.ISBNS);
         } catch (Exception e) {
             e.printStackTrace();
         }

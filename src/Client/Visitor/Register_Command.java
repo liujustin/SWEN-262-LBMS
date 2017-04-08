@@ -7,6 +7,7 @@ import Network.Main;
 //AUTHOR::Ryan Connors, Adam Nowak
 //DATE::Feb.25.2017
 public class Register_Command implements Command {
+    LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
     private String last;
     private String first;
     private String address;
@@ -29,7 +30,7 @@ public class Register_Command implements Command {
     @Override
     public String execute() {
         try {
-            Main.vk.registerVisitor(this.first,this.last,this.address,this.phone);
+            visitorKeeper.registerVisitor(this.first,this.last,this.address,this.phone);
         } catch (Exception e) {
             e.printStackTrace();
         }

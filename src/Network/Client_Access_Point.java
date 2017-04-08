@@ -2,21 +2,24 @@ package Network;//FILE::Network.Client_Access_Point.java
 //AUTHOR: Adam Nowak, Ryan Connors
 //DATE::Feb.25.2017
 
-import Books.Book_Purchase_Command;
-import Books.Book_Search_Command;
-import Books.Book_Store_Command;
-import Books.Borrow_Command;
+import Books.*;
+import Client.Visitor.LBMS_VisitorKeeper;
 import Time.Advance_Time_Command;
 import Time.Current_Time_Command;
 import Client.Visitor.Begin_Visit_Command;
 import Client.Visitor.End_Visit_Command;
 import Client.Visitor.Register_Command;
+import Time.LBMS_StatisticsKeeper;
+import Time.Library_Report_Command;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
 
 public class Client_Access_Point {
+    LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
+    LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
+    LBMS_StatisticsKeeper statisticsKeeper = LBMS_StatisticsKeeper.getInstance();
 
 
     /**
@@ -352,7 +355,7 @@ public class Client_Access_Point {
                 break;
             case "info":  cmd = new Book_Search_Command(parsedcommand.get(1).toString(), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), parsedcommand.get(5).toString());
                 break;
-            case "borrow": cmd = new Borrow_Command(Main.vk.getVisitorRegistry().get((parsedcommand.get(1))), parsedcommand.get(2).toString());
+            case "borrow": cmd = new Borrow_Command(visitorKeeper.getVisitorRegistry().get((parsedcommand.get(1))), parsedcommand.get(2).toString());
                 break;
             case "borrowed": cmd = new Find_Borrowed_Command(Long.getLong(parsedcommand.get(1).toString()));
                 break;

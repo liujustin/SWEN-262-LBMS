@@ -1,9 +1,12 @@
 package Books;
 
+import Network.Command;
+
 //FILE::Books.Book_Search_Command.java
 //AUTHOR::Ryan Connors, Kevin.P.Barnett
 //DATE::Feb.25.2017
 public class Book_Search_Command implements Command {
+    LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
     private String title;
     private String authors;
     private String isbn;
@@ -28,7 +31,7 @@ public class Book_Search_Command implements Command {
 
     @Override
     public String execute() {
-        //Main.bk.search(this.title,this.authors,this.isbn,this.publisher,this.sort_order);
+        //bookKeeper.search(this.title,this.authors,this.isbn,this.publisher,this.sort_order);
         return "";
     }
 }

@@ -1,5 +1,6 @@
 package Books;
 
+import Client.Visitor.LBMS_VisitorKeeper;
 import Network.Command;
 import Network.Main;
 
@@ -8,6 +9,7 @@ import Network.Main;
 //DATE::Feb.25.2017
 public class Find_Borrowed_Command implements Command {
 
+    LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
     private Long visitorID;
 
     /**
@@ -21,7 +23,7 @@ public class Find_Borrowed_Command implements Command {
     @Override
     public String execute() {
         try {
-            return Main.vk.borrowedBooks(visitorID);
+            return visitorKeeper.borrowedBooks(visitorID);
         } catch (Exception e) {
             return e.getMessage();
         }

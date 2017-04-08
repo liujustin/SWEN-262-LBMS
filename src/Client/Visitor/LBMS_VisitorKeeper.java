@@ -2,6 +2,7 @@ package Client.Visitor;//FILE::Client.Visitor.LBMS_VisitorKeeper.java
 //AUTHOR::Kevin.P.Barnett, Adam Nowak
 //DATE::Mar.04.2017
 
+import Books.Book_Loan;
 import Time.LBMS_StatisticsKeeper;
 
 import java.io.File;
@@ -13,6 +14,7 @@ import java.util.*;
 
 public class LBMS_VisitorKeeper
 {
+    private static final LBMS_VisitorKeeper visitorKeeper = new LBMS_VisitorKeeper();
     private HashMap<Long, Visitor> visitorRegistry;
     private static HashMap<Long, Date> activeVisitor;
     private Long newID = 999999999L;
@@ -42,6 +44,11 @@ public class LBMS_VisitorKeeper
             e.printStackTrace();
         }
     }
+
+    public static LBMS_VisitorKeeper getInstance(){
+        return visitorKeeper;
+    }
+
     public static HashMap<Long,Date> getActiveVisitors(){ return activeVisitor;}
     /**
      *
@@ -72,7 +79,7 @@ public class LBMS_VisitorKeeper
     public Visitor registerVisitor(String firstName, String lastName, String address, String phoneNumber) throws Exception
     {
         String time = LBMS_StatisticsKeeper.Get_Time();
-        Long id = incrementID(); // starts visitor id as 1000000000 and increments by 1 each GUI.time register visitor is called
+        Long id = incrementID(); // starts visitor id as 1000000000 and increments by 1 each GUI.timeGUI register visitor is called
 
         for(Long key: this.visitorRegistry.keySet())
             newID = Long.max(newID, key);

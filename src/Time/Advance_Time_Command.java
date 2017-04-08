@@ -8,6 +8,7 @@ import Network.Main;
 public class Advance_Time_Command implements Command {
     private int days;
     private int hours;
+    LBMS_StatisticsKeeper sk = LBMS_StatisticsKeeper.getInstance();
 
     public Advance_Time_Command(int days, int hours) {
         this.days = days;
@@ -16,8 +17,8 @@ public class Advance_Time_Command implements Command {
     @Override
     public String execute(){
         try {
-            Main.sk.advanceDay(this.days);
-            Main.sk.advanceHour(this.hours);
+            sk.advanceDay(this.days);
+            sk.advanceHour(this.hours);
         }catch(Exception e){
             e.printStackTrace();
         }
