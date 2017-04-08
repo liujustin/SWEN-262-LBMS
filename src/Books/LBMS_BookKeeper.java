@@ -138,7 +138,7 @@ public class LBMS_BookKeeper
             throw new Exception(errorString);
         }
         Calendar calendar = Calendar.getInstance();
-        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy,HH:mm:ss");
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
         calendar.setTime(dateFormat.parse(time));
         calendar.add(Calendar.DAY_OF_YEAR, 7);
         Date futureDate = calendar.getTime();

@@ -111,7 +111,7 @@ public class LBMS_VisitorKeeper
         {
             if(! this.activeVisitor.containsKey(visitorID)) {
 
-                DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy,HH:mm:ss");
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
 
                 String currentTime = time.split(",")[1];
 
@@ -182,7 +182,7 @@ public class LBMS_VisitorKeeper
             for (int j = 0; j < visitor.getBorrowed_books().size(); j++) {
                 double book_balance = 0;
                 if (ISBNS.get(i).equals(visitor.getBorrowed_books().get(j))) {
-                    DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy,HH:mm:ss");
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
                     Date time = dateFormat.parse(LBMS_StatisticsKeeper.Get_Time());
                     if (time.after(dateFormat.parse(visitor.getBorrowed_books().get(j).getDue_date()))) { // check if due date is before current date
                         book_balance += 10;

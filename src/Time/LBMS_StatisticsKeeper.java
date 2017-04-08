@@ -50,7 +50,7 @@ public class LBMS_StatisticsKeeper
 		}
 
 		skiptime = seconds;
-		DateFormat dateFormat = new SimpleDateFormat ("MM/dd/yyyy,HH:mm:ss");
+		DateFormat dateFormat = new SimpleDateFormat ("yyyy/MM/dd,HH:mm:ss");
 		c.add(Calendar.SECOND, skiptime);
 		date.setTime(c.getTimeInMillis());
 		String output = dateFormat.format(date);
