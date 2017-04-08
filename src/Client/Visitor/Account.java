@@ -7,6 +7,7 @@ import Network.Main;
  */
 public class Account {
 
+    LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
     private String username;
     private String password;
     private int role;
@@ -18,12 +19,12 @@ public class Account {
         this.password = password;
         this.role = role;
         this.visitorID = visitorID;
-        this.v = Main.vk.getVisitorRegistry().get(this.visitorID);
+        this.v = visitorKeeper.getVisitorRegistry().get(this.visitorID);
     }
 
     public Account createAccount(String username, String password, int role, long visitorID){
-        Account a = new Account(username,password,role,visitorID);
+        Account newAccount = new Account(username,password,role,visitorID);
         System.out.println("create,success");
-        return a;
+        return newAccount;
     }
 }

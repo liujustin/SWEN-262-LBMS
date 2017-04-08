@@ -115,7 +115,7 @@
 9780316317542,"Woman of God",{James Patterson},"Little, Brown",2016-09-26,400
 9780618711680,"The God Particle",{Leon M. Lederman, Dick Teresi},"Houghton Mifflin Harcourt",1993,434
 9780754662662,"The Cult of the Mother of God in Byzantium",{Leslie Brubaker, Mary B. Cunningham},"Ashgate Publishing, Ltd.",2011,306
-9780906138236,"In Conversation with God: Ordinary GUI.time : weeks 13-23",{Francis Fernandez},"Scepter Publishers",1991-10-01,629
+9780906138236,"In Conversation with God: Ordinary GUI.timeGUI : weeks 13-23",{Francis Fernandez},"Scepter Publishers",1991-10-01,629
 9780316227711,"Underwater Dogs",{Seth Casteel},"Little, Brown",2012-10-23,144
 9780679644767,"The Big New Yorker Books.Book of Dogs",{The New Yorker Magazine},"Random House",2012-10-30,416
 9781592533251,"101 Dog Tricks",{Kyra Sundance, Chalcy},"Quarry",2007-04-01,208

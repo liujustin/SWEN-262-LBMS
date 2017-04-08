@@ -9,6 +9,7 @@ import Client.Visitor.Visitor;
 //DATE::Feb.25.2017
 public class Borrow_Command implements Command {
 
+    LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
     private Visitor borrower;
     private String books;
 
@@ -25,7 +26,7 @@ public class Borrow_Command implements Command {
     @Override
     public String execute(){
         try {
-            Main.bk.borrowBook(this.borrower,this.books);
+            bookKeeper.borrowBook(this.borrower,this.books);
         } catch (Exception e) {
             e.printStackTrace();
         }

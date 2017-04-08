@@ -2,6 +2,8 @@ package Client.Visitor;//FILE::Client.Visitor.java
 //AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 
+import Books.Book_Loan;
+
 import java.util.ArrayList;
 
 public class Visitor

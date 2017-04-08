@@ -1,10 +1,12 @@
 package Books;
 
+import Network.Command;
+
 //FILE::Books.Book_Purchase_Command.java
 //AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 public class Book_Purchase_Command implements Command {
-
+    LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
     private int quantity;
     private String books;
 
@@ -19,7 +21,7 @@ public class Book_Purchase_Command implements Command {
     }
     @Override
     public String execute() {
-        //Main.bk.buyBook(this.quantity,this.bookID,this.books);
+//        bookKeeper.buyBook(this.quantity,this.books);
         return "";
     }
 }

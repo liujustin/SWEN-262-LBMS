@@ -35,7 +35,7 @@ public class Graphics_View extends Application
         BorderPane mainWindow = new BorderPane();
         mainWindow.setPrefSize(400,100);
         mainWindow.setCenter(order());
-        time timer = new time();
+        timeGUI timer = new timeGUI();
         HBox currentTime = timer.start();
         mainWindow.setBottom(currentTime);
         Scene scene = new Scene(mainWindow);

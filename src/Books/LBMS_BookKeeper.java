@@ -15,6 +15,7 @@ import java.util.*;
 
 public class LBMS_BookKeeper
 {
+    private static final LBMS_BookKeeper bookKeeper = new LBMS_BookKeeper();
     private final String bookListURI = "books.txt";
     private HashMap<Book, Integer> purchasedBooks;
     private HashMap<String, Book> bookRegistry;
@@ -25,6 +26,10 @@ public class LBMS_BookKeeper
         this.purchasedBooks = new HashMap<>();
         this.bookRegistry = new HashMap<>();
         getBookList();
+    }
+
+    public static LBMS_BookKeeper getInstance(){
+        return bookKeeper;
     }
 
     /**

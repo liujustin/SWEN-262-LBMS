@@ -12,7 +12,7 @@ import java.util.TimerTask;
 
 public class LBMS_StatisticsKeeper
 {
-	private static final LBMS_StatisticsKeeper timekeeper = new LBMS_StatisticsKeeper();
+	private static final LBMS_StatisticsKeeper statisticsKeeper = new LBMS_StatisticsKeeper();
 	private static Date date;
 	private Calendar calendar;
 	private static boolean isOpen;
@@ -33,7 +33,7 @@ public class LBMS_StatisticsKeeper
 	}
 
 	public static LBMS_StatisticsKeeper getInstance(){
-		return timekeeper;
+		return statisticsKeeper;
 	}
 
 	/**
@@ -77,7 +77,7 @@ public class LBMS_StatisticsKeeper
 
 
 	/**
-	 * Prints the GUI.time for the datetime command
+	 * Prints the GUI.timeGUI for the datetime command
 	 */
 	public String printTime(){
 		String d2 = LBMS_StatisticsKeeper.Get_Time();

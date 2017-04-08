@@ -1,5 +1,6 @@
 package Books;
 
+import Network.Command;
 import Network.Main;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 //DATE::Feb.25.2017
 public class Book_Store_Command implements Command {
 
+    LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
     private String title;
     private ArrayList<String> authors;
     private String isbn;
@@ -50,13 +52,13 @@ public class Book_Store_Command implements Command {
         ArrayList<Book> searchedBooks = new ArrayList<>();
         switch(paramCount-1)
         {
-            case 1: searchedBooks = Search.search(this.title, Main.bk.getBooksForPurchase());
+            case 1: searchedBooks = Search.search(this.title, bookKeeper.getBooksForPurchase());
                 break;
-            case 2: searchedBooks = Search.search(this.title, this.authors, Main.bk.getBooksForPurchase());
+            case 2: searchedBooks = Search.search(this.title, this.authors, bookKeeper.getBooksForPurchase());
                 break;
-            case 3: searchedBooks = Search.search(this.title, this.authors, this.isbn, Main.bk.getBooksForPurchase());
+            case 3: searchedBooks = Search.search(this.title, this.authors, this.isbn, bookKeeper.getBooksForPurchase());
                 break;
-            case 4: searchedBooks = Search.search(this.title, this.authors, this.isbn, this.publisher, Main.bk.getBooksForPurchase());
+            case 4: searchedBooks = Search.search(this.title, this.authors, this.isbn, this.publisher, bookKeeper.getBooksForPurchase());
                 break;
             //case 5: searchedBooks = Books.Search.search(this.title, this.authors, this.isbn, this.publisher, this.sort_order,  Network.Main.bk.getBooksForPurchase());
             //    break;
