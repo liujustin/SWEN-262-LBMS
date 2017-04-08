@@ -2,10 +2,14 @@ package Client.Visitor;
 
 import Network.Main;
 
+import java.util.HashMap;
+
 /**
  * Created by Ryan on 4/7/2017.
  */
 public class Account {
+
+    public static HashMap<String, Account> activeAccounts = new HashMap<>();
 
     LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
     private String username;
