@@ -29,7 +29,7 @@ public class Book_Store_Command implements Command {
         }
         catch(Exception e){this.paramCount = params.size();}
 
-        System.out.println(this.authors.toString());
+        Search.initializeSearch();
     }
 
     private String generateBookString(ArrayList<Book> searchedBooks)
@@ -58,6 +58,8 @@ public class Book_Store_Command implements Command {
             //case 5: searchedBooks = Search.search(this.title, this.authors, this.isbn, this.publisher, this.sort_order,  Main.bk.getBooksForPurchase());
             //    break;
         }
+
+        Search.setLastSearched(searchedBooks);
 
         return String.format("search,%d,\n%s", searchedBooks.size(), generateBookString(searchedBooks));
     }
