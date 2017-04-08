@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 
 public class LBMS_StatisticsKeeper
 {
+	private static final LBMS_StatisticsKeeper timekeeper = new LBMS_StatisticsKeeper();
 	private static Date date;
 	private Calendar calendar;
 	private static boolean isOpen;
@@ -29,9 +30,13 @@ public class LBMS_StatisticsKeeper
 		}
 	};
 
-	public LBMS_StatisticsKeeper(){
+	private LBMS_StatisticsKeeper(){
 		this.calendar = Calendar.getInstance();
 		this.date = new Date();
+	}
+
+	public static LBMS_StatisticsKeeper getInstance(){
+		return timekeeper;
 	}
 
 	/**
