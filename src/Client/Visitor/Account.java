@@ -29,6 +29,7 @@ public class Account {
     public Account createAccount(String username, String password, int role, long visitorID){
         Account newAccount = new Account(username,password,role,visitorID);
         System.out.println("create,success");
+        activeAccounts.put(newAccount.password,newAccount);
         return newAccount;
     }
 }
