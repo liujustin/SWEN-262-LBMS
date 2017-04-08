@@ -3,7 +3,7 @@ package Time;
 import Network.Command;
 
 //FILE::Time.Current_Time_Command.java
-//AUTHOR::Ryan Connors
+//AUTHOR::Ryan Connors, Justin Liu
 //DATE::Feb.25.2017
 public class Current_Time_Command implements Command {
     LBMS_StatisticsKeeper statisticsKeeper = LBMS_StatisticsKeeper.getInstance();
