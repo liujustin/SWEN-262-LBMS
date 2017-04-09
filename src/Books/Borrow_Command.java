@@ -15,12 +15,12 @@ public class Borrow_Command implements Command {
 
     /**
      *
-     * @param v
-     * @param b
+     * @param visitor
+     * @param book
      */
-    public Borrow_Command(Visitor v, String b){
-        this.borrower = v;
-        this.books = b;
+    public Borrow_Command(Visitor visitor, String book){
+        this.borrower = visitor;
+        this.books = book;
     }
 
     @Override
