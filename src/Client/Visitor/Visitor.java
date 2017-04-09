@@ -33,7 +33,6 @@ public class Visitor
         this.balance = balance;
         this.phone_number = phone_number;
         this.visitor_ID = visitor_ID;
-        this.borrowed_books = borrowed_books;
     }
 
     /**
