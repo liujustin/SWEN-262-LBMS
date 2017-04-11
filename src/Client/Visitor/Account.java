@@ -29,7 +29,27 @@ public class Account {
     public Account createAccount(String username, String password, int role, long visitorID){
         Account newAccount = new Account(username,password,role,visitorID);
         System.out.println("create,success");
-        activeAccounts.put(newAccount.password,newAccount);
+        activeAccounts.put(newAccount.username,newAccount);
         return newAccount;
     }
+
+    public boolean login(String username, String password){
+        boolean result = true;
+        for (String key : activeAccounts.keySet() ) {
+            if (username.equals(key)){
+                if(password.equals(activeAccounts.get(key).password)){
+                    result = true;
+                }
+                else{
+                    result = false;
+                }
+            }
+            else{
+                result = false;
+            }
+        }
+        return result;
+    }
+
+//    public logout
 }
