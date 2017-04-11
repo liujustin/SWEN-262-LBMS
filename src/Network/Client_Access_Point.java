@@ -365,7 +365,7 @@ public class Client_Access_Point {
                 break;
             case "search": cmd = new Book_Store_Command(parsedcommand);
                 break;
-            case "buy": cmd = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(1).toString()),parsedcommand.get(2).toString());
+            case "buy": cmd = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2));
                 break;
             case "advance":
                 int day = Integer.parseInt(parsedcommand.get(1).toString());

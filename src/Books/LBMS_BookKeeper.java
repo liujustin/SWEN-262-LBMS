@@ -84,20 +84,30 @@ public class LBMS_BookKeeper
      * @param quantity
      * @param ISBNS
      */
-    public void buyBook(Integer quantity, ArrayList<String> ISBNS)
-    {
-        for(String isbn : ISBNS)
-        {
-            for(int i = 0; i < quantity; ++ i)
-            {
-                if(this.purchasedBooks.containsKey(this.bookRegistry.get(isbn)))
-                    this.purchasedBooks.put(this.bookRegistry.get(isbn), this.purchasedBooks.get(this.bookRegistry.get(isbn)) + 1);
-                else
-                    this.purchasedBooks.put(this.bookRegistry.get(isbn), 1);
+    public void buyBook(Integer quantity, ArrayList<String> ISBNS) throws Exception {
+
+        String out = "";
+        int amount = 0;
+
+        for (String isbn : ISBNS) {
+            for (int i = 0; i < Search.getLastSearched().size(); i++) {
+                if(Search.getLastSearched().get(i).equals(this.bookRegistry.get(isbn))){
+                    out += Search.getLastSearched().get(i).toString();
+                    for (int j = 0; j < quantity; j++) {
+                        if (this.purchasedBooks.containsKey(this.bookRegistry.get(isbn))){
+                            this.purchasedBooks.put(this.bookRegistry.get(isbn), this.purchasedBooks.get(this.bookRegistry.get(isbn)) + 1);
+                            amount++;
+                        }else {
+                            this.purchasedBooks.put(this.bookRegistry.get(isbn), 1);
+                            amount++;
+                        }
+                    }
+                }
             }
         }
+        System.out.println(String.format("buy,success,%d,\n%s", amount , out));
+        System.out.println(this.purchasedBooks);
     }
-
     /**
      *
      * @param visitor
@@ -109,9 +119,9 @@ public class LBMS_BookKeeper
     public void borrowBook(Visitor visitor, String bookList) throws Exception
     {
         String time = LBMS_StatisticsKeeper.Get_Time();
-        if(!LBMS_StatisticsKeeper.getIsopen(LBMS_StatisticsKeeper.Get_Time())){
+        if(!LBMS_StatisticsKeeper.getIsopen(time))
             throw new Exception("Library is currently closed.");
-        }
+
 
         String[] bookISBN = bookList.split(",");
 
