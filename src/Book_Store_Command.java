@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.HashMap;
 
 //FILE::Book_Store_Command.java
 //AUTHOR::Ryan Connors, Kevin.P.Barnett
@@ -29,7 +28,7 @@ public class Book_Store_Command implements Command {
         }
         catch(Exception e){this.paramCount = params.size();}
 
-        Search.initializeSearch();
+        SearchToBuy.initializeSearch();
     }
 
     private String generateBookString(ArrayList<Book> searchedBooks)
@@ -47,19 +46,19 @@ public class Book_Store_Command implements Command {
         ArrayList<Book> searchedBooks = new ArrayList<>();
         switch(paramCount-1)
         {
-            case 1: searchedBooks = Search.search(this.title, Main.bk.getBooksForPurchase());
+            case 1: searchedBooks = SearchToBuy.search(this.title, Main.bk.getBooksForPurchase());
                 break;
-            case 2: searchedBooks = Search.search(this.title, this.authors, Main.bk.getBooksForPurchase());
+            case 2: searchedBooks = SearchToBuy.search(this.title, this.authors, Main.bk.getBooksForPurchase());
                 break;
-            case 3: searchedBooks = Search.search(this.title, this.authors, this.isbn, Main.bk.getBooksForPurchase());
+            case 3: searchedBooks = SearchToBuy.search(this.title, this.authors, this.isbn, Main.bk.getBooksForPurchase());
                 break;
-            case 4: searchedBooks = Search.search(this.title, this.authors, this.isbn, this.publisher, Main.bk.getBooksForPurchase());
+            case 4: searchedBooks = SearchToBuy.search(this.title, this.authors, this.isbn, this.publisher, Main.bk.getBooksForPurchase());
                 break;
-            //case 5: searchedBooks = Search.search(this.title, this.authors, this.isbn, this.publisher, this.sort_order,  Main.bk.getBooksForPurchase());
+            //case 5: searchedBooks = SearchToBuy.search(this.title, this.authors, this.isbn, this.publisher, this.sort_order,  Main.bk.getBooksForPurchase());
             //    break;
         }
 
-        Search.setLastSearched(searchedBooks);
+        SearchToBuy.setLastSearched(searchedBooks);
 
         return String.format("search,%d,\n%s", searchedBooks.size(), generateBookString(searchedBooks));
     }
