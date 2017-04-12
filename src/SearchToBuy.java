@@ -2,7 +2,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Predicate;
 
-public class Search
+public class SearchToBuy
 {
     private static ArrayList<Book> lastSearched;
 
