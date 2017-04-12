@@ -1,18 +1,22 @@
-package Network;//FILE::Network.Client_Access_Point.java
+//FILE::Client_Access_Point.java
 //AUTHOR: Adam Nowak, Ryan Connors
 //DATE::Feb.25.2017
+package Network;
 
 import Books.*;
-import Client.Visitor.LBMS_VisitorKeeper;
-import Time.Advance_Time_Command;
-import Time.Current_Time_Command;
 import Client.Visitor.Begin_Visit_Command;
 import Client.Visitor.End_Visit_Command;
+import Client.Visitor.LBMS_VisitorKeeper;
 import Client.Visitor.Register_Command;
+import Network.Command;
+import Time.Advance_Time_Command;
+import Time.Current_Time_Command;
 import Time.LBMS_StatisticsKeeper;
 import Time.Library_Report_Command;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 
@@ -20,7 +24,6 @@ public class Client_Access_Point {
     LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
     LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
     LBMS_StatisticsKeeper statisticsKeeper = LBMS_StatisticsKeeper.getInstance();
-
 
     /**
      * This Function allows the employee to issue a command via scanner
@@ -42,13 +45,14 @@ public class Client_Access_Point {
     }
 
     /**
-     * Parses the Network.Command the user inputs from getCommand()
+     * Parses the Command the user inputs from getCommand()
      *
      * @param command
      * @return Arraylist of objects
      */
 
-    public ArrayList<Object> parseCommand(String command) {
+    public ArrayList<Object> parseCommand(String command)
+    {
         int commandsize;
         String errormessage;
         Object firstindex;
@@ -67,45 +71,57 @@ public class Client_Access_Point {
         outerloop:
         // The main loop that parses the input command
 
-        for (int i = 0; i < command.length() - 1; i++) {
-            if (command.charAt(i) == ',' && command.charAt(i + 1) == ' ') {
+        for(int i = 0; i < command.length() - 1; i++)
+        {
+            if(command.charAt(i) == ',' && command.charAt(i + 1) == ' ')
+            {
                 parsedcommand.add(command.substring(n, i));
                 i += 2;
                 n = i;
-            } else if (command.charAt(i) == ',' && command.charAt(i + 1) == '"') {
+            }else if(command.charAt(i) == ',' && command.charAt(i + 1) == '"')
+            {
                 parsedcommand.add(command.substring(n, i));
                 i += 2;
                 n = i;
-                for (; i < command.length() - 2; i++) {
-                    if (command.charAt(i) == '"') {
+                for(; i < command.length() - 2; i++)
+                {
+                    if(command.charAt(i) == '"')
+                    {
                         parsedcommand.add(command.substring(n, i));
                         i++;
                         n = i;
                         break;
                     }
                 }
-            } else if (command.charAt(i) == ',') {
+            }else if(command.charAt(i) == ',')
+            {
                 parsedcommand.add(command.substring(n, i));
                 i++;
                 n = i;
             }
 
-            if (command.charAt(i) == '{') {
+            if(command.charAt(i) == '{')
+            {
                 i++;
                 n = i;
                 ArrayList<String> parsedids = new ArrayList<>();
-                for (; i < command.length(); i++) {
-                    if (command.charAt(i) == ',') {
+                for(; i < command.length(); i++)
+                {
+                    if(command.charAt(i) == ',')
+                    {
                         parsedids.add(command.substring(n, i));
                         i++;
                         n = i;
                     }
-                    if (command.charAt(i) == '}') {
+                    if(command.charAt(i) == '}')
+                    {
                         parsedids.add(command.substring(n, i));
                         parsedcommand.add(parsedids);
-                        if (command.endsWith("}")) {
+                        if(command.endsWith("}"))
+                        {
                             break outerloop;
-                        } else if (command.charAt(i + 1) == ',') {
+                        }else if(command.charAt(i + 1) == ',')
+                        {
                             i += 2;
                             n = i;
                         }
@@ -120,7 +136,8 @@ public class Client_Access_Point {
          * and the last character of a command doesn't include a comma.
          */
 
-        if (!command.endsWith("}")) {
+        if(! command.endsWith("}"))
+        {
 
             parsedcommand.add(command.substring(n, command.length()));
         }
@@ -129,195 +146,261 @@ public class Client_Access_Point {
         * Parameter error handling until end of function.
         */
 
-        if (parsedcommand.get(0).equals("register")) {
-            if (parsedcommand.size() < 5) {
+        if(parsedcommand.get(0).equals("register"))
+        {
+            if(parsedcommand.size() < 5)
+            {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while (commandsize < 5) {
-                    if (commandsize == 1) {
+                while(commandsize < 5)
+                {
+                    if(commandsize == 1)
+                    {
                         errormessage += "first name, ";
                         commandsize++;
                     }
-                    if (commandsize == 2) {
+                    if(commandsize == 2)
+                    {
                         errormessage += "last name, ";
                         commandsize++;
                     }
-                    if (commandsize == 3) {
+                    if(commandsize == 3)
+                    {
                         errormessage += "address, ";
                         commandsize++;
                     }
-                    if (commandsize == 4) {
+                    if(commandsize == 4)
+                    {
                         errormessage += "phone number}";
                         commandsize++;
                     }
                 }
-                try {
+                try
+                {
                     throw new Exception(errormessage);
-                } catch (Exception e) {
+                }catch(Exception e)
+                {
                     e.printStackTrace();
                 }
             }
-        } else if (parsedcommand.get(0).equals("arrive")
+        }else if(parsedcommand.get(0).equals("arrive")
                 || parsedcommand.get(0).equals("depart")
-                || parsedcommand.get(0).equals("borrowed")) {
+                || parsedcommand.get(0).equals("borrowed"))
+        {
 
-            if (parsedcommand.size() < 2) {
-                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {Client.Visitor.Client.Visitor ID}";
-                try {
+            if(parsedcommand.size() < 2)
+            {
+                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {Visitor ID}";
+                try
+                {
                     throw new Exception(errormessage);
-                } catch (Exception e) {
+                }catch(Exception e)
+                {
                     e.printStackTrace();
                 }
             }
-        } else if (parsedcommand.get(0).equals("info")) {
-            if (parsedcommand.size() <= 6) {
-                if (parsedcommand.size() < 3) {
+        }else if(parsedcommand.get(0).equals("info"))
+        {
+            if(parsedcommand.size() <= 6)
+            {
+                if(parsedcommand.size() < 3)
+                {
                     commandsize = parsedcommand.size();
                     errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                    while (commandsize < 3) {
-                        if (commandsize == 1) {
+                    while(commandsize < 3)
+                    {
+                        if(commandsize == 1)
+                        {
                             errormessage += "title, ";
                             commandsize++;
                         }
-                        if (commandsize == 2) {
+                        if(commandsize == 2)
+                        {
                             errormessage += "authors}";
                             commandsize++;
                         }
                         commandsize++;
                     }
-                    try {
+                    try
+                    {
                         throw new Exception(errormessage);
-                    } catch (Exception e) {
+                    }catch(Exception e)
+                    {
                         e.printStackTrace();
                     }
                 }
             }
-        } else if (parsedcommand.get(0).equals("borrow")) {
-            if (parsedcommand.size() < 3) {
+        }else if(parsedcommand.get(0).equals("borrow"))
+        {
+            if(parsedcommand.size() < 3)
+            {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while (commandsize < 3) {
-                    if (commandsize == 1) {
-                        errormessage += "Client.Visitor.Client.Visitor ID, ";
+                while(commandsize < 3)
+                {
+                    if(commandsize == 1)
+                    {
+                        errormessage += "Visitor ID, ";
                         commandsize++;
                     }
-                    if (commandsize == 2) {
+                    if(commandsize == 2)
+                    {
                         errormessage += "id}";
                         commandsize++;
                     }
                 }
-                try {
+                try
+                {
                     throw new Exception(errormessage);
-                } catch (Exception e) {
+                }catch(Exception e)
+                {
                     e.printStackTrace();
                 }
             }
-        } else if (parsedcommand.get(0).equals("return")) {
-            if (parsedcommand.size() < 4) {
+        }else if(parsedcommand.get(0).equals("return"))
+        {
+            if(parsedcommand.size() < 4)
+            {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while (commandsize < 4) {
-                    if (commandsize == 1) {
-                        errormessage += "Client.Visitor.Client.Visitor ID, ";
+                while(commandsize < 4)
+                {
+                    if(commandsize == 1)
+                    {
+                        errormessage += "Visitor ID, ";
                         commandsize++;
                     }
-                    if (commandsize == 2) {
+                    if(commandsize == 2)
+                    {
                         errormessage += "id, ";
                         commandsize++;
                     }
-                    if (commandsize == 3) {
+                    if(commandsize == 3)
+                    {
                         errormessage += "ids}";
                         commandsize++;
                     }
                 }
-                try {
+                try
+                {
                     throw new Exception(errormessage);
-                } catch (Exception e) {
+                }catch(Exception e)
+                {
                     e.printStackTrace();
                 }
             }
-        } else if (parsedcommand.get(0).equals("pay")) {
-            if (parsedcommand.size() < 3) {
+        }else if(parsedcommand.get(0).equals("pay"))
+        {
+            if(parsedcommand.size() < 3)
+            {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while (commandsize < 3) {
-                    if (commandsize == 1) {
-                        errormessage += "Client.Visitor.Client.Visitor ID, ";
+                while(commandsize < 3)
+                {
+                    if(commandsize == 1)
+                    {
+                        errormessage += "Visitor ID, ";
                         commandsize++;
                     }
-                    if (commandsize == 2) {
+                    if(commandsize == 2)
+                    {
                         errormessage += "amount}";
                         commandsize++;
                     }
                 }
-                try {
+                try
+                {
                     throw new Exception(errormessage);
-                } catch (Exception e) {
+                }catch(Exception e)
+                {
                     e.printStackTrace();
                 }
             }
-        } else if (parsedcommand.get(0).equals("search")) {
-            if (parsedcommand.size() < 2) {
+        }else if(parsedcommand.get(0).equals("search"))
+        {
+            if(parsedcommand.size() < 2)
+            {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while (commandsize < 2) {
-                    if (commandsize == 1) {
+                while(commandsize < 2)
+                {
+                    if(commandsize == 1)
+                    {
                         errormessage += "title}";
                         commandsize++;
                     }
                 }
-                try {
+                try
+                {
                     throw new Exception(errormessage);
-                } catch (Exception e) {
+                }catch(Exception e)
+                {
                     e.printStackTrace();
                 }
             }
-        } else if (parsedcommand.get(0).equals("buy")) {
-            if (parsedcommand.size() < 3) {
+        }else if(parsedcommand.get(0).equals("buy"))
+        {
+            if(parsedcommand.size() < 3)
+            {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while (commandsize < 3) {
-                    if (commandsize == 1) {
+                while(commandsize < 3)
+                {
+                    if(commandsize == 1)
+                    {
                         errormessage += "quantity, ";
                         commandsize++;
                     }
-                    if (commandsize == 2) {
+                    if(commandsize == 2)
+                    {
                         errormessage += "id} ";
                         commandsize++;
                     }
                 }
-                try {
+                try
+                {
                     throw new Exception(errormessage);
-                } catch (Exception e) {
+                }catch(Exception e)
+                {
                     e.printStackTrace();
                 }
             }
-        } else if (parsedcommand.get(0).equals("advance")) {
-            if (parsedcommand.size() < 2) {
+        }else if(parsedcommand.get(0).equals("advance"))
+        {
+            if(parsedcommand.size() < 2)
+            {
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {number-of-days}";
-                try {
+                try
+                {
                     throw new Exception(errormessage);
-                } catch (Exception e) {
+                }catch(Exception e)
+                {
                     e.printStackTrace();
                 }
             }
-        } else if (parsedcommand.get(0).equals("report")) {
-            if (parsedcommand.size() < 2) {
+        }else if(parsedcommand.get(0).equals("report"))
+        {
+            if(parsedcommand.size() < 2)
+            {
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {days}";
-                try {
+                try
+                {
                     throw new Exception(errormessage);
-                } catch (Exception e) {
+                }catch(Exception e)
+                {
                     e.printStackTrace();
                 }
             }
-        } else if (parsedcommand.get(0).equals("datetime") || parsedcommand.get(0).equals("shutdown")) {
+        }else if(parsedcommand.get(0).equals("datetime") || parsedcommand.get(0).equals("shutdown"))
+        {
             return parsedcommand;
 
             /*
              * Else statement handles an error where request command doesn't exist.
              *
              */
-        } else {
+        }
+        else {
             errormessage = "Requested command doesn't exist.";
             try {
                 throw new Exception(errormessage);
@@ -353,7 +436,7 @@ public class Client_Access_Point {
                 break;
             case "depart": cmd = new End_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()));
                 break;
-            case "info":  cmd = new Book_Search_Command(parsedcommand.get(1).toString(), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), parsedcommand.get(5).toString());
+            case "info":  cmd = new Book_Search_Command(parsedcommand);
                 break;
             case "borrow": cmd = new Borrow_Command(visitorKeeper.getVisitorRegistry().get((parsedcommand.get(1))), parsedcommand.get(2).toString());
                 break;
@@ -381,6 +464,8 @@ public class Client_Access_Point {
                 break;
             case "report": cmd = new Library_Report_Command(Integer.parseInt(parsedcommand.get(1).toString()));
                 break;
+
+            case "dummy": return null;
 
             default: return null;
         }

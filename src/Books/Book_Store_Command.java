@@ -1,15 +1,17 @@
 package Books;
 
+import Books.Book;
+import Books.SearchToBuy;
 import Network.Command;
 import Network.Main;
 
 import java.util.ArrayList;
 
-//FILE::Books.Book_Store_Command.java
+//FILE::Book_Store_Command.java
 //AUTHOR::Ryan Connors, Kevin.P.Barnett
 //DATE::Feb.25.2017
-public class Book_Store_Command implements Command {
-
+public class Book_Store_Command implements Command
+{
     LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
     private String title;
     private ArrayList<String> authors;
@@ -34,7 +36,7 @@ public class Book_Store_Command implements Command {
         }
         catch(Exception e){this.paramCount = params.size();}
 
-        Search.initializeSearch();
+        SearchToBuy.initializeSearch();
     }
 
     private String generateBookString(ArrayList<Book> searchedBooks)
@@ -52,19 +54,19 @@ public class Book_Store_Command implements Command {
         ArrayList<Book> searchedBooks = new ArrayList<>();
         switch(paramCount-1)
         {
-            case 1: searchedBooks = Search.search(this.title, bookKeeper.getBooksForPurchase());
+            case 1: searchedBooks = SearchToBuy.search(this.title, bookKeeper.getBooksForPurchase());
                 break;
-            case 2: searchedBooks = Search.search(this.title, this.authors, bookKeeper.getBooksForPurchase());
+            case 2: searchedBooks = SearchToBuy.search(this.title, this.authors, bookKeeper.getBooksForPurchase());
                 break;
-            case 3: searchedBooks = Search.search(this.title, this.authors, this.isbn, bookKeeper.getBooksForPurchase());
+            case 3: searchedBooks = SearchToBuy.search(this.title, this.authors, this.isbn, bookKeeper.getBooksForPurchase());
                 break;
-            case 4: searchedBooks = Search.search(this.title, this.authors, this.isbn, this.publisher, bookKeeper.getBooksForPurchase());
+            case 4: searchedBooks = SearchToBuy.search(this.title, this.authors, this.isbn, this.publisher, bookKeeper.getBooksForPurchase());
                 break;
-            //case 5: searchedBooks = Books.Search.search(this.title, this.authors, this.isbn, this.publisher, this.sort_order,  Network.Main.bk.getBooksForPurchase());
+            //case 5: searchedBooks = SearchToBuy.search(this.title, this.authors, this.isbn, this.publisher, this.sort_order,  bookKeeper.getBooksForPurchase());
             //    break;
         }
 
-        Search.setLastSearched(searchedBooks);
+        SearchToBuy.setLastSearched(searchedBooks);
 
         return String.format("search,%d,\n%s", searchedBooks.size(), generateBookString(searchedBooks));
     }

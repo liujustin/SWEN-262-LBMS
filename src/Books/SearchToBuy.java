@@ -1,11 +1,9 @@
 package Books;
 
-import Books.Book;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class Search
+public class SearchToBuy
 {
     private static ArrayList<Book> lastSearched;
 
@@ -84,10 +82,10 @@ public class Search
     }
 
     /*
-    public ArrayList<Books.Book> searchBySortOrder(String title, ArrayList<String> authors, String isbn, String publisher, String, sortOrder, HashMap<String, Books.Book> booksForPurchase)
+    public ArrayList<Book> searchBySortOrder(String title, ArrayList<String> authors, String isbn, String publisher, String, sortOrder, HashMap<String, Book> booksForPurchase)
     {
-        ArrayList<Books.Book> tempBookBuffer = searchByPublisher(title, authors, isbn, publisher, booksForPurchase);
-        ArrayList<Books.Book> searchedBooks = new ArrayList<>();
+        ArrayList<Book> tempBookBuffer = searchByPublisher(title, authors, isbn, publisher, booksForPurchase);
+        ArrayList<Book> searchedBooks = new ArrayList<>();
 
         tempBookBuffer.sort(C);
 
