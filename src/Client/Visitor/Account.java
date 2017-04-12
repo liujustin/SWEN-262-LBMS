@@ -1,5 +1,9 @@
 package Client.Visitor;
 
+import Network.Main;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Ryan on 4/7/2017.
