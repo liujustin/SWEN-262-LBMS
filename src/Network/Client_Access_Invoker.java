@@ -1,8 +1,8 @@
-package Network;//FILE::Network.Client_Access_Command.java
+package Network;//FILE::Network.Client_Access_Invoker.java
 //AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 
-public class Client_Access_Command {
+public class Client_Access_Invoker {
     public Command command;
 
     /**
