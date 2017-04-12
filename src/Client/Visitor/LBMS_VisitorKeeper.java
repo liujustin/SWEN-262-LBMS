@@ -17,8 +17,6 @@ public class LBMS_VisitorKeeper
     private static final LBMS_VisitorKeeper visitorKeeper = new LBMS_VisitorKeeper();
     private HashMap<Long, Visitor> visitorRegistry;
     private static HashMap<Long, Date> activeVisitor;
-    private static HashMap<String, Account> activeAccounts = new HashMap<>();
-    private ArrayList<Account> loggedIn = new ArrayList<>();
     private Long newID = 999999999L;
 
     //================================================================================
@@ -149,45 +147,6 @@ public class LBMS_VisitorKeeper
             throw new Exception("depart,invalid-id;");
     }
 
-    //================================================================================
-    // Accounts
-    //================================================================================
-
-    public Account createAccount(String username, String password, int role, long visitorID){
-        Account newAccount = new Account(username,password,role,visitorID);
-        System.out.println("create,success");
-        activeAccounts.put(newAccount.getUsername(),newAccount);
-        return newAccount;
-    }
-
-    public boolean login(String username, String password){
-        boolean result = true;
-        for (String key : activeAccounts.keySet() ) {
-            if (username.equals(key)){
-                if(password.equals(activeAccounts.get(key).getPassword())){
-                    result = true;
-                    loggedIn.add(activeAccounts.get(key));
-                }
-                else{
-                    result = false;
-                }
-            }
-            else{
-                result = false;
-            }
-        }
-        return result;
-    }
-
-    public boolean logout(String username){
-        for(Account user: loggedIn){
-            if(username.equals(user.getUsername())) {
-                loggedIn.remove(user);
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * this function shuts down the system
@@ -320,6 +279,125 @@ public class LBMS_VisitorKeeper
                     book.getBook().getBookName() + "," + book.getStart_date().substring(0,10);
        }
        return response;
+    }
+
+    //================================================================================
+    // Accounts
+    //================================================================================
+
+    private static HashMap<String, Account> activeAccounts = new HashMap<>();
+    private ArrayList<Account> loggedIn = new ArrayList<>();
+
+    /**
+     * This method takes in a username string, a password string, a role (0 for visitor, 1 for employee),
+     * and a long visitorID. From there, it will create a new Account using those credentials and add it into
+     * the activeAccounts hashmap.
+     * @param username
+     * @param password
+     * @param role
+     * @param visitorID
+     * @return
+     */
+    public void createAccount(String username, String password, int role, long visitorID){
+        //TODO wherever this method is called, you must check whether or not the username currently exists
+        // in the activeAccounts HashMap using the getActiveAccounts. If they pass that, you must check if there is
+        // an account with the visitorID. From there, you must check whether it exists in the activeVisitor.
+        // It cannot be handled in here.
+
+        Account newAccount = new Account(username,password,role,visitorID);
+        System.out.println("create,success");
+        activeAccounts.put(newAccount.getUsername(),newAccount);
+    }
+
+    /**
+     * returns the activeAccounts hashmap.
+     * @return
+     */
+    public HashMap<String,Account> getActiveAccounts(){
+        return activeAccounts;
+    }
+    /**
+     * This method is used to verify whether or not a user is registered in the system. If it is registered,
+     * it will return a true which means it exists, but if not, it will return false.
+     * @param username
+     * @param password
+     * @return
+     */
+    public boolean loginAccount(String username, String password){
+        boolean result = true;
+        for (String key : activeAccounts.keySet() ) {
+            if (username.equals(key)){
+                if(password.equals(activeAccounts.get(key).getPassword())){
+                    loggedIn.add(activeAccounts.get(key));
+                }
+                result = false;
+            }
+            else{
+                result = false;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * This method is used to log out a user. Because the specifications say that it will return a success
+     * method despite whether or not there exists a user logged in, it does not return anything.
+     * @param username
+     */
+    public void logoutAccount(String username){
+        for(Account user: loggedIn) {
+            if (username.equals(user.getUsername())) {
+                loggedIn.remove(user);
+            }
+        }
+    }
+
+    //================================================================================
+    // Clients
+    //================================================================================
+
+    private ArrayList<Integer> activeConnections = new ArrayList<>();
+
+    /**
+     * This method uses Random.nextInt in order to generate a random number with a minimum of 1
+     * and a maximum of 100.
+     * @return
+     */
+    public int generateClient(){
+        Random rand = new Random();
+        return rand.nextInt(100) + 1;
+    }
+
+    /**
+     * This method utilizes the generateClient method and creates a tempClient. From there
+     * it will check if that tempClient is in the activeConnections ArrayList and if it is,
+     * then it will recurse until it starts a connection with a client that is not already active.
+     * After that, it will add that tempClient into the activeConnections list and
+     * return the ID of the client.
+     * @return tempClient
+     */
+    public Integer startConnection(){
+        int tempClient = generateClient();
+        if(activeConnections.contains(tempClient)) {
+            startConnection();
+        }
+        activeConnections.add(tempClient);
+        System.out.format("connect,%d%n;",tempClient);
+        return tempClient;
+    }
+
+    /**
+     * This method takes in a clientID and checks to see if its in the ArrayList. If it is,
+     * it will remove the clientID and then print out that it was disconnected. If it does
+     * not exist, it will do nothing.
+     * @param clientID
+     * @return
+     */
+    public void disconnectConnection(int clientID){
+        if(activeConnections.contains(clientID)){
+            activeConnections.remove(clientID);
+            System.out.format("%d%n,disconnect",clientID);
+        }
     }
 
     /**
