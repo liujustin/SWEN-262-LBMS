@@ -90,9 +90,9 @@ public class LBMS_BookKeeper
         int amount = 0;
 
         for (String isbn : ISBNS) {
-            for (int i = 0; i < Search.getLastSearched().size(); i++) {
-                if(Search.getLastSearched().get(i).equals(this.bookRegistry.get(isbn))){
-                    out += Search.getLastSearched().get(i).toString();
+            for (int i = 0; i < SearchToBuy.getLastSearched().size(); i++) {
+                if(SearchToBuy.getLastSearched().get(i).equals(this.bookRegistry.get(isbn))){
+                    out += SearchToBuy.getLastSearched().get(i).toString();
                     for (int j = 0; j < quantity; j++) {
                         if (this.purchasedBooks.containsKey(this.bookRegistry.get(isbn))){
                             this.purchasedBooks.put(this.bookRegistry.get(isbn), this.purchasedBooks.get(this.bookRegistry.get(isbn)) + 1);

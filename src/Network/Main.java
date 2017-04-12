@@ -7,8 +7,8 @@ import java.util.ArrayList;
 //FILE::Network.Main.java
 //AUTHOR::Ryan Connors, Adam Nowak, Kevin Barnett, Justin Liu
 //DATE::Feb.25.2017
-
-public class Main {
+public class Main
+{
 
     private Client_Access_Point clientPoint = new Client_Access_Point();
     private Client_Access_Command clientCommand = new Client_Access_Command();
@@ -25,9 +25,10 @@ public class Main {
         System.out.println(outPut);
     }
 
-    public void startLoop(String[] args, Graphics_View graphics_view) throws Exception
+    public void startLoop(String[] args, Graphics_View graphics_view)
     {
         this.graphics_view = graphics_view;
+
         while(true)
         {
             String command = clientPoint.getCommand();
@@ -53,20 +54,26 @@ public class Main {
      * The main method that prints to the console and presents the user with commands.
      *
      */
-    public static void main(String[] args) {
-        System.out.println("Welcome to the Library Books.Book Management System!");
-        System.out.println("Here are the available commands!");
-        System.out.println("Commands:");
-        System.out.println();
-        System.out.println("register, \t arrive, \t depart");
-        System.out.println("info, \t     borrow, \t borrowed");
-        System.out.println("return, \t pay, \t     search");
-        System.out.println("buy, \t     advance, \t datetime");
-        System.out.println("report, \t shutdown");
-        System.out.println();
-
+    public static void main(String[] args)
+    {
         Main main = new Main();
 
-        Graphics_View.load(args, main);
+        if(args[0].equals("text"))
+        {
+            System.out.println("Welcome to the Library Book Management System!");
+            System.out.println("Here are the available commands!");
+            System.out.println("Commands:");
+            System.out.println();
+            System.out.println("register, \t arrive, \t depart");
+            System.out.println("info, \t     borrow, \t borrowed");
+            System.out.println("return, \t pay, \t     search");
+            System.out.println("buy, \t     advance, \t datetime");
+            System.out.println("report, \t shutdown");
+            System.out.println();
+
+            main.startLoop(args, null);
+        }
+        else
+            Graphics_View.load(args, main);
     }
 }

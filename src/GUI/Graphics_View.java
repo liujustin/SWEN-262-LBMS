@@ -4,6 +4,7 @@ package GUI;//FILE::GUI.Graphics_View.java
 
 import Network.Main;
 import javafx.application.Application;
+import javafx.event.Event;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -16,13 +17,26 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import javax.sound.midi.SysexMessage;
+import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Scanner;
+
 public class Graphics_View extends Application
 {
     private static Main bootInstance;
     private Stage primaryStage;
     private Scene primaryScene;
 
+    private ArrayList<Event> eventList;
+
     private static String[] arguments;
+
+    public void init()
+    {
+        this.eventList = new ArrayList<>();
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -32,7 +46,10 @@ public class Graphics_View extends Application
         this.primaryScene = new Scene(root);
 
         bootInstance.startLoop(arguments, this);
+    }
 
+    public void displayScreen()
+    {
         BorderPane mainWindow = new BorderPane();
         mainWindow.setPrefSize(400,100);
         mainWindow.setCenter(order());
@@ -43,7 +60,22 @@ public class Graphics_View extends Application
         primaryStage.setTitle("LBMS");
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
 
+    public String getCommand()
+    {
+        this.displayScreen();
+
+        String command;
+        System.out.println("Please enter a command.");
+        Scanner scan1 = new Scanner(System.in);
+        command = scan1.nextLine().toString();
+        while (command.charAt(command.length() - 1) != ';') {
+            System.out.println("partial-request;");
+            Scanner line = new Scanner(System.in);
+            command = command + line.nextLine().toString();
+        }
+        return command;
     }
 
     public static void load(String[] args, Main main)
@@ -60,6 +92,7 @@ public class Graphics_View extends Application
         Button login = new Button("Login");
         login.setPrefSize(100,100);
         Button exit = new Button("Exit");
+        exit.setOnKeyPressed(e -> this.eventList.add(e));
         exit.setPrefSize(100,100);
         Button create = new Button("Create Client.Visitor.Account");
         create.setPrefSize(100,100);
@@ -101,5 +134,4 @@ public class Graphics_View extends Application
         order.getChildren().addAll(user,psswd,button);
         return order;
     }
-
 }
