@@ -1,5 +1,5 @@
 bugs:
-+ Register Command doesn't check for duplicate visitor accounts
++ Register Network.Command doesn't check for duplicate visitor accounts
 
 
 to do:
@@ -8,7 +8,7 @@ to do:
  + Refactoring code
  + GUI
  + redo/undo
- + Employee/Visitor Accounts
+ + Employee/Client.Visitor.Client.Visitor Accounts
  + Concurrent Client Connections
  + incorporate Proxy + State Patterns
  + Support Google Books Web Service API
