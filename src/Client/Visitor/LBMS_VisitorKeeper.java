@@ -17,7 +17,13 @@ public class LBMS_VisitorKeeper
     private static final LBMS_VisitorKeeper visitorKeeper = new LBMS_VisitorKeeper();
     private HashMap<Long, Visitor> visitorRegistry;
     private static HashMap<Long, Date> activeVisitor;
+    private static HashMap<String, Account> activeAccounts = new HashMap<>();
+    private ArrayList<Account> loggedIn = new ArrayList<>();
     private Long newID = 999999999L;
+
+    //================================================================================
+    // Visitors
+    //================================================================================
 
     public LBMS_VisitorKeeper()
     {
@@ -143,6 +149,46 @@ public class LBMS_VisitorKeeper
             throw new Exception("depart,invalid-id;");
     }
 
+    //================================================================================
+    // Accounts
+    //================================================================================
+
+    public Account createAccount(String username, String password, int role, long visitorID){
+        Account newAccount = new Account(username,password,role,visitorID);
+        System.out.println("create,success");
+        activeAccounts.put(newAccount.getUsername(),newAccount);
+        return newAccount;
+    }
+
+    public boolean login(String username, String password){
+        boolean result = true;
+        for (String key : activeAccounts.keySet() ) {
+            if (username.equals(key)){
+                if(password.equals(activeAccounts.get(key).getPassword())){
+                    result = true;
+                    loggedIn.add(activeAccounts.get(key));
+                }
+                else{
+                    result = false;
+                }
+            }
+            else{
+                result = false;
+            }
+        }
+        return result;
+    }
+
+    public boolean logout(String username){
+        for(Account user: loggedIn){
+            if(username.equals(user.getUsername())) {
+                loggedIn.remove(user);
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * this function shuts down the system
      *
@@ -236,6 +282,12 @@ public class LBMS_VisitorKeeper
         System.out.println("return,success");
     }
 
+    /**
+     *
+     * @param visitorID
+     * @param amount
+     * @throws Exception
+     */
     public void payFine(Long visitorID, double amount)throws Exception{
         if (!this.visitorRegistry.containsKey(visitorID)) {
             throw new Exception("pay,invalid-visitor-id;");
@@ -248,6 +300,13 @@ public class LBMS_VisitorKeeper
         visitor.setBalance(new_visitor_balance);
         System.out.println("pay,success," + visitor.getBalance() + ";");
     }
+
+    /**
+     *
+     * @param visitorID
+     * @return
+     * @throws Exception
+     */
    public String borrowedBooks(Long visitorID) throws Exception{
        if (!this.visitorRegistry.containsKey(visitorID)) {
            throw new Exception("borrowed,invalid-visitor-id;");

@@ -2,6 +2,7 @@ package Client.Visitor;
 
 import Network.Main;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -9,7 +10,6 @@ import java.util.HashMap;
  */
 public class Account {
 
-    public static HashMap<String, Account> activeAccounts = new HashMap<>();
 
     LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
     private String username;
@@ -26,30 +26,20 @@ public class Account {
         this.v = visitorKeeper.getVisitorRegistry().get(this.visitorID);
     }
 
-    public Account createAccount(String username, String password, int role, long visitorID){
-        Account newAccount = new Account(username,password,role,visitorID);
-        System.out.println("create,success");
-        activeAccounts.put(newAccount.username,newAccount);
-        return newAccount;
+    public String getUsername(){
+        return username;
     }
 
-    public boolean login(String username, String password){
-        boolean result = true;
-        for (String key : activeAccounts.keySet() ) {
-            if (username.equals(key)){
-                if(password.equals(activeAccounts.get(key).password)){
-                    result = true;
-                }
-                else{
-                    result = false;
-                }
-            }
-            else{
-                result = false;
-            }
-        }
-        return result;
+    public String getPassword(){
+        return password;
     }
 
-//    public logout
+    public int getRole(){
+        return role;
+    }
+
+    public long getVisitorID(){
+        return visitorID;
+    }
+
 }

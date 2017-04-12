@@ -22,4 +22,5 @@ public class Begin_Visit_Command implements Command {
             return e.getMessage();
         }
     }
+
 }
