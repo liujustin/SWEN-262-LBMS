@@ -7,8 +7,8 @@ import Network.Command;
  * Created by Ryan on 4/12/2017.
  */
 public class UndoRedoCaretaker {
-    private Stack<Command> UndoStack;
-    private Stack<Command> RedoStack;
+    private Stack<Memento> UndoStack;
+    private Stack<Memento> RedoStack;
 
     private static final UndoRedoCaretaker Caretaker = new UndoRedoCaretaker();
 
@@ -17,11 +17,11 @@ public class UndoRedoCaretaker {
         this.RedoStack = new Stack<>();
     }
 
-    public Stack<Command> getUndoStack() {
+    public Stack<Memento> getUndoStack() {
         return UndoStack;
     }
 
-    public Stack<Command> getRedoStack() {
+    public Stack<Memento> getRedoStack() {
         return RedoStack;
     }
 

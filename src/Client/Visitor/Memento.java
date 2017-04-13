@@ -1,20 +1,21 @@
 package Client.Visitor;
 
+import Network.Command;
 /**
  * Created by Ryan on 4/12/2017.
  */
 public class Memento {
-    private Object state;
+    private Command state;
 
-    public Memento(Object state) {
+    public Memento(Command state) {
         this.state = state;
     }
 
-    public Object getState() {
+    public Command getState() {
         return state;
     }
 
-    public void setState(Object state) {
+    public void setState(Command state) {
         this.state = state;
     }
 }
