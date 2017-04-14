@@ -11,7 +11,7 @@ public class Main
 {
 
     private Client_Access_Point clientPoint = new Client_Access_Point();
-    private Client_Access_Command clientCommand = new Client_Access_Command();
+    private Client_Access_Invoker clientCommand = new Client_Access_Invoker();
     private Graphics_View graphics_view;
 
 
