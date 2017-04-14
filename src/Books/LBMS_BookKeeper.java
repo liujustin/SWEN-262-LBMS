@@ -165,6 +165,8 @@ public class LBMS_BookKeeper
         return this.bookRegistry;
     }
 
+    public HashMap<Book, Integer> getPurchasedBooks(){return this.purchasedBooks;}
+
 
 
     /**
