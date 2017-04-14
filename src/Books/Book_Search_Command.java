@@ -67,6 +67,6 @@ public class Book_Search_Command implements Command
 
         SearchToBuy.setLastSearched(searchedBooks);
 
-        return String.format("search,%d,\n%s", searchedBooks.size(), generateBookString(searchedBooks));
+        return String.format("info,%d,\n%s", searchedBooks.size(), generateBookString(searchedBooks));
     }
 }

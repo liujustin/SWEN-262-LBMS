@@ -12,7 +12,7 @@ public class SearchForInfo
         lastSearched = new ArrayList<>();
     }
 
-    public static void setLastSearched(ArrayList<Book> lastSearchedBooks)
+    public static void setLastInfoSearch(ArrayList<Book> lastSearchedBooks)
     {
         lastSearched = lastSearchedBooks;
     }
