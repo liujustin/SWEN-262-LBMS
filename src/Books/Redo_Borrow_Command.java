@@ -1,24 +1,22 @@
 package Books;
 
-import Network.Command;
-import Network.Main;
 import Client.Visitor.Visitor;
+import Network.Command;
 
-//FILE::Books.Borrow_Command.java
-//AUTHOR::Ryan Connors
-//DATE::Feb.25.2017
-public class Borrow_Command implements Command {
+/**
+ * Created by Ryan on 4/13/2017.
+ */
+public class Redo_Borrow_Command implements Command {
+    LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
+    private Visitor borrower;
+    private String books;
 
-     LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
-     private Visitor borrower;
-     private String books;
-
-     /**
+    /**
      *
      * @param visitor
      * @param book
      */
-    public Borrow_Command(Visitor visitor, String book){
+    public Redo_Borrow_Command(Visitor visitor, String book){
         this.borrower = visitor;
         this.books = book;
     }
