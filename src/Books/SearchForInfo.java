@@ -12,7 +12,7 @@ public class SearchForInfo
         lastSearched = new ArrayList<>();
     }
 
-    public static void setLastSearched(ArrayList<Book> lastSearchedBooks)
+    public static void setLastInfoSearch(ArrayList<Book> lastSearchedBooks)
     {
         lastSearched = lastSearchedBooks;
     }
@@ -63,7 +63,7 @@ public class SearchForInfo
         ArrayList<Book> searchedBooks = new ArrayList<>();
 
         for(Book b: tempBookBuffer)
-            if(b.getBookIsbn().equals(isbn) || b.getBookIsbn().equals("*"))
+            if(b.getBookIsbn().equals(isbn) || isbn.equals("*"))
                 searchedBooks.add(b);
 
         return searchedBooks;
@@ -75,7 +75,7 @@ public class SearchForInfo
         ArrayList<Book> searchedBooks = new ArrayList<>();
 
         for(Book b: tempBookBuffer)
-            if(b.getBookPublisher().equals(publisher) || b.getBookPublisher().equals("*"))
+            if(b.getBookPublisher().equals(publisher) || publisher.equals("*"))
                 searchedBooks.add(b);
 
         return searchedBooks;

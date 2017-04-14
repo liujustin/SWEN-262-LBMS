@@ -165,6 +165,24 @@ public class LBMS_BookKeeper
         return this.bookRegistry;
     }
 
+    public HashMap<Book, Integer> getPurchasedBooks(){return this.purchasedBooks;}
+
+    public void shutdown()
+    {
+        //Store Purchased Books
+        try
+        {
+            PrintStream saveState = new PrintStream(new FileOutputStream(new File("purchasedBooks.log")));
+            saveState.flush();
+
+            for(Map.Entry<Book, Integer> entry:this.purchasedBooks.entrySet())
+                saveState.println(entry.getKey().toString()+":"+entry.getValue());
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 
 
     /**

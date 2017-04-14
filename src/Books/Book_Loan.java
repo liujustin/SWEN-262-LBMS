@@ -5,12 +5,16 @@ package Books;//FILE::Books.Book_Loan.java
 import Time.LBMS_StatisticsKeeper;
 import Client.Visitor.Visitor;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Book_Loan {
     private Visitor loaned_to;
@@ -142,10 +146,27 @@ public class Book_Loan {
         return visitor_balance;
     }
 
+    public static void saveBookLoans(HashMap<Integer, Visitor> visitorRegistry)
+    {
+        try
+        {
+            PrintStream saveState = new PrintStream(new FileOutputStream(new File("borrowBooks.log")));
+            saveState.flush();
+
+            for(Visitor v: visitorRegistry.values())
+                for(Book_Loan b: v.getBorrowed_books())
+                    saveState.println(b.toString());
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public String toString() {
         String book_loanString = String.format("%s:%s:%s:%f:%s:%d",
-                this.loaned_to,
-                this.book,
+                this.loaned_to.getVisitor_ID(),
+                this.book.getBookIsbn(),
                 this.balance);
           //      this.active_balance);
 

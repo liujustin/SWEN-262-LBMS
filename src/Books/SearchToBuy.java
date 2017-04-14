@@ -63,7 +63,7 @@ public class SearchToBuy
         ArrayList<Book> searchedBooks = new ArrayList<>();
 
         for(Book b: tempBookBuffer)
-            if(b.getBookIsbn().equals(isbn) || b.getBookIsbn().equals("*"))
+            if(b.getBookIsbn().equals(isbn) || isbn.equals("*"))
                 searchedBooks.add(b);
 
         return searchedBooks;
@@ -75,7 +75,7 @@ public class SearchToBuy
         ArrayList<Book> searchedBooks = new ArrayList<>();
 
         for(Book b: tempBookBuffer)
-            if(b.getBookPublisher().equals(publisher) || b.getBookPublisher().equals("*"))
+            if(b.getBookPublisher().equals(publisher) || publisher.equals("*"))
                 searchedBooks.add(b);
 
         return searchedBooks;

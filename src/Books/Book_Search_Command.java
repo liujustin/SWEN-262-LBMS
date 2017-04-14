@@ -53,13 +53,13 @@ public class Book_Search_Command implements Command
         ArrayList<Book> searchedBooks = new ArrayList<>();
         switch(paramCount-1)
         {
-            case 1: searchedBooks = SearchToBuy.search(this.title, bookKeeper.getBooksForPurchase());
+            case 1: searchedBooks = SearchForInfo.search(this.title, bookKeeper.getPurchasedBooks());
                 break;
-            case 2: searchedBooks = SearchToBuy.search(this.title, this.authors, bookKeeper.getBooksForPurchase());
+            case 2: searchedBooks = SearchForInfo.search(this.title, this.authors, bookKeeper.getPurchasedBooks());
                 break;
-            case 3: searchedBooks = SearchToBuy.search(this.title, this.authors, this.isbn, bookKeeper.getBooksForPurchase());
+            case 3: searchedBooks = SearchForInfo.search(this.title, this.authors, this.isbn, bookKeeper.getPurchasedBooks());
                 break;
-            case 4: searchedBooks = SearchToBuy.search(this.title, this.authors, this.isbn, this.publisher, bookKeeper.getBooksForPurchase());
+            case 4: searchedBooks = SearchForInfo.search(this.title, this.authors, this.isbn, this.publisher, bookKeeper.getPurchasedBooks());
                 break;
             //case 5: searchedBooks = SearchToBuy.search(this.title, this.authors, this.isbn, this.publisher, this.sort_order,  Main.bk.getBooksForPurchase());
             //    break;
@@ -67,6 +67,6 @@ public class Book_Search_Command implements Command
 
         SearchToBuy.setLastSearched(searchedBooks);
 
-        return String.format("search,%d,\n%s", searchedBooks.size(), generateBookString(searchedBooks));
+        return String.format("info,%d,\n%s", searchedBooks.size(), generateBookString(searchedBooks));
     }
 }
