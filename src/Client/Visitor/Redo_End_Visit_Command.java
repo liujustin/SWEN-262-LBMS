@@ -20,6 +20,9 @@ public class Redo_End_Visit_Command implements Command{
     @Override
     public String execute() {
         try {
+            Begin_Visit_Command b = new Begin_Visit_Command(this.visitorID);
+            Memento m = new Memento(b);
+            UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
             visitorKeeper.endVisit(this.visitorID);
         } catch (Exception e) {
             e.printStackTrace();
