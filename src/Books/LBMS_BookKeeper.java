@@ -119,12 +119,12 @@ public class LBMS_BookKeeper
      */
     public void borrowBook(Long visitorID, ArrayList<String> bookISBNS) throws Exception
     {
+        System.out.println(SearchForInfo.getLastSearched());
         String time = LBMS_StatisticsKeeper.Get_Time();
         LBMS_VisitorKeeper visitKeeper = LBMS_VisitorKeeper.getInstance();
         HashMap<Long,Visitor> visitorlist = visitKeeper.getVisitorRegistry();
-        Visitor visitor = visitorlist.get(visitorID);
-        System.out.println(visitorlist);
-        if(!visitorlist.containsValue(visitor)) {
+        Visitor visitor = LBMS_VisitorKeeper.getVisitorRegistry().get(visitorID);
+        if(!visitorlist.containsKey(visitorID)) {
             throw new Exception("borrow,invalid-visitor-id;");
         }
         //if(!LBMS_StatisticsKeeper.getIsopen(time)) {
