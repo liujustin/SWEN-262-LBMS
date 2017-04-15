@@ -3,9 +3,9 @@ package Books;//FILE::Books.Book.java
 //DATE::Feb.25.2017
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringJoiner;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Book
 {
@@ -120,8 +120,37 @@ public class Book
         return out;
     }
 
+    public static Comparator<Book> BookTitleComparator = new Comparator<Book>() {
+
+        public int compare(Book b1, Book b2) {
+            String Book1 = b1.getBookName();
+            String Book2 = b2.getBookName();
+            return Book1.compareTo(Book2);
+        }};
+
+    /*Comparator for sorting the list by roll no*/
+    public static Comparator<Book> BookDateComparator = new Comparator<Book>() {
+
+        public int compare(Book b1, Book b2) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            String Book1 = b1.getPublishDate();
+            String Book2 = b2.getPublishDate();
+            Date Book1Date = null;
+            Date Book2Date = null;
+            try {
+                Book1Date = sdf.parse(Book1);
+                Book2Date = sdf.parse(Book2);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            } finally{
+                return Book2Date.compareTo(Book1Date);
+            }
+        }};
+
     public String toString()
     {
         return String.format("%s,%s,{%s},%s\n", this.bookIsbn, this.bookName, buildAuthorString(), this.publishDate);
     }
+
+
 }

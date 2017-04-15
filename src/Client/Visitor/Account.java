@@ -1,15 +1,9 @@
 package Client.Visitor;
 
-import Network.Main;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-
 /**
  * Created by Ryan on 4/7/2017.
  */
 public class Account {
-
 
     LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
     private String username;

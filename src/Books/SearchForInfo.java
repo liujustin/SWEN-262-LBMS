@@ -1,6 +1,7 @@
 package Books;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class SearchForInfo
@@ -81,15 +82,25 @@ public class SearchForInfo
         return searchedBooks;
     }
 
-    /*
-    public ArrayList<Book> searchBySortOrder(String title, ArrayList<String> authors, String isbn, String publisher, String, sortOrder, HashMap<Book, Integer> purchasedBooks)
+
+    public static ArrayList<Book> search(String title, ArrayList<String> authors, String isbn, String publisher, String sortOrder, HashMap<Book, Integer> purchasedBooks)
     {
-        ArrayList<Book> tempBookBuffer = searchByPublisher(title, authors, isbn, publisher, purchasedBooks);
+        ArrayList<Book> tempBookBuffer = search(title, authors, isbn, publisher, purchasedBooks);
         ArrayList<Book> searchedBooks = new ArrayList<>();
 
-        tempBookBuffer.sort(C);
+        for(Book b: tempBookBuffer) {
+            if (b.getBookPublisher().equals(publisher) || publisher.equals("*"))
+                searchedBooks.add(b);
+        }
+        if (sortOrder.equals("title")) {
+            Collections.sort(searchedBooks, Book.BookTitleComparator);
+        }
+        else if(sortOrder.equals("publish-date")){
+            Collections.sort(searchedBooks,Book.BookDateComparator);
+        }
+        else{
 
+        }
         return searchedBooks;
     }
-    */
 }
