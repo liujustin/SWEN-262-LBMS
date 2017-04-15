@@ -30,11 +30,10 @@ public class Refund_Payment_Command implements Command {
             visitorKeeper.getVisitorRegistry().get(this.visitorID).setBalance
                     (visitorKeeper.getVisitorRegistry().get(this.visitorID).getBalance()- this.amount);
 
-            Redo_Pay_Fine_Command p = new Redo_Pay_Fine_Command(this.visitorID,this.amount);
-
+            Pay_Fine_Command p = new Pay_Fine_Command(this.visitorID,this.amount);
             Memento m = new Memento(p);
 
-            UndoRedoCaretaker.getCaretaker().getRedoStack().add(m);
+            UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
 
         } catch (Exception e) {
             e.printStackTrace();
