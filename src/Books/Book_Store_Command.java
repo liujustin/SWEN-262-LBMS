@@ -33,6 +33,7 @@ public class Book_Store_Command implements Command
             this.isbn = (String) params.get(3);
             this.publisher = (String) params.get(4);
             this.sort_order = (String) params.get(5);
+            this.paramCount = params.size();
         }
         catch(Exception e){this.paramCount = params.size();}
 
@@ -62,8 +63,8 @@ public class Book_Store_Command implements Command
                 break;
             case 4: searchedBooks = SearchToBuy.search(this.title, this.authors, this.isbn, this.publisher, bookKeeper.getBooksForPurchase());
                 break;
-            //case 5: searchedBooks = SearchToBuy.search(this.title, this.authors, this.isbn, this.publisher, this.sort_order,  bookKeeper.getBooksForPurchase());
-            //    break;
+            case 5: searchedBooks = SearchToBuy.search(this.title, this.authors, this.isbn, this.publisher, this.sort_order, bookKeeper.getBooksForPurchase());
+                break;
         }
 
         SearchToBuy.setLastSearched(searchedBooks);

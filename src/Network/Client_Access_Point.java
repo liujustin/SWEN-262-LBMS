@@ -438,13 +438,13 @@ public class Client_Access_Point {
                 break;
             case "info":  cmd = new Book_Search_Command(parsedcommand);
                 break;
-            case "borrow": cmd = new Borrow_Command(visitorKeeper.getVisitorRegistry().get((parsedcommand.get(1))), parsedcommand.get(2).toString());
+            case "borrow": cmd = new Borrow_Command(Long.parseLong(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2));
                 break;
-            case "borrowed": cmd = new Find_Borrowed_Command(Long.getLong(parsedcommand.get(1).toString()));
+            case "borrowed": cmd = new Find_Borrowed_Command(Long.parseLong(parsedcommand.get(1).toString()));
                 break;
-            case "return": cmd = new Return_Command(Long.getLong(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2));
+            case "return": cmd = new Return_Command(Long.parseLong(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2));
                 break;
-            case "pay": cmd = new Pay_Fine_Command(Long.getLong(parsedcommand.get(1).toString()),Double.parseDouble(parsedcommand.get(2).toString()));
+            case "pay": cmd = new Pay_Fine_Command(Long.parseLong(parsedcommand.get(1).toString()),Double.parseDouble(parsedcommand.get(2).toString()));
                 break;
             case "search": cmd = new Book_Store_Command(parsedcommand);
                 break;

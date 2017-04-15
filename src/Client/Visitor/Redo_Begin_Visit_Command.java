@@ -17,6 +17,9 @@ public class Redo_Begin_Visit_Command implements Command{
     @Override
     public String execute() {
         try {
+            End_Visit_Command e = new End_Visit_Command(this.visitorID);
+            Memento m = new Memento(e);
+            UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
             return visitorKeeper.beginVisit(this.visitorID);
         } catch (Exception e) {
             return e.getMessage();
