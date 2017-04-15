@@ -35,7 +35,7 @@ public class Book_Search_Command implements Command
         }
         catch(Exception e){this.paramCount = params.size();}
 
-        SearchToBuy.initializeSearch();
+        SearchForInfo.initializeSearch();
     }
 
     private String generateBookString(ArrayList<Book> searchedBooks)
