@@ -9,10 +9,7 @@ import Client.Visitor.End_Visit_Command;
 import Client.Visitor.LBMS_VisitorKeeper;
 import Client.Visitor.Register_Command;
 import Network.Command;
-import Time.Advance_Time_Command;
-import Time.Current_Time_Command;
-import Time.LBMS_StatisticsKeeper;
-import Time.Library_Report_Command;
+import Time.*;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -373,20 +370,8 @@ public class Client_Access_Point {
                     e.printStackTrace();
                 }
             }
-        }else if(parsedcommand.get(0).equals("report"))
-        {
-            if(parsedcommand.size() < 2)
-            {
-                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {days}";
-                try
-                {
-                    throw new Exception(errormessage);
-                }catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        }else if(parsedcommand.get(0).equals("datetime") || parsedcommand.get(0).equals("shutdown"))
+        }
+        else if(parsedcommand.get(0).equals("datetime") || parsedcommand.get(0).equals("shutdown") || parsedcommand.get(0).equals("report"))
         {
             return parsedcommand;
 
@@ -457,9 +442,15 @@ public class Client_Access_Point {
                 break;
             case "datetime": cmd = new Current_Time_Command();
                 break;
-            case "report": cmd = new Library_Report_Command(Integer.parseInt(parsedcommand.get(1).toString()));
+            case "report":
+                int days;
+                if (parsedcommand.size() < 2){
+                    days = 100000;
+                }else{
+                    days = Integer.parseInt(parsedcommand.get(1).toString());
+                }
+                cmd = new Statistics_Report_Command(days);
                 break;
-
             case "dummy": return null;
 
             default: return null;

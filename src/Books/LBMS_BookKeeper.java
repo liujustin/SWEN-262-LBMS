@@ -79,6 +79,35 @@ public class LBMS_BookKeeper
             e.printStackTrace();
         }
     }
+    public void undoBuyBook(Integer quantity, ArrayList<String> ISBNS){
+        //total amount of books that were purchased
+        ArrayList<Book> purchasedbooks = new ArrayList<Book>(bookKeeper.getPurchasedBooks().keySet());
+
+        //list of books that you want removed
+        ArrayList<Book> removedbooks = new ArrayList<Book>();
+
+        //loops through everybook in purchased book and if it is a book that you want to remove, add it to the removedbooks arraylist
+        for(String isbn : ISBNS){
+            for(Book book : purchasedbooks){
+                if(book.getBookID().equals(isbn)){
+                    removedbooks.add(book);
+                    break;
+                }
+            }
+        }
+        // loop through all purchased books and remove those books with corresponding quantity
+        for(Book booksToRemove : removedbooks) {
+            if(getPurchasedBooks().containsKey(booksToRemove)){
+                int bookvalue = getPurchasedBooks().get(booksToRemove).intValue();
+                bookvalue -= quantity;
+                getPurchasedBooks().put(booksToRemove,bookvalue);
+                if(getPurchasedBooks().get(booksToRemove).intValue() == 0){
+                    getPurchasedBooks().remove(booksToRemove);
+                }
+            }
+        }
+        System.out.println("undo,success;");
+    }
 
     /**
      *
