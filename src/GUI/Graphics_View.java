@@ -33,6 +33,11 @@ public class Graphics_View extends Application
 
     private static String[] arguments;
 
+    public void init()
+    {
+        this.event = "";
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         this.primaryStage = primaryStage;
@@ -45,12 +50,15 @@ public class Graphics_View extends Application
 
     public void displayScreen()
     {
+        this.event = "";
+
         BorderPane mainWindow = new BorderPane();
         mainWindow.setPrefSize(400,100);
         mainWindow.setCenter(order());
         timeGUI timer = new timeGUI();
         HBox currentTime = timer.start();
         mainWindow.setBottom(currentTime);
+
         Scene scene = new Scene(mainWindow);
         primaryStage.setTitle("LBMS");
         primaryStage.setScene(scene);
@@ -63,11 +71,8 @@ public class Graphics_View extends Application
 
         String command = "";
 
-        while(command.equals(""))
-        {
-            if(this.event != null)
-                command = this.event.
-        }
+        if(!this.event.equals(""))
+            command = this.event;
 
         return command;
     }
@@ -90,7 +95,10 @@ public class Graphics_View extends Application
         Button create = new Button("Create Client.Visitor.Account");
         create.setPrefSize(100,100);
 
-        login.setOnMouseClicked(e -> this.event = );
+        Button testSearch = new Button("Testing a button");
+        testSearch.setPrefSize(100, 100);
+
+        testSearch.setOnMouseClicked(e -> this.event = "search,*;");
 
         my_box.getChildren().addAll(login,create,exit);
         return my_box;
