@@ -140,7 +140,8 @@ public class LBMS_VisitorKeeper
      */
     public void endVisit(Long visitorID) throws Exception
     {
-        if(this.activeVisitor.containsKey(visitorID)) {
+        if(this.activeVisitor.containsKey(visitorID))
+        {
             this.activeVisitor.remove(visitorID);
             String time = LBMS_StatisticsKeeper.Get_Time().split(",")[1];
             System.out.println("depart," + visitorID + "," + time);
@@ -177,79 +178,104 @@ public class LBMS_VisitorKeeper
      * @throws Exception
      */
     public void returnBook(Long visitorID, ArrayList<String> ISBNS) throws Exception {
-        String errormessage1 = "return,invalid-book-id";
+        String errormessage1 = "return,invalid-book-id,";
         String errormessage2a = "return,overdue,";
         String errormessage2b = "";
         double visitor_balance = 0;
+        int index = 0;
         ArrayList<Book> booklist = new ArrayList<>();
         if (!this.visitorRegistry.containsKey(visitorID)) {
             throw new Exception("return,invalid-visitor-id;");
         }
         for(String isbn : ISBNS){
-            if(LBMS_BookKeeper.getBookRegistry().containsKey(isbn)){
-                booklist.add(LBMS_BookKeeper.getBookRegistry().get(isbn));
+            if(LBMS_BookKeeper.getInstance().getBookRegistry().containsKey(isbn)){
+                booklist.add(LBMS_BookKeeper.getInstance().getBookRegistry().get(isbn));
+                if(!LBMS_BookKeeper.getInstance().getPurchasedBooks().containsKey(booklist.get(index))){
+                    booklist.remove(index);
+                }else{
+                    index +=1;
+                }
+            }else{
+                errormessage1 += isbn + ",";
             }
         }
         Visitor visitor = this.visitorRegistry.get(visitorID);
-        for (int i = 0; i < booklist.size(); i++) {
-            for (int j = 0; j < visitor.getBorrowed_books().size(); j++) {
+        for (int i = 0; i < booklist.size(); i++)
+        {
+            for (int j = 0; j < visitor.getBorrowed_books().size(); j++)
+            {
                 double book_balance = 0;
-                if (booklist.get(i).equals(visitor.getBorrowed_books().get(j).getBook())) {
+
+                if (booklist.get(i).equals(visitor.getBorrowed_books().get(j).getBook()))
+                {
                     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
                     Date time = dateFormat.parse(LBMS_StatisticsKeeper.Get_Time());
-                    System.out.println(visitor.getBorrowed_books().get(j).getDue_date());
-                    System.out.println(time);
-                    if (time.after(dateFormat.parse(visitor.getBorrowed_books().get(j).getDue_date()))) { // check if due date is before current date
-                        book_balance += 10;
+                    if (time.after(dateFormat.parse(visitor.getBorrowed_books().get(j).getDue_date())))
+                    { // check if due date is before current date
+                        book_balance += 8;
                         visitor.getBorrowed_books().get(j).setBalance(book_balance);
                     }
+
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(time);
-                    calendar.add(Calendar.DAY_OF_YEAR, 7);
                     Date futureDate = calendar.getTime();
-                    while (futureDate.before(dateFormat.parse(visitor.getBorrowed_books().get(j).getDue_date()))) {// if the date is a week past the due date  (current date + week is after the due date)
-                        if (book_balance == 30) {
+                    while (futureDate.after(dateFormat.parse(visitor.getBorrowed_books().get(j).getDue_date())))
+                    {// if the date is a week past the due date  (current date + week is after the due date)
+                        if (book_balance == 30)
+                        {
                             book_balance = 30;
                             visitor.getBorrowed_books().get(j).setBalance(book_balance);
                             break;
                         }
                         book_balance += 2;
                         visitor.getBorrowed_books().get(j).setBalance(book_balance);
-                        calendar.add(Calendar.DAY_OF_YEAR, 7);
+                        calendar.add(Calendar.DAY_OF_YEAR, -7);
                         futureDate = calendar.getTime();
+                        if(futureDate.before(dateFormat.parse(visitor.getBorrowed_books().get(j).getDue_date())))
+                        {
+                            break;
+                        }
                     }
-                    if (visitor.getBorrowed_books().get(j).getBalance() > 0) {
+                    if (visitor.getBorrowed_books().get(j).getBalance() > 0)
+                    {
                         errormessage2b += ISBNS.get(i) + ",";
                     }
                     visitor_balance += book_balance;
                     visitor.getBorrowed_books().remove(j);
                     break;
                 }
-                if (!ISBNS.get(i).equals(visitor.getBorrowed_books().get(j)) && j == visitor.getBorrowed_books().size()) {
+                if (!booklist.get(i).equals(visitor.getBorrowed_books().get(j)) && j == visitor.getBorrowed_books().size())
+                {
                     errormessage1 += visitorID + ",";
                 }
             }
         }
-        if (!errormessage1.endsWith("return,invalid-book-id")) {
-            errormessage1 = errormessage2b.substring(0, errormessage2b.length() - 1);
+        if (!errormessage1.endsWith("return,invalid-book-id"))
+        {
+            errormessage1 = errormessage1.substring(0, errormessage1.length() - 1);
             errormessage1 += ";";
             throw new Exception(errormessage1);
         }
         visitor.setBalance(visitor_balance);
-        for (int i = 0; i < ISBNS.size(); i++) {
-            for (int j = 0; j < visitor.getBorrowed_books().size(); j++) {
-                if (ISBNS.get(i).equals(visitor.getBorrowed_books().get(j))) {
+        for (int i = 0; i < ISBNS.size(); i++)
+        {
+            for (int j = 0; j < visitor.getBorrowed_books().size(); j++)
+            {
+                if (ISBNS.get(i).equals(visitor.getBorrowed_books().get(j)))
+                {
                     visitor.getBorrowed_books().remove(j);
                     j--;
                 }
             }
         }
-        if (visitor_balance > 0) {
+        if (visitor_balance > 0)
+        {
             errormessage2b = errormessage2b.substring(0, errormessage2b.length() - 1);
             errormessage2b += ";";
-            throw new Exception(errormessage2a + "$" + visitor_balance + "," + errormessage2b);
+            System.out.println(errormessage2a + "$" + visitor_balance + "," + errormessage2b);
+        }else {
+            System.out.println("return,success");
         }
-        System.out.println("return,success");
     }
 
     /**
@@ -258,7 +284,8 @@ public class LBMS_VisitorKeeper
      * @param amount
      * @throws Exception
      */
-    public void payFine(Long visitorID, double amount)throws Exception{
+    public void payFine(Long visitorID, double amount)throws Exception
+    {
         if (!this.visitorRegistry.containsKey(visitorID)) {
             throw new Exception("pay,invalid-visitor-id;");
         }
@@ -278,13 +305,15 @@ public class LBMS_VisitorKeeper
      * @throws Exception
      */
    public String borrowedBooks(Long visitorID) throws Exception{
-       if (!this.visitorRegistry.containsKey(visitorID)) {
+       if (!this.visitorRegistry.containsKey(visitorID))
+       {
            throw new Exception("borrowed,invalid-visitor-id;");
        }
        Visitor visitor = this.visitorRegistry.get(visitorID);
        ArrayList visitorsbooks = visitor.getBorrowed_books();
        String response = "borrowed," + visitorsbooks.size() + "," + "\n";
-       for(int i = 0;i < visitorsbooks.size();i++ ){
+       for(int i = 0;i < visitorsbooks.size();i++ )
+       {
             Book_Loan book = (Book_Loan) visitorsbooks.get(i);
             response += book.getBook().getBookIsbn() + "," + book.getBook().getBookIsbn()+ "," +
                     book.getBook().getBookName() + "," + book.getStart_date().substring(0,10) + "\n";
