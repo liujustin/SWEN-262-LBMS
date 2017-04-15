@@ -1,6 +1,7 @@
 package Books;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 public class SearchToBuy
@@ -63,9 +64,8 @@ public class SearchToBuy
         ArrayList<Book> searchedBooks = new ArrayList<>();
 
         for(Book b: tempBookBuffer)
-            if(b.getBookIsbn().equals(isbn) || b.getBookIsbn().equals("*"))
+            if(b.getBookIsbn().equals(isbn) || isbn.equals("*"))
                 searchedBooks.add(b);
-
         return searchedBooks;
     }
 
@@ -75,21 +75,31 @@ public class SearchToBuy
         ArrayList<Book> searchedBooks = new ArrayList<>();
 
         for(Book b: tempBookBuffer)
-            if(b.getBookPublisher().equals(publisher) || b.getBookPublisher().equals("*"))
+            if(b.getBookPublisher().equals(publisher) || publisher.equals("*"))
                 searchedBooks.add(b);
-
         return searchedBooks;
     }
 
-    /*
-    public ArrayList<Book> searchBySortOrder(String title, ArrayList<String> authors, String isbn, String publisher, String, sortOrder, HashMap<String, Book> booksForPurchase)
+
+    public static ArrayList<Book> search(String title, ArrayList<String> authors, String isbn, String publisher, String sortOrder, HashMap<String, Book> booksForPurchase)
     {
-        ArrayList<Book> tempBookBuffer = searchByPublisher(title, authors, isbn, publisher, booksForPurchase);
+        ArrayList<Book> tempBookBuffer = search(title, authors, isbn, publisher,booksForPurchase);
         ArrayList<Book> searchedBooks = new ArrayList<>();
 
-        tempBookBuffer.sort(C);
+        for(Book b: tempBookBuffer) {
+            if (b.getBookPublisher().equals(publisher) || publisher.equals("*"))
+                searchedBooks.add(b);
+        }
+        if (sortOrder.equals("title")) {
+            Collections.sort(searchedBooks, Book.BookTitleComparator);
+        }
+        else if(sortOrder.equals("publish-date")){
+            Collections.sort(searchedBooks,Book.BookDateComparator);
+        }
+        else{
 
+        }
         return searchedBooks;
     }
-    */
+
 }

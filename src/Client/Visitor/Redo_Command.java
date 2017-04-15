@@ -17,7 +17,7 @@ public class Redo_Command implements Command {
         if (this.command.getState() instanceof Redo_Borrow_Command) {
             this.command.getState().execute();
         }
-        else if (this.command.getState() instanceof Return_Command) {
+        else if (this.command.getState() instanceof Redo_Return_Command) {
             this.command.getState().execute();
         }
         else if (this.command.getState() instanceof Redo_Begin_Visit_Command) {
@@ -26,8 +26,8 @@ public class Redo_Command implements Command {
         else if (this.command.getState() instanceof  Redo_End_Visit_Command) {
             this.command.getState().execute();
         }
-        else if (this.command.getState() instanceof Book_Purchase_Command) {
-            //undo book purchase
+        else if (this.command.getState() instanceof Redo_Book_Purchase_Command) {
+            this.command.getState().execute();
         }
         else {
             this.command.getState().execute();
