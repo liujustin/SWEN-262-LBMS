@@ -192,12 +192,19 @@ public class LBMS_VisitorKeeper
                 booklist.add(LBMS_BookKeeper.getInstance().getBookRegistry().get(isbn));
                 if(!LBMS_BookKeeper.getInstance().getPurchasedBooks().containsKey(booklist.get(index))){
                     booklist.remove(index);
+                    errormessage1 += isbn + ",";
                 }else{
                     index +=1;
                 }
             }else{
                 errormessage1 += isbn + ",";
             }
+        }
+        if (!errormessage1.endsWith("return,invalid-book-id,"))
+        {
+            errormessage1 = errormessage1.substring(0, errormessage1.length() - 1);
+            errormessage1 += ";";
+            throw new Exception(errormessage1);
         }
         Visitor visitor = this.visitorRegistry.get(visitorID);
         for (int i = 0; i < booklist.size(); i++)
@@ -249,12 +256,6 @@ public class LBMS_VisitorKeeper
                     errormessage1 += visitorID + ",";
                 }
             }
-        }
-        if (!errormessage1.endsWith("return,invalid-book-id"))
-        {
-            errormessage1 = errormessage1.substring(0, errormessage1.length() - 1);
-            errormessage1 += ";";
-            throw new Exception(errormessage1);
         }
         visitor.setBalance(visitor_balance);
         for (int i = 0; i < ISBNS.size(); i++)
