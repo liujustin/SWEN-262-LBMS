@@ -2,6 +2,7 @@ package Books;//FILE::Books.LBMS_BookKeeper.java
 //AUTHOR::Kevin.P.Barnett
 //DATE::Feb.25.2017
 
+import Client.Visitor.LBMS_VisitorKeeper;
 import Time.LBMS_StatisticsKeeper;
 import Client.Visitor.Visitor;
 
@@ -110,34 +111,47 @@ public class LBMS_BookKeeper
     }
     /**
      *
-     * @param visitor
-     * @param bookList
+     * @param visitorID
+     * @param bookISBNS
      * @throws Exception
      *
      * allows the visitor to borrow a book
      */
-    public void borrowBook(Visitor visitor, String bookList) throws Exception
+    public void borrowBook(Long visitorID, ArrayList<String> bookISBNS) throws Exception
     {
         String time = LBMS_StatisticsKeeper.Get_Time();
-        if(!LBMS_StatisticsKeeper.getIsopen(time))
-            throw new Exception("Library is currently closed.");
-
-
-        String[] bookISBN = bookList.split(",");
-
-        if(bookISBN.length > 5 - visitor.getBorrowed_books().size())
-            throw new Exception("borrow,book-limit-exceeded;");
-
-        if(visitor.getBalance() > 0)
-            throw new Exception("borrow,outstanding-fine,"+visitor.getBalance()+';');
-
-        ArrayList<String> invalidBookIDs = new ArrayList<>();
-        for(int i=0; i<bookISBN.length; ++i)
-        {
-            if(!this.purchasedBooks.containsKey(bookISBN[i]))
-                invalidBookIDs.add(bookISBN[i]);
+        LBMS_VisitorKeeper visitKeeper = LBMS_VisitorKeeper.getInstance();
+        HashMap<Long,Visitor> visitorlist = visitKeeper.getVisitorRegistry();
+        Visitor visitor = visitorlist.get(visitorID);
+        System.out.println(visitorlist);
+        if(!visitorlist.containsValue(visitor)) {
+            throw new Exception("borrow,invalid-visitor-id;");
         }
-
+        //if(!LBMS_StatisticsKeeper.getIsopen(time)) {
+          //  throw new Exception("Library is currently closed.");
+        //}
+        if(bookISBNS.size() > 5 - visitor.getBorrowed_books().size()) {
+            throw new Exception("borrow,book-limit-exceeded;");
+        }
+        if(visitor.getBalance() > 0) {
+            throw new Exception("borrow,outstanding-fine," + visitor.getBalance() + ';');
+        }
+        Calendar calendar = Calendar.getInstance();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
+        calendar.setTime(dateFormat.parse(time));
+        calendar.add(Calendar.DAY_OF_YEAR, 7);
+        Date futureDate = calendar.getTime();
+        String futDate = dateFormat.format(futureDate);
+        ArrayList<String> invalidBookIDs = new ArrayList<>();
+        for(String isbn : bookISBNS) {
+            for (int i = 0; i < SearchForInfo.getLastSearched().size(); i++) {
+                if (!this.purchasedBooks.containsKey(bookISBNS.get(i))) {
+                    invalidBookIDs.add(bookISBNS.get(i));
+                } else {
+                    visitor.add_book(new Book_Loan(visitor, this.bookRegistry.get(isbn), 0.0, true, LBMS_StatisticsKeeper.Get_Time(), futDate));
+                }
+            }
+        }
         if(invalidBookIDs.size() > 0)
         {
             String errorString = "borrow,invalid-book-id,{";
@@ -147,16 +161,6 @@ public class LBMS_BookKeeper
 
             throw new Exception(errorString);
         }
-        Calendar calendar = Calendar.getInstance();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
-        calendar.setTime(dateFormat.parse(time));
-        calendar.add(Calendar.DAY_OF_YEAR, 7);
-        Date futureDate = calendar.getTime();
-        String futDate = dateFormat.format(futureDate);
-
-        for(String isbn: bookISBN)
-            visitor.add_book(new Book_Loan(visitor, this.bookRegistry.get(isbn), 0.0, true, LBMS_StatisticsKeeper.Get_Time(),futDate));
-
         System.out.println("borrow," + futDate.substring(0,10));
     }
 

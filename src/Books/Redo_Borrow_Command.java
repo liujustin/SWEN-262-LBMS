@@ -3,22 +3,24 @@ package Books;
 import Client.Visitor.Visitor;
 import Network.Command;
 
+import java.util.ArrayList;
+
 /**
  * Created by Ryan on 4/13/2017.
  */
 public class Redo_Borrow_Command implements Command {
     LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
-    private Visitor borrower;
-    private String books;
+    private Long borrower;
+    private ArrayList<String> books;
 
     /**
      *
-     * @param visitor
-     * @param book
+     * @param visitorID
+     * @param bookISBNS
      */
-    public Redo_Borrow_Command(Visitor visitor, String book){
-        this.borrower = visitor;
-        this.books = book;
+    public Redo_Borrow_Command(Long visitorID, ArrayList<String> bookISBNS){
+        this.borrower = visitorID;
+        this.books = bookISBNS;
     }
 
     @Override

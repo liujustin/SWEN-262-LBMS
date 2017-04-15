@@ -15,7 +15,7 @@ import java.util.*;
 public class LBMS_VisitorKeeper
 {
     private static final LBMS_VisitorKeeper visitorKeeper = new LBMS_VisitorKeeper();
-    private HashMap<Long, Visitor> visitorRegistry;
+    private static HashMap<Long, Visitor> visitorRegistry;
     private static HashMap<Long, Date> activeVisitor;
     private Long newID = 999999999L;
 
@@ -58,9 +58,9 @@ public class LBMS_VisitorKeeper
      *
      * @return visitor registry
      */
-    public HashMap<Long, Visitor> getVisitorRegistry()
+    public static HashMap<Long, Visitor> getVisitorRegistry()
     {
-        return this.visitorRegistry;
+        return visitorRegistry;
     }
 
     /**
