@@ -272,11 +272,11 @@ public class LBMS_VisitorKeeper
        }
        Visitor visitor = this.visitorRegistry.get(visitorID);
        ArrayList visitorsbooks = visitor.getBorrowed_books();
-       String response = "borrowed," + visitorsbooks.size() + ",";
+       String response = "borrowed," + visitorsbooks.size() + "," + "\n";
        for(int i = 0;i < visitorsbooks.size();i++ ){
             Book_Loan book = (Book_Loan) visitorsbooks.get(i);
-            response += book.getBook().getBookID() + "," + book.getBook().getBookIsbn()+ "," +
-                    book.getBook().getBookName() + "," + book.getStart_date().substring(0,10);
+            response += book.getBook().getBookIsbn() + "," + book.getBook().getBookIsbn()+ "," +
+                    book.getBook().getBookName() + "," + book.getStart_date().substring(0,10) + "\n";
        }
        return response;
     }

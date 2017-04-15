@@ -119,14 +119,16 @@ public class LBMS_BookKeeper
      */
     public void borrowBook(Long visitorID, ArrayList<String> bookISBNS) throws Exception
     {
-        System.out.println(SearchForInfo.getLastSearched());
+        ArrayList<Book> listofbooks = new ArrayList<>();
         String time = LBMS_StatisticsKeeper.Get_Time();
         LBMS_VisitorKeeper visitKeeper = LBMS_VisitorKeeper.getInstance();
         HashMap<Long,Visitor> visitorlist = visitKeeper.getVisitorRegistry();
         Visitor visitor = LBMS_VisitorKeeper.getVisitorRegistry().get(visitorID);
+        System.out.println(visitorlist.keySet());
         if(!visitorlist.containsKey(visitorID)) {
             throw new Exception("borrow,invalid-visitor-id;");
         }
+        //Book listofbooks = bookRegistry.get(bookISBNS);
         //if(!LBMS_StatisticsKeeper.getIsopen(time)) {
           //  throw new Exception("Library is currently closed.");
         //}
@@ -143,12 +145,18 @@ public class LBMS_BookKeeper
         Date futureDate = calendar.getTime();
         String futDate = dateFormat.format(futureDate);
         ArrayList<String> invalidBookIDs = new ArrayList<>();
-        for(String isbn : bookISBNS) {
-            for (int i = 0; i < SearchForInfo.getLastSearched().size(); i++) {
-                if (!this.purchasedBooks.containsKey(bookISBNS.get(i))) {
-                    invalidBookIDs.add(bookISBNS.get(i));
+        for(String isbn : bookISBNS){
+            if(bookRegistry.containsKey(isbn)){
+                listofbooks.add(bookRegistry.get(isbn));
+            }
+        }
+        for(int i = 0; i < listofbooks.size(); i++) {
+            for (int j = 0; j < SearchForInfo.getLastSearched().size(); j++) {
+                if (!this.purchasedBooks.containsKey(listofbooks.get(i))) {
+                    System.out.println(this.purchasedBooks.keySet());
+                    invalidBookIDs.add(bookISBNS.get(j));
                 } else {
-                    visitor.add_book(new Book_Loan(visitor, this.bookRegistry.get(isbn), 0.0, true, LBMS_StatisticsKeeper.Get_Time(), futDate));
+                    visitor.add_book(new Book_Loan(visitor, listofbooks.get(i), 0.0, true, LBMS_StatisticsKeeper.Get_Time(), futDate));
                 }
             }
         }

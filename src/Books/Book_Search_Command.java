@@ -65,7 +65,7 @@ public class Book_Search_Command implements Command
                 break;
         }
 
-        SearchToBuy.setLastSearched(searchedBooks);
+        SearchForInfo.setLastInfoSearch(searchedBooks);
 
         return String.format("info,%d,\n%s", searchedBooks.size(), generateBookString(searchedBooks));
     }
