@@ -1,5 +1,7 @@
 package Books;
 
+import Client.Visitor.Memento;
+import Client.Visitor.UndoRedoCaretaker;
 import Network.Command;
 import Network.Main;
 import Client.Visitor.Visitor;
@@ -28,6 +30,9 @@ public class Borrow_Command implements Command {
     @Override
     public String execute(){
         try {
+            Return_Command r = new Return_Command(this.visitorID,this.bookISBNS);
+            Memento m = new Memento(r);
+            UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
             bookKeeper.borrowBook(this.visitorID,this.bookISBNS);
         } catch (Exception e) {
             e.printStackTrace();

@@ -8,21 +8,15 @@ import Network.Command;
  */
 public class UndoRedoCaretaker {
     private Stack<Memento> UndoStack;
-    private Stack<Memento> RedoStack;
 
     private static final UndoRedoCaretaker Caretaker = new UndoRedoCaretaker();
 
     public UndoRedoCaretaker() {
         this.UndoStack = new Stack<>();
-        this.RedoStack = new Stack<>();
     }
 
     public Stack<Memento> getUndoStack() {
         return UndoStack;
-    }
-
-    public Stack<Memento> getRedoStack() {
-        return RedoStack;
     }
 
     public static UndoRedoCaretaker getCaretaker() {

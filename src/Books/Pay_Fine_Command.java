@@ -3,6 +3,8 @@ package Books;//FILE::Books.Pay_Fine_Command.java
 //DATE::Feb.25.2017
 
 import Client.Visitor.LBMS_VisitorKeeper;
+import Client.Visitor.Memento;
+import Client.Visitor.UndoRedoCaretaker;
 import Network.Command;
 import Network.Main;
 
@@ -22,9 +24,14 @@ public class Pay_Fine_Command implements Command {
         this.amount = amount;
     }
 
+
     @Override
     public String execute() {
         try {
+            Refund_Payment_Command r = new Refund_Payment_Command(this.visitorID,this.amount);
+            Memento m = new Memento(r);
+            UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
+
             visitorKeeper.payFine(this.visitorID,this.amount);
         } catch (Exception e) {
             e.printStackTrace();

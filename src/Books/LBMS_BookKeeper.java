@@ -32,7 +32,7 @@ public class LBMS_BookKeeper
     public static LBMS_BookKeeper getInstance(){
         return bookKeeper;
     }
-
+    public HashMap<String,Book> getBookRegistry(){ return this.bookRegistry; }
     /**
      *
      * gets the available list of books for the library to purchase
@@ -79,6 +79,35 @@ public class LBMS_BookKeeper
             e.printStackTrace();
         }
     }
+    public void undoBuyBook(Integer quantity, ArrayList<String> ISBNS){
+        //total amount of books that were purchased
+        ArrayList<Book> purchasedbooks = new ArrayList<Book>(bookKeeper.getPurchasedBooks().keySet());
+
+        //list of books that you want removed
+        ArrayList<Book> removedbooks = new ArrayList<Book>();
+
+        //loops through everybook in purchased book and if it is a book that you want to remove, add it to the removedbooks arraylist
+        for(String isbn : ISBNS){
+            for(Book book : purchasedbooks){
+                if(book.getBookID().equals(isbn)){
+                    removedbooks.add(book);
+                    break;
+                }
+            }
+        }
+        // loop through all purchased books and remove those books with corresponding quantity
+        for(Book booksToRemove : removedbooks) {
+            if(getPurchasedBooks().containsKey(booksToRemove)){
+                int bookvalue = getPurchasedBooks().get(booksToRemove).intValue();
+                bookvalue -= quantity;
+                getPurchasedBooks().put(booksToRemove,bookvalue);
+                if(getPurchasedBooks().get(booksToRemove).intValue() == 0){
+                    getPurchasedBooks().remove(booksToRemove);
+                }
+            }
+        }
+        System.out.println("undo,success;");
+    }
 
     /**
      *
@@ -119,14 +148,18 @@ public class LBMS_BookKeeper
      */
     public void borrowBook(Long visitorID, ArrayList<String> bookISBNS) throws Exception
     {
-        System.out.println(SearchForInfo.getLastSearched());
+        ArrayList<Book> listofbooks = new ArrayList<>();
         String time = LBMS_StatisticsKeeper.Get_Time();
         LBMS_VisitorKeeper visitKeeper = LBMS_VisitorKeeper.getInstance();
         HashMap<Long,Visitor> visitorlist = visitKeeper.getVisitorRegistry();
         Visitor visitor = LBMS_VisitorKeeper.getVisitorRegistry().get(visitorID);
+        String errorString = "borrow,invalid-book-id,{";
+
+        int index = 0;
         if(!visitorlist.containsKey(visitorID)) {
             throw new Exception("borrow,invalid-visitor-id;");
         }
+        //Book listofbooks = bookRegistry.get(bookISBNS);
         //if(!LBMS_StatisticsKeeper.getIsopen(time)) {
           //  throw new Exception("Library is currently closed.");
         //}
@@ -142,25 +175,32 @@ public class LBMS_BookKeeper
         calendar.add(Calendar.DAY_OF_YEAR, 7);
         Date futureDate = calendar.getTime();
         String futDate = dateFormat.format(futureDate);
-        ArrayList<String> invalidBookIDs = new ArrayList<>();
-        for(String isbn : bookISBNS) {
-            for (int i = 0; i < SearchForInfo.getLastSearched().size(); i++) {
-                if (!this.purchasedBooks.containsKey(bookISBNS.get(i))) {
-                    invalidBookIDs.add(bookISBNS.get(i));
-                } else {
-                    visitor.add_book(new Book_Loan(visitor, this.bookRegistry.get(isbn), 0.0, true, LBMS_StatisticsKeeper.Get_Time(), futDate));
+        for(String isbn : bookISBNS){
+            if(bookRegistry.containsKey(isbn))
+            {
+                listofbooks.add(bookRegistry.get(isbn));
+                if(!getPurchasedBooks().containsKey(listofbooks.get(index))){
+                    listofbooks.remove(index);
+                    errorString += isbn + ",";
                 }
+            }else{
+                errorString += isbn + ",";
             }
         }
-        if(invalidBookIDs.size() > 0)
+        if (!errorString.endsWith("borrow,invalid-book-id,{"))
         {
-            String errorString = "borrow,invalid-book-id,{";
-            for(String isbn: invalidBookIDs)
-                errorString += isbn+", ";
-            errorString = errorString.subSequence(0, errorString.length()-1).toString()+"};";
-
+            errorString = errorString.substring(0, errorString.length() - 1);
+            errorString += "};";
             throw new Exception(errorString);
         }
+        for(int i = 0; i < listofbooks.size(); i++)
+        {
+            for (int j = 0; j < SearchForInfo.getLastSearched().size(); j++)
+            {
+                visitor.add_book(new Book_Loan(visitor, listofbooks.get(i), 0.0, true, LBMS_StatisticsKeeper.Get_Time(), futDate));
+            }
+        }
+
         System.out.println("borrow," + futDate.substring(0,10));
     }
 
