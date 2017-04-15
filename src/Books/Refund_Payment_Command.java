@@ -13,28 +13,34 @@ public class Refund_Payment_Command implements Command {
     LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
     private Long visitorID;
     private double amount;
+    private boolean isUndo;
 
     /**
      *
      * @param visitorID
      * @param amount
      */
-    public Refund_Payment_Command(Long visitorID, Double amount){
+    public Refund_Payment_Command(Long visitorID, Double amount,boolean isUndo){
         this.visitorID = visitorID;
         this.amount = amount;
+        this.isUndo = isUndo;
     }
 
     @Override
     public String execute() {
         try {
+            if (this.isUndo) {
+                Pay_Fine_Command p = new Pay_Fine_Command(this.visitorID,this.amount,false);
+                Memento m = new Memento(p);
+                UndoRedoCaretaker.getCaretaker().getRedoStack().add(m);
+            }
+            else {
+                Pay_Fine_Command p = new Pay_Fine_Command(this.visitorID,this.amount,true);
+                Memento m = new Memento(p);
+                UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
+            }
             visitorKeeper.getVisitorRegistry().get(this.visitorID).setBalance
                     (visitorKeeper.getVisitorRegistry().get(this.visitorID).getBalance()- this.amount);
-
-            Pay_Fine_Command p = new Pay_Fine_Command(this.visitorID,this.amount);
-            Memento m = new Memento(p);
-
-            UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
-
         } catch (Exception e) {
             e.printStackTrace();
         }

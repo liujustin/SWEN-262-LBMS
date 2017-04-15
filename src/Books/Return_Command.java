@@ -15,19 +15,28 @@ public class Return_Command implements Command {
     LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
     private Long visitor_ID;
     private ArrayList<String> ISBNS;
+    private boolean isUndo;
 
-    public Return_Command(Long visitor_ID,ArrayList<String> ISBNS){
+    public Return_Command(Long visitor_ID,ArrayList<String> ISBNS,boolean isUndo){
         this.visitor_ID = visitor_ID;
         this.ISBNS = ISBNS;
+        this.isUndo = isUndo;
 
     }
 
     @Override
     public String execute() {
         try {
-            Borrow_Command b = new Borrow_Command(this.visitor_ID,this.ISBNS);
-            Memento m = new Memento(b);
-            UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
+            if (this.isUndo) {
+                Borrow_Command b = new Borrow_Command(this.visitor_ID,this.ISBNS,false);
+                Memento m = new Memento(b);
+                UndoRedoCaretaker.getCaretaker().getRedoStack().add(m);
+            }
+            else {
+                Borrow_Command b = new Borrow_Command(this.visitor_ID,this.ISBNS,true);
+                Memento m = new Memento(b);
+                UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
+            }
 
             visitorKeeper.returnBook(this.visitor_ID,this.ISBNS);
         } catch (Exception e) {
