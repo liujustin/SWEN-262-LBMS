@@ -259,11 +259,11 @@ public class Client_Access_Point {
             }
         }else if(parsedcommand.get(0).equals("return"))
         {
-            if(parsedcommand.size() < 4)
+            if(parsedcommand.size() < 3)
             {
                 commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while(commandsize < 4)
+                while(commandsize < 3)
                 {
                     if(commandsize == 1)
                     {
@@ -273,11 +273,6 @@ public class Client_Access_Point {
                     if(commandsize == 2)
                     {
                         errormessage += "id, ";
-                        commandsize++;
-                    }
-                    if(commandsize == 3)
-                    {
-                        errormessage += "ids}";
                         commandsize++;
                     }
                 }

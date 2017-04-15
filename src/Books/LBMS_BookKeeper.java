@@ -19,7 +19,7 @@ public class LBMS_BookKeeper
     private static final LBMS_BookKeeper bookKeeper = new LBMS_BookKeeper();
     private final String bookListURI = "books.txt";
     private HashMap<Book, Integer> purchasedBooks;
-    private HashMap<String, Book> bookRegistry;
+    private static HashMap<String, Book> bookRegistry;
 
 
     public LBMS_BookKeeper()
@@ -32,7 +32,7 @@ public class LBMS_BookKeeper
     public static LBMS_BookKeeper getInstance(){
         return bookKeeper;
     }
-
+    public static HashMap<String,Book> getBookRegistry(){ return bookRegistry; }
     /**
      *
      * gets the available list of books for the library to purchase

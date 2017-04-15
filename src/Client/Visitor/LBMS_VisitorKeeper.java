@@ -2,7 +2,9 @@ package Client.Visitor;//FILE::Client.Visitor.LBMS_VisitorKeeper.java
 //AUTHOR::Kevin.P.Barnett, Adam Nowak
 //DATE::Mar.04.2017
 
+import Books.Book;
 import Books.Book_Loan;
+import Books.LBMS_BookKeeper;
 import Time.LBMS_StatisticsKeeper;
 
 import java.io.File;
@@ -179,16 +181,24 @@ public class LBMS_VisitorKeeper
         String errormessage2a = "return,overdue,";
         String errormessage2b = "";
         double visitor_balance = 0;
+        ArrayList<Book> booklist = new ArrayList<>();
         if (!this.visitorRegistry.containsKey(visitorID)) {
             throw new Exception("return,invalid-visitor-id;");
         }
+        for(String isbn : ISBNS){
+            if(LBMS_BookKeeper.getBookRegistry().containsKey(isbn)){
+                booklist.add(LBMS_BookKeeper.getBookRegistry().get(isbn));
+            }
+        }
         Visitor visitor = this.visitorRegistry.get(visitorID);
-        for (int i = 0; i < ISBNS.size(); i++) {
+        for (int i = 0; i < booklist.size(); i++) {
             for (int j = 0; j < visitor.getBorrowed_books().size(); j++) {
                 double book_balance = 0;
-                if (ISBNS.get(i).equals(visitor.getBorrowed_books().get(j))) {
+                if (booklist.get(i).equals(visitor.getBorrowed_books().get(j).getBook())) {
                     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
                     Date time = dateFormat.parse(LBMS_StatisticsKeeper.Get_Time());
+                    System.out.println(visitor.getBorrowed_books().get(j).getDue_date());
+                    System.out.println(time);
                     if (time.after(dateFormat.parse(visitor.getBorrowed_books().get(j).getDue_date()))) { // check if due date is before current date
                         book_balance += 10;
                         visitor.getBorrowed_books().get(j).setBalance(book_balance);
@@ -197,7 +207,7 @@ public class LBMS_VisitorKeeper
                     calendar.setTime(time);
                     calendar.add(Calendar.DAY_OF_YEAR, 7);
                     Date futureDate = calendar.getTime();
-                    while (futureDate.after(dateFormat.parse(visitor.getBorrowed_books().get(j).getDue_date()))) {// if the date is a week past the due date  (current date + week is after the due date)
+                    while (futureDate.before(dateFormat.parse(visitor.getBorrowed_books().get(j).getDue_date()))) {// if the date is a week past the due date  (current date + week is after the due date)
                         if (book_balance == 30) {
                             book_balance = 30;
                             visitor.getBorrowed_books().get(j).setBalance(book_balance);
@@ -212,6 +222,7 @@ public class LBMS_VisitorKeeper
                         errormessage2b += ISBNS.get(i) + ",";
                     }
                     visitor_balance += book_balance;
+                    visitor.getBorrowed_books().remove(j);
                     break;
                 }
                 if (!ISBNS.get(i).equals(visitor.getBorrowed_books().get(j)) && j == visitor.getBorrowed_books().size()) {
