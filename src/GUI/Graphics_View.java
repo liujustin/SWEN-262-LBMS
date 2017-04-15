@@ -29,14 +29,9 @@ public class Graphics_View extends Application
     private Stage primaryStage;
     private Scene primaryScene;
 
-    private ArrayList<Event> eventList;
+    private String event;
 
     private static String[] arguments;
-
-    public void init()
-    {
-        this.eventList = new ArrayList<>();
-    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -66,15 +61,14 @@ public class Graphics_View extends Application
     {
         this.displayScreen();
 
-        String command;
-        System.out.println("Please enter a command.");
-        Scanner scan1 = new Scanner(System.in);
-        command = scan1.nextLine().toString();
-        while (command.charAt(command.length() - 1) != ';') {
-            System.out.println("partial-request;");
-            Scanner line = new Scanner(System.in);
-            command = command + line.nextLine().toString();
+        String command = "";
+
+        while(command.equals(""))
+        {
+            if(this.event != null)
+                command = this.event.
         }
+
         return command;
     }
 
@@ -92,10 +86,12 @@ public class Graphics_View extends Application
         Button login = new Button("Login");
         login.setPrefSize(100,100);
         Button exit = new Button("Exit");
-        exit.setOnKeyPressed(e -> this.eventList.add(e));
         exit.setPrefSize(100,100);
         Button create = new Button("Create Client.Visitor.Account");
         create.setPrefSize(100,100);
+
+        login.setOnMouseClicked(e -> this.event = );
+
         my_box.getChildren().addAll(login,create,exit);
         return my_box;
     }

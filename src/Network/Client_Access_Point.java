@@ -464,9 +464,6 @@ public class Client_Access_Point {
                 break;
             case "report": cmd = new Library_Report_Command(Integer.parseInt(parsedcommand.get(1).toString()));
                 break;
-
-            case "dummy": return null;
-
             default: return null;
         }
 
