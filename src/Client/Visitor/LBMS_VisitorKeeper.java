@@ -339,17 +339,31 @@ public class LBMS_VisitorKeeper
      * @return
      */
     public void createAccount(int clientID, String username, String password, int role, long visitorID) throws Exception{
-        //TODO wherever this method is called, you must check whether or not the username currently exists
-        // in the activeAccounts HashMap using the getActiveAccounts. If they pass that, you must check if there is
-        // an account with the visitorID. From there, you must check whether it exists in the activeVisitor.
-        // It cannot be handled in here.
-
-        Account newAccount = new Account(username,password,role,visitorID);
         if(!activeConnections.containsKey(clientID))
         {
             String errormessage = clientID + ",<invalid-client-id>;";
             throw new Exception(errormessage);
         }
+        if(!visitorRegistry.containsValue(visitorID))
+        {
+            String errormessage = clientID + ",create,invalid-visitor";
+            throw new Exception(errormessage);
+        }
+        Account newAccount = new Account(username,password,role,visitorID);
+        for( String key : activeAccounts.keySet())
+        {
+            if(activeAccounts.get(key).getUsername().equals(newAccount.getUsername()))
+            {
+                String errormessage = clientID + ",create,duplicate-username;";
+                throw new Exception(errormessage);
+            }
+            if(activeAccounts.get(key).getVisitorID() == newAccount.getVisitorID())
+            {
+                String errormessage = clientID + ",create,duplicate-visitor;";
+                throw new Exception(errormessage);
+            }
+        }
+
         for (Integer key : activeConnections.keySet())
         {
             if(activeConnections.get(key) == null)
@@ -449,7 +463,8 @@ public class LBMS_VisitorKeeper
      */
     public void startConnection(){
         int tempClient = generateClient();
-        if(activeConnections.containsKey(tempClient)) {
+        if(activeConnections.containsKey(tempClient))
+        {
             startConnection();
         }
         activeConnections.put(tempClient,null);

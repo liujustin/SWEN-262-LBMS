@@ -413,6 +413,8 @@ public class Client_Access_Point {
                 break;
             case "logout": cmd = new Logout_Command(Integer.parseInt(parsedcommand.get(0).toString()));
                 break;
+            case "create": cmd = new CreateAccount_Command(Integer.parseInt(parsedcommand.get(0).toString()),parsedcommand.get(2).toString(),parsedcommand.get(3).toString(),Integer.parseInt(parsedcommand.get(4).toString()),Long.parseLong(parsedcommand.get(5).toString()));
+                break;
             case "register": cmd = new Register_Command(parsedcommand.get(1).toString(), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString());
                 break;
             case "arrive": cmd = new Begin_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()));

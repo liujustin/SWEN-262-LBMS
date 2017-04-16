@@ -2,25 +2,29 @@ package Client.Visitor;
 
 import Network.Command;
 
-//FILE:: Login_Command.java
-//AUTHOR::Adam Nowak
-//DATE::Apr.16.2017
-public class Login_Command implements Command{
+/**
+ * Created by adamn on 4/16/2017.
+ */
+public class CreateAccount_Command implements Command{
     LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
     private int clientID;
     private String username;
     private String password;
-    private int test;
+    private int role;
+    private Long visitorID;
 
-    public Login_Command(int clientID, String username, String password){
+    public CreateAccount_Command(int clientID,String username,String password,int role,Long visitorID){
         this.clientID = clientID;
         this.username = username;
         this.password = password;
+        this.role = role;
+        this.visitorID = visitorID;
     }
+
     @Override
     public String execute() {
         try {
-            visitorKeeper.loginAccount(this.clientID,this.username,this.password);
+            visitorKeeper.createAccount(this.clientID,this.username,this.password,this.role,this.visitorID);
         } catch (Exception e) {
             e.printStackTrace();
         }
