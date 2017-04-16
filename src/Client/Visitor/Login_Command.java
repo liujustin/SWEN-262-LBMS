@@ -10,7 +10,6 @@ public class Login_Command implements Command{
     private int clientID;
     private String username;
     private String password;
-    private int test;
 
     public Login_Command(int clientID, String username, String password){
         this.clientID = clientID;

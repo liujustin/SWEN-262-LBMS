@@ -7,7 +7,6 @@ import Network.Command;
  */
 public class Connect_Command implements Command {
     LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
-    private int test;
 
     @Override
     public String execute() {

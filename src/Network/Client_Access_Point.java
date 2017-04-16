@@ -409,6 +409,8 @@ public class Client_Access_Point {
         {
             case "connect": cmd = new Connect_Command();
                 break;
+            case "disconnect": cmd = new Disconnect_Command(Integer.parseInt(parsedcommand.get(0).toString()));
+                break;
             case "login": cmd = new Login_Command(Integer.parseInt(parsedcommand.get(0).toString()),parsedcommand.get(2).toString(),parsedcommand.get(3).toString());
                 break;
             case "logout": cmd = new Logout_Command(Integer.parseInt(parsedcommand.get(0).toString()));
