@@ -29,10 +29,17 @@ public class Main
     {
         this.graphics_view = graphics_view;
 
+        String command;
+
         while(true)
         {
-            String command = clientPoint.getCommand();
-            ArrayList<Object> parsedCommand = clientPoint.parseCommand(command);
+            if(args[0].equals("text"))
+                command = clientPoint.getCommand();
+            else
+                command = this.graphics_view.getCommand();
+
+            if(!command.equals(""))
+            {ArrayList<Object> parsedCommand = clientPoint.parseCommand(command);
 
             try
             {
@@ -44,7 +51,7 @@ public class Main
                 else
                     graphicsOutput(clientCommand.executeCommand());
             }
-            catch(NullPointerException e){}
+            catch(NullPointerException e){}}
         }
     }
 

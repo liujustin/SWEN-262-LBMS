@@ -446,7 +446,7 @@ public class Client_Access_Point {
                 }else{
                     days = Integer.parseInt(parsedcommand.get(1).toString());
                 }
-                //cmd = new Statistics_Report_Command(days);
+                cmd = null;//new Statistics_Report_Command(days);
                 break;
             case "undo":
                 cmd = new Undo_Command();
@@ -454,8 +454,6 @@ public class Client_Access_Point {
             case "redo":
                 cmd = new Redo_Command();
                 break;
-            case "dummy": return null;
-
             default: return null;
         }
 

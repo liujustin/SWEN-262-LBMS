@@ -29,13 +29,13 @@ public class Graphics_View extends Application
     private Stage primaryStage;
     private Scene primaryScene;
 
-    private ArrayList<Event> eventList;
+    private String event;
 
     private static String[] arguments;
 
     public void init()
     {
-        this.eventList = new ArrayList<>();
+        this.event = "";
     }
 
     @Override
@@ -50,12 +50,15 @@ public class Graphics_View extends Application
 
     public void displayScreen()
     {
+        this.event = "";
+
         BorderPane mainWindow = new BorderPane();
         mainWindow.setPrefSize(400,100);
         mainWindow.setCenter(order());
         timeGUI timer = new timeGUI();
         HBox currentTime = timer.start();
         mainWindow.setBottom(currentTime);
+
         Scene scene = new Scene(mainWindow);
         primaryStage.setTitle("LBMS");
         primaryStage.setScene(scene);
@@ -66,15 +69,11 @@ public class Graphics_View extends Application
     {
         this.displayScreen();
 
-        String command;
-        System.out.println("Please enter a command.");
-        Scanner scan1 = new Scanner(System.in);
-        command = scan1.nextLine().toString();
-        while (command.charAt(command.length() - 1) != ';') {
-            System.out.println("partial-request;");
-            Scanner line = new Scanner(System.in);
-            command = command + line.nextLine().toString();
-        }
+        String command = "";
+
+        if(!this.event.equals(""))
+            command = this.event;
+
         return command;
     }
 
@@ -92,10 +91,15 @@ public class Graphics_View extends Application
         Button login = new Button("Login");
         login.setPrefSize(100,100);
         Button exit = new Button("Exit");
-        exit.setOnKeyPressed(e -> this.eventList.add(e));
         exit.setPrefSize(100,100);
         Button create = new Button("Create Client.Visitor.Account");
         create.setPrefSize(100,100);
+
+        Button testSearch = new Button("Testing a button");
+        testSearch.setPrefSize(100, 100);
+
+        testSearch.setOnMouseClicked(e -> this.event = "search,*;");
+
         my_box.getChildren().addAll(login,create,exit);
         return my_box;
     }
