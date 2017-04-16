@@ -327,7 +327,6 @@ public class LBMS_VisitorKeeper
     //================================================================================
 
     private static HashMap<String, Account> activeAccounts = new HashMap<>();
-    private ArrayList<Account> loggedIn = new ArrayList<>();
 
     /**
      * This method takes in a username string, a password string, a role (0 for visitor, 1 for employee),
@@ -339,24 +338,29 @@ public class LBMS_VisitorKeeper
      * @param visitorID
      * @return
      */
-    public void createAccount(String username, String password, int role, long visitorID){
+    public void createAccount(int clientID, String username, String password, int role, long visitorID) throws Exception{
         //TODO wherever this method is called, you must check whether or not the username currently exists
         // in the activeAccounts HashMap using the getActiveAccounts. If they pass that, you must check if there is
         // an account with the visitorID. From there, you must check whether it exists in the activeVisitor.
         // It cannot be handled in here.
 
         Account newAccount = new Account(username,password,role,visitorID);
+        if(!activeConnections.containsKey(clientID))
+        {
+            String errormessage = clientID + ",<invalid-client-id>;";
+            throw new Exception(errormessage);
+        }
+        for (Integer key : activeConnections.keySet())
+        {
+            if(activeConnections.get(key) == null)
+            {
+                activeConnections.put(key,newAccount);
+            }
+        }
         System.out.println("create,success");
         activeAccounts.put(newAccount.getUsername(),newAccount);
     }
 
-    /**
-     * returns the activeAccounts hashmap.
-     * @return
-     */
-    public HashMap<String,Account> getActiveAccounts(){
-        return activeAccounts;
-    }
     /**
      * This method is used to verify whether or not a user is registered in the system. If it is registered,
      * it will return a true which means it exists, but if not, it will return false.
@@ -364,40 +368,66 @@ public class LBMS_VisitorKeeper
      * @param password
      * @return
      */
-    public boolean loginAccount(String username, String password){
-        boolean result = true;
-        for (String key : activeAccounts.keySet() ) {
-            if (username.equals(key)){
-                if(password.equals(activeAccounts.get(key).getPassword())){
-                    loggedIn.add(activeAccounts.get(key));
+    public void loginAccount(int clientID, String username, String password) throws Exception
+    {
+
+        if(!activeConnections.containsKey(clientID))
+        {
+            String errormessage = clientID + ",<invalid-client-id>;";
+            throw new Exception(errormessage);
+        }
+        for( Integer key: activeConnections.keySet())
+        {
+            if(key.equals(clientID))
+            {
+                for (String keys : activeAccounts.keySet())
+                {
+                    if (username.equals(keys)) {
+                        if (password.equals(activeAccounts.get(keys).getPassword()))
+                        {
+                            activeConnections.put(key, activeAccounts.get(keys));
+                            System.out.println(clientID + ",login,success;");
+                        }else
+                        {
+                            System.out.println(clientID + ",bad-username-or-password;");
+                        }
+                    }else
+                    {
+                        System.out.println(clientID + ",bad-username-or-password;");
+                    }
                 }
-                result = false;
-            }
-            else{
-                result = false;
             }
         }
-        return result;
     }
 
     /**
      * This method is used to log out a user. Because the specifications say that it will return a success
      * method despite whether or not there exists a user logged in, it does not return anything.
-     * @param username
+     * @param clientID
      */
-    public void logoutAccount(String username){
-        for(Account user: loggedIn) {
-            if (username.equals(user.getUsername())) {
-                loggedIn.remove(user);
+    public void logoutAccount(int clientID) throws Exception
+    {
+        if(!activeConnections.containsKey(clientID))
+        {
+            String errormessage = clientID + ",<invalid-client-id>;";
+            throw new Exception(errormessage);
+        }
+        for( Integer key: activeConnections.keySet())
+        {
+            if (clientID == key)
+            {
+                activeConnections.put(key,null);
+                break;
             }
         }
+        System.out.println(clientID + ",logout;");
     }
 
     //================================================================================
     // Clients
     //================================================================================
 
-    private ArrayList<Integer> activeConnections = new ArrayList<>();
+    private static HashMap<Integer,Account> activeConnections = new HashMap<>();
 
     /**
      * This method uses Random.nextInt in order to generate a random number with a minimum of 1
@@ -417,14 +447,13 @@ public class LBMS_VisitorKeeper
      * return the ID of the client.
      * @return tempClient
      */
-    public Integer startConnection(){
+    public void startConnection(){
         int tempClient = generateClient();
-        if(activeConnections.contains(tempClient)) {
+        if(activeConnections.containsKey(tempClient)) {
             startConnection();
         }
-        activeConnections.add(tempClient);
+        activeConnections.put(tempClient,null);
         System.out.format("connect,%d%n;",tempClient);
-        return tempClient;
     }
 
     /**
@@ -434,8 +463,14 @@ public class LBMS_VisitorKeeper
      * @param clientID
      * @return
      */
-    public void disconnectConnection(int clientID){
-        if(activeConnections.contains(clientID)){
+    public void disconnectConnection(int clientID) throws Exception
+    {
+        if(!activeConnections.containsKey(clientID))
+        {
+            String errormessage = clientID + ",<invalid-client-id>;";
+            throw new Exception(errormessage);
+        }
+        if(activeConnections.containsKey(clientID)){
             activeConnections.remove(clientID);
             System.out.format("%d%n,disconnect",clientID);
         }

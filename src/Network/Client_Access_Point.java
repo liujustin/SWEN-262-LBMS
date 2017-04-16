@@ -407,25 +407,31 @@ public class Client_Access_Point {
         Command cmd;
         switch(parsedcommand.get(0).toString())
         {
+            case "connect": cmd = new Connect_Command();
+                break;
+            case "login": cmd = new Login_Command(Integer.parseInt(parsedcommand.get(0).toString()),parsedcommand.get(2).toString(),parsedcommand.get(3).toString());
+                break;
+            case "logout": cmd = new Logout_Command(Integer.parseInt(parsedcommand.get(0).toString()));
+                break;
             case "register": cmd = new Register_Command(parsedcommand.get(1).toString(), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString());
                 break;
-            case "arrive": cmd = new Begin_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()),false);
+            case "arrive": cmd = new Begin_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()));
                 break;
-            case "depart": cmd = new End_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()),false);
+            case "depart": cmd = new End_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()));
                 break;
             case "info":  cmd = new Book_Search_Command(parsedcommand);
                 break;
-            case "borrow": cmd = new Borrow_Command(Long.parseLong(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2),false);
+            case "borrow": cmd = new Borrow_Command(Long.parseLong(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2));
                 break;
             case "borrowed": cmd = new Find_Borrowed_Command(Long.parseLong(parsedcommand.get(1).toString()));
                 break;
-            case "return": cmd = new Return_Command(Long.parseLong(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2),false);
+            case "return": cmd = new Return_Command(Long.parseLong(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2));
                 break;
-            case "pay": cmd = new Pay_Fine_Command(Long.parseLong(parsedcommand.get(1).toString()),Double.parseDouble(parsedcommand.get(2).toString()),false);
+            case "pay": cmd = new Pay_Fine_Command(Long.parseLong(parsedcommand.get(1).toString()),Double.parseDouble(parsedcommand.get(2).toString()));
                 break;
             case "search": cmd = new Book_Store_Command(parsedcommand);
                 break;
-            case "buy": cmd = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2),false);
+            case "buy": cmd = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2));
                 break;
             case "advance":
                 int day = Integer.parseInt(parsedcommand.get(1).toString());
@@ -446,14 +452,9 @@ public class Client_Access_Point {
                 }else{
                     days = Integer.parseInt(parsedcommand.get(1).toString());
                 }
-                cmd = null;//new Statistics_Report_Command(days);
+                cmd = new Statistics_Report_Command(days);
                 break;
-            case "undo":
-                cmd = new Undo_Command();
-                break;
-            case "redo":
-                cmd = new Redo_Command();
-                break;
+            case "dummy": return null;
             default: return null;
         }
 
