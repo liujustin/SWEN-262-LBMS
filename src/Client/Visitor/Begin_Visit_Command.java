@@ -28,10 +28,11 @@ public class Begin_Visit_Command implements Command {
                 Memento m = new Memento(e);
                 UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
             }
-            return visitorKeeper.beginVisit(this.visitorID);
+            visitorKeeper.beginVisit(this.visitorID);
         } catch (Exception e) {
             return e.getMessage();
         }
+        return "";
     }
 
 }

@@ -6,6 +6,7 @@ package Network;
 import Books.*;
 import Client.Visitor.*;
 import Network.Command;
+import Shutdown.Shut_Down_Command;
 import Time.*;
 
 import java.lang.reflect.Array;
@@ -379,11 +380,14 @@ public class Client_Access_Point {
         }
         else {
             errormessage = "Requested command doesn't exist.";
-            try {
-                throw new Exception(errormessage);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+//            try {
+//                throw new Exception(errormessage);
+//                getCommand();
+//            } catch (Exception e) {
+//                System.out.print(errormessage);
+//            }
+            System.out.println(errormessage);
+            getCommand();
         }
         /*
          *  Fixes parsing for buy and return command
@@ -419,23 +423,23 @@ public class Client_Access_Point {
                 break;
             case "register": cmd = new Register_Command(parsedcommand.get(1).toString(), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString());
                 break;
-            case "arrive": cmd = new Begin_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()));
+            case "arrive": cmd = new Begin_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()),false);
                 break;
-            case "depart": cmd = new End_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()));
+            case "depart": cmd = new End_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()),false);
                 break;
             case "info":  cmd = new Book_Search_Command(parsedcommand);
                 break;
-            case "borrow": cmd = new Borrow_Command(Long.parseLong(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2));
+            case "borrow": cmd = new Borrow_Command(Long.parseLong(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2),false);
                 break;
             case "borrowed": cmd = new Find_Borrowed_Command(Long.parseLong(parsedcommand.get(1).toString()));
                 break;
-            case "return": cmd = new Return_Command(Long.parseLong(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2));
+            case "return": cmd = new Return_Command(Long.parseLong(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2),false);
                 break;
-            case "pay": cmd = new Pay_Fine_Command(Long.parseLong(parsedcommand.get(1).toString()),Double.parseDouble(parsedcommand.get(2).toString()));
+            case "pay": cmd = new Pay_Fine_Command(Long.parseLong(parsedcommand.get(1).toString()),Double.parseDouble(parsedcommand.get(2).toString()),false);
                 break;
             case "search": cmd = new Book_Store_Command(parsedcommand);
                 break;
-            case "buy": cmd = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2));
+            case "buy": cmd = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2),false);
                 break;
             case "advance":
                 int day = Integer.parseInt(parsedcommand.get(1).toString());
@@ -458,7 +462,14 @@ public class Client_Access_Point {
                 }
                 cmd = new Statistics_Report_Command(days);
                 break;
-            case "dummy": return null;
+            case "undo":
+                cmd = new Undo_Command();
+                break;
+            case "redo":
+                cmd = new Redo_Command();
+                break;
+            case "shutdown":
+                cmd = new Shut_Down_Command();
             default: return null;
         }
 

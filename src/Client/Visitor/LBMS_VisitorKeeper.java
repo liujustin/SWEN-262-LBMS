@@ -7,9 +7,7 @@ import Books.Book_Loan;
 import Books.LBMS_BookKeeper;
 import Time.LBMS_StatisticsKeeper;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -19,6 +17,8 @@ public class LBMS_VisitorKeeper
     private static final LBMS_VisitorKeeper visitorKeeper = new LBMS_VisitorKeeper();
     private static HashMap<Long, Visitor> visitorRegistry;
     private static HashMap<Long, Date> activeVisitor;
+    private static HashMap<Long, ArrayList<String>> visitorLog;
+    public static ArrayList<String> visitLength = new ArrayList<>();
     private Long newID = 999999999L;
 
     //================================================================================
@@ -32,6 +32,8 @@ public class LBMS_VisitorKeeper
 
         //This stores the currently visiting visitors//
         this.activeVisitor = new HashMap<>();
+
+        this.visitorLog = new HashMap<>();
 
         try
         {
@@ -107,7 +109,7 @@ public class LBMS_VisitorKeeper
      * @param visitorID
      * @throws Exception
      */
-    public String beginVisit(Long visitorID) throws Exception
+    public void beginVisit(Long visitorID) throws Exception
     {
         String time = LBMS_StatisticsKeeper.Get_Time();
         if(!LBMS_StatisticsKeeper.getIsopen(LBMS_StatisticsKeeper.Get_Time())){
@@ -121,9 +123,9 @@ public class LBMS_VisitorKeeper
 
                 String currentTime = time.split(",")[1];
 
-                this.activeVisitor.put(visitorID, dateFormat.parse(time));
-
-                return "arrive,"+ visitorID + "," + currentTime;
+                activeVisitor.put(visitorID, dateFormat.parse(time));
+                System.out.print("arrive,"+ visitorID + "," + currentTime);
+                visitLength.add(currentTime);
             }
             else
                 throw new Exception("arrive,duplicate;");
@@ -142,33 +144,14 @@ public class LBMS_VisitorKeeper
     {
         if(this.activeVisitor.containsKey(visitorID))
         {
+            String time = LBMS_StatisticsKeeper.Get_Time();
+            String currentTime = time.split(",")[1];
             this.activeVisitor.remove(visitorID);
-            String time = LBMS_StatisticsKeeper.Get_Time().split(",")[1];
-            System.out.println("depart," + visitorID + "," + time);
+            System.out.print("depart," + visitorID + "," + currentTime);
+            visitLength.add(currentTime);
         }
         else
             throw new Exception("depart,invalid-id;");
-    }
-
-
-    /**
-     * this function shuts down the system
-     *
-     */
-    public void shutdown()
-    {
-        try
-        {
-            PrintStream saveState = new PrintStream(new FileOutputStream(new File("visitor.log")));
-            saveState.flush();
-
-            for(Visitor v:this.visitorRegistry.values())
-                saveState.println(v.toString());
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -492,6 +475,31 @@ public class LBMS_VisitorKeeper
     }
 
     /**
+     * this function shuts down the system
+     *
+     */
+    public void shutdown() {
+        try {
+            PrintStream saveState = new PrintStream(new FileOutputStream(new File("visitor.txt")));
+            saveState.flush();
+
+            for (Visitor v : this.visitorRegistry.values())
+                saveState.println(v.toString());
+
+            try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("visitLengths.txt"), "utf-8"))) {
+                for (String time : visitLength) {
+                    writer.write(time);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+        /**
      *
      * @param args
      * main function used for testing purposes
