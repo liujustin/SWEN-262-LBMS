@@ -321,7 +321,7 @@ public class LBMS_VisitorKeeper
      * @param visitorID
      * @return
      */
-    public void createAccount(int clientID, String username, String password, int role, long visitorID) throws Exception{
+    public void createAccount(Integer clientID, String username, String password, int role, long visitorID) throws Exception{
         if(!activeConnections.containsKey(clientID))
         {
             String errormessage = clientID + ",<invalid-client-id>;";
@@ -365,7 +365,7 @@ public class LBMS_VisitorKeeper
      * @param password
      * @return
      */
-    public void loginAccount(int clientID, String username, String password) throws Exception
+    public void loginAccount(Integer clientID, String username, String password) throws Exception
     {
 
         if(!activeConnections.containsKey(clientID))
@@ -402,7 +402,7 @@ public class LBMS_VisitorKeeper
      * method despite whether or not there exists a user logged in, it does not return anything.
      * @param clientID
      */
-    public void logoutAccount(int clientID) throws Exception
+    public void logoutAccount(Integer clientID) throws Exception
     {
         if(!activeConnections.containsKey(clientID))
         {
@@ -425,6 +425,9 @@ public class LBMS_VisitorKeeper
     //================================================================================
 
     private static HashMap<Integer,Account> activeConnections = new HashMap<>();
+    public static HashMap<Integer,Account> getActiveConnections(){return activeConnections; }
+
+
 
     /**
      * This method uses Random.nextInt in order to generate a random number with a minimum of 1
@@ -451,7 +454,7 @@ public class LBMS_VisitorKeeper
             startConnection();
         }
         activeConnections.put(tempClient,null);
-        System.out.format("connect,%d%n;",tempClient);
+        System.out.format("connect,%d;",tempClient);
     }
 
     /**
@@ -461,7 +464,7 @@ public class LBMS_VisitorKeeper
      * @param clientID
      * @return
      */
-    public void disconnectConnection(int clientID) throws Exception
+    public void disconnectConnection(Integer clientID) throws Exception
     {
         if(!activeConnections.containsKey(clientID))
         {

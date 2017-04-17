@@ -46,8 +46,7 @@ public class Client_Access_Point {
      * @return Arraylist of objects
      */
 
-    public ArrayList<Object> parseCommand(String command)
-    {
+    public ArrayList<Object> parseCommand(String command) throws Exception {
         int commandsize;
         String errormessage;
         Object firstindex;
@@ -140,13 +139,15 @@ public class Client_Access_Point {
         /*
         * Parameter error handling until end of function.
         */
-
-        if(parsedcommand.get(0).equals("register"))
+        if(parsedcommand.size() == 1){
+            parsedcommand.add("whoops");
+        }
+        if(parsedcommand.get(1).equals("register"))
         {
             if(parsedcommand.size() < 5)
             {
                 commandsize = parsedcommand.size();
-                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
+                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {";
                 while(commandsize < 5)
                 {
                     if(commandsize == 1)
@@ -170,38 +171,26 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                try
-                {
-                    throw new Exception(errormessage);
-                }catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
+                throw new Exception(errormessage);
             }
-        }else if(parsedcommand.get(0).equals("arrive")
-                || parsedcommand.get(0).equals("depart")
-                || parsedcommand.get(0).equals("borrowed"))
+        }else if(parsedcommand.get(1).equals("arrive")
+                || parsedcommand.get(1).equals("depart")
+                || parsedcommand.get(1).equals("borrowed"))
         {
 
             if(parsedcommand.size() < 2)
             {
-                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {Visitor ID}";
-                try
-                {
-                    throw new Exception(errormessage);
-                }catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
+                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {Visitor ID}";
+                throw new Exception(errormessage);
             }
-        }else if(parsedcommand.get(0).equals("info"))
+        }else if(parsedcommand.get(1).equals("info"))
         {
             if(parsedcommand.size() <= 6)
             {
                 if(parsedcommand.size() < 3)
                 {
                     commandsize = parsedcommand.size();
-                    errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
+                    errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {";
                     while(commandsize < 3)
                     {
                         if(commandsize == 1)
@@ -216,21 +205,15 @@ public class Client_Access_Point {
                         }
                         commandsize++;
                     }
-                    try
-                    {
-                        throw new Exception(errormessage);
-                    }catch(Exception e)
-                    {
-                        e.printStackTrace();
-                    }
+                    throw new Exception(errormessage);
                 }
             }
-        }else if(parsedcommand.get(0).equals("borrow"))
+        }else if(parsedcommand.get(1).equals("borrow"))
         {
             if(parsedcommand.size() < 3)
             {
                 commandsize = parsedcommand.size();
-                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
+                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {";
                 while(commandsize < 3)
                 {
                     if(commandsize == 1)
@@ -244,20 +227,14 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                try
-                {
-                    throw new Exception(errormessage);
-                }catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
+                throw new Exception(errormessage);
             }
-        }else if(parsedcommand.get(0).equals("return"))
+        }else if(parsedcommand.get(1).equals("return"))
         {
             if(parsedcommand.size() < 3)
             {
                 commandsize = parsedcommand.size();
-                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
+                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {";
                 while(commandsize < 3)
                 {
                     if(commandsize == 1)
@@ -271,15 +248,9 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                try
-                {
-                    throw new Exception(errormessage);
-                }catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
+                throw new Exception(errormessage);
             }
-        }else if(parsedcommand.get(0).equals("pay"))
+        }else if(parsedcommand.get(1).equals("pay"))
         {
             if(parsedcommand.size() < 3)
             {
@@ -298,15 +269,9 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                try
-                {
-                    throw new Exception(errormessage);
-                }catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
+                throw new Exception(errormessage);
             }
-        }else if(parsedcommand.get(0).equals("search"))
+        }else if(parsedcommand.get(1).equals("search"))
         {
             if(parsedcommand.size() < 2)
             {
@@ -320,15 +285,9 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                try
-                {
-                    throw new Exception(errormessage);
-                }catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
+                throw new Exception(errormessage);
             }
-        }else if(parsedcommand.get(0).equals("buy"))
+        }else if(parsedcommand.get(1).equals("buy"))
         {
             if(parsedcommand.size() < 3)
             {
@@ -347,29 +306,18 @@ public class Client_Access_Point {
                         commandsize++;
                     }
                 }
-                try
-                {
-                    throw new Exception(errormessage);
-                }catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
+                throw new Exception(errormessage);
             }
-        }else if(parsedcommand.get(0).equals("advance"))
+        }else if(parsedcommand.get(1).equals("advance"))
         {
             if(parsedcommand.size() < 2)
             {
-                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {number-of-days}";
-                try
-                {
-                    throw new Exception(errormessage);
-                }catch(Exception e)
-                {
-                    e.printStackTrace();
-                }
+                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {number-of-days}";
+                throw new Exception(errormessage);
             }
         }
-        else if(parsedcommand.get(0).equals("datetime") || parsedcommand.get(0).equals("shutdown") || parsedcommand.get(0).equals("report"))
+        else if(parsedcommand.get(1).equals("datetime") || parsedcommand.get(1).equals("shutdown")
+                || parsedcommand.get(1).equals("report") || parsedcommand.get(0).equals("connect"))
         {
             return parsedcommand;
 
@@ -380,22 +328,15 @@ public class Client_Access_Point {
         }
         else {
             errormessage = "Requested command doesn't exist.";
-//            try {
-//                throw new Exception(errormessage);
-//                getCommand();
-//            } catch (Exception e) {
-//                System.out.print(errormessage);
-//            }
-            System.out.println(errormessage);
-            getCommand();
+            throw new Exception(errormessage);
         }
         /*
          *  Fixes parsing for buy and return command
          */
-        if (parsedcommand.get(0).equals("buy") || parsedcommand.get(0).equals("return")) {
-            firstindex = parsedcommand.get(0);
-            secondindex = parsedcommand.get(1);
-            for (int i = 2; i < parsedcommand.size(); i++) {
+        if (parsedcommand.get(1).equals("buy") || parsedcommand.get(1).equals("return")) {
+            firstindex = parsedcommand.get(1);
+            secondindex = parsedcommand.get(2);
+            for (int i = 3; i < parsedcommand.size(); i++) {
                 thirdindex.add(parsedcommand.get(i));
             }
             parsedcommand.clear();
@@ -406,73 +347,94 @@ public class Client_Access_Point {
         return parsedcommand;
     }
 
-    public Command ConcreteCommand(ArrayList parsedcommand)
+    public Command ConcreteCommand(ArrayList parsedcommand) throws Exception
     {
         Command cmd;
-        switch(parsedcommand.get(0).toString())
-        {
-            case "connect": cmd = new Connect_Command();
-                break;
-            case "disconnect": cmd = new Disconnect_Command(Integer.parseInt(parsedcommand.get(0).toString()));
-                break;
-            case "login": cmd = new Login_Command(Integer.parseInt(parsedcommand.get(0).toString()),parsedcommand.get(2).toString(),parsedcommand.get(3).toString());
-                break;
-            case "logout": cmd = new Logout_Command(Integer.parseInt(parsedcommand.get(0).toString()));
-                break;
-            case "create": cmd = new CreateAccount_Command(Integer.parseInt(parsedcommand.get(0).toString()),parsedcommand.get(2).toString(),parsedcommand.get(3).toString(),Integer.parseInt(parsedcommand.get(4).toString()),Long.parseLong(parsedcommand.get(5).toString()));
-                break;
-            case "register": cmd = new Register_Command(parsedcommand.get(1).toString(), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString());
-                break;
-            case "arrive": cmd = new Begin_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()),false);
-                break;
-            case "depart": cmd = new End_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()),false);
-                break;
-            case "info":  cmd = new Book_Search_Command(parsedcommand);
-                break;
-            case "borrow": cmd = new Borrow_Command(Long.parseLong(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2),false);
-                break;
-            case "borrowed": cmd = new Find_Borrowed_Command(Long.parseLong(parsedcommand.get(1).toString()));
-                break;
-            case "return": cmd = new Return_Command(Long.parseLong(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2),false);
-                break;
-            case "pay": cmd = new Pay_Fine_Command(Long.parseLong(parsedcommand.get(1).toString()),Double.parseDouble(parsedcommand.get(2).toString()),false);
-                break;
-            case "search": cmd = new Book_Store_Command(parsedcommand);
-                break;
-            case "buy": cmd = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(1).toString()),(ArrayList)parsedcommand.get(2),false);
-                break;
-            case "advance":
-                int day = Integer.parseInt(parsedcommand.get(1).toString());
-                int hour;
-                if(parsedcommand.size() < 3)
-                    hour = 0;
-                else
-                    hour = Integer.parseInt(parsedcommand.get(2).toString());
+        if(parsedcommand.get(0).equals("connect")) {
+            cmd = new Connect_Command();
+            return cmd;
+        }else {
+            if (!LBMS_VisitorKeeper.getActiveConnections().containsKey(Integer.parseInt(parsedcommand.get(0).toString()))) {
+                throw new Exception("invalid-client-id;");
+            }
+            switch (parsedcommand.get(1).toString()) {
+                case "disconnect":
+                    cmd = new Disconnect_Command(Integer.parseInt(parsedcommand.get(0).toString()));
+                    break;
+                case "login":
+                    cmd = new Login_Command(Integer.parseInt(parsedcommand.get(0).toString()), parsedcommand.get(2).toString(), parsedcommand.get(3).toString());
+                    break;
+                case "logout":
+                    cmd = new Logout_Command(Integer.parseInt(parsedcommand.get(0).toString()));
+                    break;
+                case "create":
+                    cmd = new CreateAccount_Command(Integer.parseInt(parsedcommand.get(0).toString()), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), Integer.parseInt(parsedcommand.get(4).toString()), Long.parseLong(parsedcommand.get(5).toString()));
+                    break;
+                case "register":
+                    cmd = new Register_Command(parsedcommand.get(1).toString(), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString());
+                    break;
+                case "arrive":
+                    cmd = new Begin_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()), false);
+                    break;
+                case "depart":
+                    cmd = new End_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()), false);
+                    break;
+                case "info":
+                    cmd = new Book_Search_Command(parsedcommand);
+                    break;
+                case "borrow":
+                    cmd = new Borrow_Command(Long.parseLong(parsedcommand.get(1).toString()), (ArrayList) parsedcommand.get(2), false);
+                    break;
+                case "borrowed":
+                    cmd = new Find_Borrowed_Command(Long.parseLong(parsedcommand.get(1).toString()));
+                    break;
+                case "return":
+                    cmd = new Return_Command(Long.parseLong(parsedcommand.get(1).toString()), (ArrayList) parsedcommand.get(2), false);
+                    break;
+                case "pay":
+                    cmd = new Pay_Fine_Command(Long.parseLong(parsedcommand.get(1).toString()), Double.parseDouble(parsedcommand.get(2).toString()), false);
+                    break;
+                case "search":
+                    cmd = new Book_Store_Command(parsedcommand);
+                    break;
+                case "buy":
+                    cmd = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(1).toString()), (ArrayList) parsedcommand.get(2), false);
+                    break;
+                case "advance":
+                    int day = Integer.parseInt(parsedcommand.get(1).toString());
+                    int hour;
+                    if (parsedcommand.size() < 3)
+                        hour = 0;
+                    else
+                        hour = Integer.parseInt(parsedcommand.get(2).toString());
 
-                cmd = new Advance_Time_Command(day, hour);
-                break;
-            case "datetime": cmd = new Current_Time_Command();
-                break;
-            case "report":
-                int days;
-                if (parsedcommand.size() < 2){
-                    days = 100000;
-                }else{
-                    days = Integer.parseInt(parsedcommand.get(1).toString());
-                }
-                cmd = new Statistics_Report_Command(days);
-                break;
-            case "undo":
-                cmd = new Undo_Command();
-                break;
-            case "redo":
-                cmd = new Redo_Command();
-                break;
-            case "shutdown":
-                cmd = new Shut_Down_Command();
-            default: return null;
+                    cmd = new Advance_Time_Command(day, hour);
+                    break;
+                case "datetime":
+                    cmd = new Current_Time_Command();
+                    break;
+                case "report":
+                    int days;
+                    if (parsedcommand.size() < 2) {
+                        days = 100000;
+                    } else {
+                        days = Integer.parseInt(parsedcommand.get(1).toString());
+                    }
+                    cmd = new Statistics_Report_Command(days);
+                    break;
+                case "undo":
+                    cmd = new Undo_Command();
+                    break;
+                case "redo":
+                    cmd = new Redo_Command();
+                    break;
+                case "shutdown":
+                    cmd = new Shut_Down_Command();
+                    break;
+                default:
+                    return null;
+            }
         }
-
-        return cmd;
+            return cmd;
     }
 }

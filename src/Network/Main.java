@@ -39,9 +39,15 @@ public class Main
                 command = this.graphics_view.getCommand();
 
             if(!command.equals(""))
-            {ArrayList<Object> parsedCommand = clientPoint.parseCommand(command);
+            {
+                ArrayList<Object> parsedCommand = null;
+                try {
+                    parsedCommand = clientPoint.parseCommand(command);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
-            try
+                try
             {
                 Command concreteCommand = clientPoint.ConcreteCommand(parsedCommand);
                 clientCommand.receiveCommand(concreteCommand);
@@ -51,7 +57,10 @@ public class Main
                 else
                     graphicsOutput(clientCommand.executeCommand());
             }
-            catch(NullPointerException e){}}
+            catch(NullPointerException e){} catch (Exception e) {
+                e.printStackTrace();
+            }
+            }
         }
     }
 
