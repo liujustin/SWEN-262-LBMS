@@ -213,78 +213,30 @@ public class Client_Access_Point {
             if(parsedcommand.size() < 3)
             {
                 commandsize = parsedcommand.size();
-                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {";
-                while(commandsize < 3)
-                {
-                    if(commandsize == 1)
-                    {
-                        errormessage += "Visitor ID, ";
-                        commandsize++;
-                    }
-                    if(commandsize == 2)
-                    {
-                        errormessage += "id}";
-                        commandsize++;
-                    }
-                }
+                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {id};";
                 throw new Exception(errormessage);
             }
         }else if(parsedcommand.get(1).equals("return"))
         {
-            if(parsedcommand.size() < 3)
-            {
-                commandsize = parsedcommand.size();
-                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {";
-                while(commandsize < 3)
-                {
-                    if(commandsize == 1)
-                    {
-                        errormessage += "Visitor ID, ";
-                        commandsize++;
-                    }
-                    if(commandsize == 2)
-                    {
-                        errormessage += "id, ";
-                        commandsize++;
-                    }
+            if(parsedcommand.size() < 4) {
+                ArrayList<String> returntest = (ArrayList) parsedcommand.get(2);
+                if (parsedcommand.size() < 4 && returntest.get(0).length() == 10) {
+                    errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {id};";
+                    throw new Exception(errormessage);
                 }
-                throw new Exception(errormessage);
             }
         }else if(parsedcommand.get(1).equals("pay"))
         {
             if(parsedcommand.size() < 3)
             {
-                commandsize = parsedcommand.size();
-                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while(commandsize < 3)
-                {
-                    if(commandsize == 1)
-                    {
-                        errormessage += "Visitor ID, ";
-                        commandsize++;
-                    }
-                    if(commandsize == 2)
-                    {
-                        errormessage += "amount}";
-                        commandsize++;
-                    }
-                }
+                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {amount};";
                 throw new Exception(errormessage);
             }
         }else if(parsedcommand.get(1).equals("search"))
         {
             if(parsedcommand.size() < 2)
             {
-                commandsize = parsedcommand.size();
-                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
-                while(commandsize < 2)
-                {
-                    if(commandsize == 1)
-                    {
-                        errormessage += "title}";
-                        commandsize++;
-                    }
-                }
+                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {title};";
                 throw new Exception(errormessage);
             }
         }else if(parsedcommand.get(1).equals("buy"))
@@ -302,7 +254,7 @@ public class Client_Access_Point {
                     }
                     if(commandsize == 2)
                     {
-                        errormessage += "id} ";
+                        errormessage += "id}; ";
                         commandsize++;
                     }
                 }
@@ -312,7 +264,7 @@ public class Client_Access_Point {
         {
             if(parsedcommand.size() < 2)
             {
-                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {number-of-days}";
+                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {number-of-days};";
                 throw new Exception(errormessage);
             }
         }
@@ -381,7 +333,7 @@ public class Client_Access_Point {
                     cmd = new Begin_Visit_Command(Long.parseLong(parsedcommand.get(2).toString()), false);
                     break;
                 case "depart":
-                    cmd = new End_Visit_Command(Long.parseLong(parsedcommand.get(3).toString()), false);
+                    cmd = new End_Visit_Command(Long.parseLong(parsedcommand.get(2).toString()), false);
                     break;
                 case "info":
                     cmd = new Book_Search_Command(parsedcommand);
