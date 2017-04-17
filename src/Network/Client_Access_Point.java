@@ -297,11 +297,13 @@ public class Client_Access_Point {
     public Command ConcreteCommand(ArrayList parsedcommand) throws Exception
     {
         Command cmd;
+        Long visitorID = 0L;
+        HashMap<Integer,Account> connections = LBMS_VisitorKeeper.getActiveConnections();
         if(parsedcommand.get(0).equals("connect")) {
             cmd = new Connect_Command();
             return cmd;
         }else {
-            if (!LBMS_VisitorKeeper.getActiveConnections().containsKey(Integer.parseInt(parsedcommand.get(0).toString()))) {
+            if (!connections.containsKey(Integer.parseInt(parsedcommand.get(0).toString()))) {
                 throw new Exception("invalid-client-id;");
             }
             switch (parsedcommand.get(1).toString()) {
@@ -315,16 +317,34 @@ public class Client_Access_Point {
                     cmd = new Logout_Command(Integer.parseInt(parsedcommand.get(0).toString()));
                     break;
                 case "create":
-                    cmd = new CreateAccount_Command(Integer.parseInt(parsedcommand.get(0).toString()), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), Integer.parseInt(parsedcommand.get(4).toString()), Long.parseLong(parsedcommand.get(5).toString()));
+                    cmd = new CreateAccount_Command(Integer.parseInt(parsedcommand.get(0).toString()), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), Long.parseLong(parsedcommand.get(5).toString()));
                     break;
                 case "register":
                     cmd = new Register_Command(parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), parsedcommand.get(5).toString());
                     break;
                 case "arrive":
-                    cmd = new Begin_Visit_Command(Long.parseLong(parsedcommand.get(2).toString()), false);
+                    if(parsedcommand.size() < 3) {
+                        for (Integer key : connections.keySet()) {
+                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
+                                visitorID = connections.get(key).getVisitorID();
+                            }
+                        }
+                    }else{
+                        visitorID = Long.parseLong(parsedcommand.get(2).toString());
+                    }
+                    cmd = new Begin_Visit_Command(visitorID, false);
                     break;
                 case "depart":
-                    cmd = new End_Visit_Command(Long.parseLong(parsedcommand.get(2).toString()), false);
+                    if(parsedcommand.size() < 3) {
+                        for (Integer key : connections.keySet()) {
+                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
+                                visitorID = connections.get(key).getVisitorID();
+                            }
+                        }
+                    }else{
+                        visitorID = Long.parseLong(parsedcommand.get(2).toString());
+                    }
+                    cmd = new End_Visit_Command(visitorID, false);
                     break;
                 case "info":
                     cmd = new Book_Search_Command(parsedcommand);

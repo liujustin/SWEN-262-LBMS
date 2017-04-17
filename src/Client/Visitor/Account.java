@@ -8,11 +8,11 @@ public class Account {
     LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
     private String username;
     private String password;
-    private int role;
+    private String role;
     private long visitorID;
     private Visitor v;
 
-    public Account(String username, String password, int role, long visitorID) {
+    public Account(String username, String password, String role, long visitorID) {
         this.username = username;
         this.password = password;
         this.role = role;
@@ -28,7 +28,7 @@ public class Account {
         return password;
     }
 
-    public int getRole(){
+    public String getRole(){
         return role;
     }
 

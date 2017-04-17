@@ -328,7 +328,11 @@ public class LBMS_VisitorKeeper
      * @param visitorID
      * @return
      */
-    public void createAccount(Integer clientID, String username, String password, int role, long visitorID) throws Exception{
+    public void createAccount(Integer clientID, String username, String password, String role, long visitorID) throws Exception{
+        if(!role.equals("visitor") && !role.equals("employee")){
+            String errormessage = clientID + ",<invalid-role-type>;";
+            throw new Exception(errormessage);
+        }
         if(!activeConnections.containsKey(clientID))
         {
             String errormessage = clientID + ",<invalid-client-id>;";

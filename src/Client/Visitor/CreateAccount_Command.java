@@ -10,10 +10,10 @@ public class CreateAccount_Command implements Command{
     private int clientID;
     private String username;
     private String password;
-    private int role;
+    private String role;
     private Long visitorID;
 
-    public CreateAccount_Command(int clientID,String username,String password,int role,Long visitorID){
+    public CreateAccount_Command(int clientID,String username,String password,String role,Long visitorID){
         this.clientID = clientID;
         this.username = username;
         this.password = password;
