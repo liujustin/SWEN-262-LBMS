@@ -1,6 +1,8 @@
 package GUI;
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -17,7 +19,7 @@ import Network.*;
 /**
  * Created by Ryan on 4/13/2017.
  */
-public class Visitor_View extends Application{
+public class Visitor_View extends Connect_View{
 
     //private static Main bootInstance;
     private Stage primaryStage;
@@ -25,8 +27,24 @@ public class Visitor_View extends Application{
 
     private static String[] arguments;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
+//        VBox order = new VBox();
+//        int gap = 5;
+////        HBox button1 = buttonBox1(clientID);
+////        HBox button2 = buttonBox2();
+//        Label welcome = new Label("Please Select an Option.");
+//        order.setSpacing(gap);
+//        Button search = new Button("Search");
+//        search.setPrefSize(75,50);
+//        search.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                Book_Search_View bsv = new Book_Search_View();
+//
+//            }
+//        });
+//        order.getChildren().addAll(welcome,search);
+//        return order;
         this.primaryStage = primaryStage;
 
         Group root = new Group();
@@ -61,6 +79,12 @@ public class Visitor_View extends Application{
         leave.setPrefSize(75,50);
         Button search = new Button("Search");
         search.setPrefSize(75,50);
+        search.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Book_Search_View bsv = new Book_Search_View();
+            }
+        });
         Button borrow = new Button("Borrow");
         borrow.setPrefSize(75,50);
         list1.getChildren().addAll(arrive,leave,search,borrow);
@@ -87,7 +111,7 @@ public class Visitor_View extends Application{
     }
 
 
-    private VBox order(){
+    public VBox order(){
         VBox order = new VBox();
         int gap = 5;
         HBox button1 = buttonBox1();

@@ -9,7 +9,9 @@ import Time.LBMS_StatisticsKeeper;
 
 import java.io.*;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Period;
 import java.util.*;
 
 public class LBMS_VisitorKeeper
@@ -116,7 +118,7 @@ public class LBMS_VisitorKeeper
      * @param visitorID
      * @throws Exception
      */
-    public void beginVisit(Long visitorID) throws Exception
+    public String beginVisit(Long visitorID) throws Exception
     {
         String time = LBMS_StatisticsKeeper.Get_Time();
         if(!LBMS_StatisticsKeeper.getIsopen(LBMS_StatisticsKeeper.Get_Time())){
@@ -127,12 +129,15 @@ public class LBMS_VisitorKeeper
             if(! this.activeVisitor.containsKey(visitorID)) {
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
-
+                DateFormat dateFormat2 = new SimpleDateFormat("HH:mm:ss");
                 String currentTime = time.split(",")[1];
 
-                activeVisitor.put(visitorID, dateFormat.parse(time));
-                System.out.print("arrive,"+ visitorID + "," + currentTime);
+                activeVisitor.put(visitorID, dateFormat2.parse(currentTime));
+
+                String output = "arrive,"+ visitorID + "," + currentTime;
+//                System.out.print(output);
                 visitLength.add(currentTime);
+                return output;
             }
             else
                 throw new Exception("arrive,duplicate;");
@@ -140,22 +145,35 @@ public class LBMS_VisitorKeeper
         else
             throw new Exception("arrive,invalid-id;");
     }
-
+    long second = 1000l;
+    long minute = 60l * second;
+    long hour = 60l * minute;
 
     /**
      *
      * @param visitorID
      * @throws Exception
      */
-    public void endVisit(Long visitorID) throws Exception
+    public String endVisit(Long visitorID) throws Exception
     {
         if(this.activeVisitor.containsKey(visitorID))
         {
             String time = LBMS_StatisticsKeeper.Get_Time();
             String currentTime = time.split(",")[1];
+            DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+            Date start = activeVisitor.get(visitorID);
+            Date end =  dateFormat.parse(currentTime);
+
+            long difference = start.getTime() - end.getTime();
+            long hours = difference/hour;
+            long minutes = hours/minute;
+            long seconds = (minutes/second);
+
             this.activeVisitor.remove(visitorID);
-            System.out.print("depart," + visitorID + "," + currentTime);
+            String output = ("depart," + visitorID + "," + currentTime + "," + hours + ":" + minutes + ":" + seconds);
+            System.out.print(output);
             visitLength.add(currentTime);
+            return output;
         }
         else
             throw new Exception("depart,invalid-id;");
@@ -458,14 +476,14 @@ public class LBMS_VisitorKeeper
      * return the ID of the client.
      * @return tempClient
      */
-    public void startConnection(){
+    public String startConnection(){
         int tempClient = generateClient();
         if(activeConnections.containsKey(tempClient))
         {
             startConnection();
         }
         activeConnections.put(tempClient,null);
-        System.out.format("connect,%d;",tempClient);
+        return String.format("connect,%d;\n",tempClient);
     }
 
     /**
@@ -475,16 +493,19 @@ public class LBMS_VisitorKeeper
      * @param clientID
      * @return
      */
-    public void disconnectConnection(Integer clientID) throws Exception
+    public String disconnectConnection(Integer clientID) throws Exception
     {
         if(!activeConnections.containsKey(clientID))
         {
             String errormessage = clientID + ",<invalid-client-id>;";
             throw new Exception(errormessage);
         }
-        if(activeConnections.containsKey(clientID)){
+        else if(activeConnections.containsKey(clientID)){
             activeConnections.remove(clientID);
-            System.out.format("%d%n,disconnect",clientID);
+            return String.format("%d%n,disconnect",clientID);
+        }
+        else{
+            return "";
         }
     }
 

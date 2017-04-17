@@ -15,7 +15,7 @@ public class Disconnect_Command implements Command{
     @Override
     public String execute() {
         try {
-            visitorKeeper.disconnectConnection(this.clientID);
+            System.out.println(visitorKeeper.disconnectConnection(this.clientID));
         } catch (Exception e) {
             e.printStackTrace();
         }

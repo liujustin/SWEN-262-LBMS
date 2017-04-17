@@ -120,7 +120,7 @@ public class Create_Account_View extends Application {
         return my_box;
     }
 
-    private VBox order(){
+    public VBox order(){
         VBox order = new VBox();
         int gap = 5;
         HBox user = usernameField();

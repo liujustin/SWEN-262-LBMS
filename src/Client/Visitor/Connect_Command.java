@@ -10,7 +10,7 @@ public class Connect_Command implements Command {
 
     @Override
     public String execute() {
-        visitorKeeper.startConnection();
+        System.out.println(visitorKeeper.startConnection());
         return "";
     }
 }

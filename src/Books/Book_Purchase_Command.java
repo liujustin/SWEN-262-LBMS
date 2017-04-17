@@ -27,6 +27,7 @@ public class Book_Purchase_Command implements Command {
     }
     @Override
     public String execute() {
+        System.out.println("quantity" + this.ISBNS);
         try {
             if (this.isUndo) {
                 Undo_Book_Purchase_Command u = new Undo_Book_Purchase_Command(this.quantity,this.ISBNS,false);
