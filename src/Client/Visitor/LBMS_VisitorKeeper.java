@@ -93,7 +93,14 @@ public class LBMS_VisitorKeeper
             newID = Long.max(newID, key);
 
         Visitor temporaryNewVisitor = new Visitor(firstName, lastName, address, 0.0, phoneNumber, newID);
-
+        for ( Visitor value : visitorRegistry.values()){
+            if(value.getFirst_name().equals(temporaryNewVisitor.getFirst_name())
+                    && value.getLast_name().equals(temporaryNewVisitor.getLast_name())
+                    && value.getAddress().equals(temporaryNewVisitor.getAddress())
+                    && value.getPhone_number().equals(temporaryNewVisitor.getPhone_number())){
+                throw new Exception("register,duplicate");
+            }
+        }
         this.visitorRegistry.put(id, temporaryNewVisitor);
 
         System.out.println("register," + id + "," + time.substring(0,10));
@@ -327,7 +334,7 @@ public class LBMS_VisitorKeeper
             String errormessage = clientID + ",<invalid-client-id>;";
             throw new Exception(errormessage);
         }
-        if(!visitorRegistry.containsValue(visitorID))
+        if(!visitorRegistry.containsKey(visitorID))
         {
             String errormessage = clientID + ",create,invalid-visitor";
             throw new Exception(errormessage);

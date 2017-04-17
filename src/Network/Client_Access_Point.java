@@ -317,7 +317,11 @@ public class Client_Access_Point {
             }
         }
         else if(parsedcommand.get(1).equals("datetime") || parsedcommand.get(1).equals("shutdown")
-                || parsedcommand.get(1).equals("report") || parsedcommand.get(0).equals("connect"))
+                || parsedcommand.get(1).equals("report") || parsedcommand.get(0).equals("connect")
+                || parsedcommand.get(1).equals("create") || parsedcommand.get(1).equals("disconnect")
+                || parsedcommand.get(1).equals("login") || parsedcommand.get(1).equals("logout")
+                ||parsedcommand.get(1).equals("undo") || parsedcommand.get(1).equals("redo")
+                || parsedcommand.get(1).equals("service"))
         {
             return parsedcommand;
 
