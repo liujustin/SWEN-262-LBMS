@@ -173,16 +173,6 @@ public class Client_Access_Point {
                 }
                 throw new Exception(errormessage);
             }
-        }else if(parsedcommand.get(1).equals("arrive")
-                || parsedcommand.get(1).equals("depart")
-                || parsedcommand.get(1).equals("borrowed"))
-        {
-
-            if(parsedcommand.size() < 2)
-            {
-                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {Visitor ID}";
-                throw new Exception(errormessage);
-            }
         }else if(parsedcommand.get(1).equals("info"))
         {
             if(parsedcommand.size() <= 6)
@@ -273,7 +263,8 @@ public class Client_Access_Point {
                 || parsedcommand.get(1).equals("create") || parsedcommand.get(1).equals("disconnect")
                 || parsedcommand.get(1).equals("login") || parsedcommand.get(1).equals("logout")
                 ||parsedcommand.get(1).equals("undo") || parsedcommand.get(1).equals("redo")
-                || parsedcommand.get(1).equals("service"))
+                || parsedcommand.get(1).equals("service") || parsedcommand.get(1).equals("arrive")
+                || parsedcommand.get(1).equals("depart") || parsedcommand.get(1).equals("borrowed"))
         {
             return parsedcommand;
 
