@@ -20,7 +20,7 @@ public class Refund_Payment_Command implements Command {
      * @param visitorID
      * @param amount
      */
-    public Refund_Payment_Command(Long visitorID, Double amount,boolean isUndo){
+    public Refund_Payment_Command(Double amount,Long visitorID,boolean isUndo){
         this.visitorID = visitorID;
         this.amount = amount;
         this.isUndo = isUndo;
@@ -30,12 +30,12 @@ public class Refund_Payment_Command implements Command {
     public String execute() {
         try {
             if (this.isUndo) {
-                Pay_Fine_Command p = new Pay_Fine_Command(this.visitorID,this.amount,false);
+                Pay_Fine_Command p = new Pay_Fine_Command(this.amount,this.visitorID,false);
                 Memento m = new Memento(p);
                 UndoRedoCaretaker.getCaretaker().getRedoStack().add(m);
             }
             else {
-                Pay_Fine_Command p = new Pay_Fine_Command(this.visitorID,this.amount,true);
+                Pay_Fine_Command p = new Pay_Fine_Command(this.amount,this.visitorID,true);
                 Memento m = new Memento(p);
                 UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
             }
