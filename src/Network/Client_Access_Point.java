@@ -296,7 +296,7 @@ public class Client_Access_Point {
     public Command ConcreteCommand(ArrayList parsedcommand) throws Exception
     {
         Command cmd;
-        ArrayList arraylistparameter = new ArrayList<>();
+        ArrayList arraylistparameter;
         Long visitorID = 0L;
         HashMap<Integer,Account> connections = LBMS_VisitorKeeper.getActiveConnections();
         if(parsedcommand.get(0).equals("connect")) {

@@ -121,9 +121,9 @@ public class LBMS_VisitorKeeper
     public String beginVisit(Long visitorID) throws Exception
     {
         String time = LBMS_StatisticsKeeper.Get_Time();
-        if(!LBMS_StatisticsKeeper.getIsopen(LBMS_StatisticsKeeper.Get_Time())){
-            throw new Exception("Library is currently closed.");
-        }
+       // if(!LBMS_StatisticsKeeper.getIsopen(LBMS_StatisticsKeeper.Get_Time())){
+         //   throw new Exception("Library is currently closed.");
+        //}
         if(this.visitorRegistry.containsKey(visitorID))
         {
             if(! this.activeVisitor.containsKey(visitorID)) {
@@ -396,14 +396,19 @@ public class LBMS_VisitorKeeper
      */
     public void loginAccount(Integer clientID, String username, String password) throws Exception
     {
-
+        String errormessage;
         if(!activeConnections.containsKey(clientID))
         {
-            String errormessage = clientID + ",<invalid-client-id>;";
+            errormessage = clientID + ",<invalid-client-id>;";
             throw new Exception(errormessage);
         }
+
         for( Integer key: activeConnections.keySet())
         {
+            if(activeAccounts.keySet().size() == 0){
+                errormessage = clientID + ",bad-username-or-password;";
+                throw new Exception(errormessage);
+            }
             if(key.equals(clientID))
             {
                 for (String keys : activeAccounts.keySet())
@@ -415,11 +420,14 @@ public class LBMS_VisitorKeeper
                             System.out.println(clientID + ",login,success;");
                         }else
                         {
-                            System.out.println(clientID + ",bad-username-or-password;");
+                            errormessage = clientID + ",bad-username-or-password;";
+                            throw new Exception(errormessage);
                         }
                     }else
                     {
-                        System.out.println(clientID + ",bad-username-or-password;");
+                        errormessage = clientID + ",bad-username-or-password;";
+                        throw new Exception(errormessage);
+
                     }
                 }
             }

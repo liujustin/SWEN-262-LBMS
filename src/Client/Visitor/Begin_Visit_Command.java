@@ -14,7 +14,6 @@ public class Begin_Visit_Command implements Command {
         this.visitorID = visitorID;
         this.isUndo = isUndo;
     }
-
     @Override
     public String execute() {
         try {
