@@ -375,42 +375,42 @@ public class Client_Access_Point {
                     cmd = new CreateAccount_Command(Integer.parseInt(parsedcommand.get(0).toString()), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), Integer.parseInt(parsedcommand.get(4).toString()), Long.parseLong(parsedcommand.get(5).toString()));
                     break;
                 case "register":
-                    cmd = new Register_Command(parsedcommand.get(1).toString(), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString());
+                    cmd = new Register_Command(parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), parsedcommand.get(5).toString());
                     break;
                 case "arrive":
-                    cmd = new Begin_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()), false);
+                    cmd = new Begin_Visit_Command(Long.parseLong(parsedcommand.get(2).toString()), false);
                     break;
                 case "depart":
-                    cmd = new End_Visit_Command(Long.parseLong(parsedcommand.get(1).toString()), false);
+                    cmd = new End_Visit_Command(Long.parseLong(parsedcommand.get(3).toString()), false);
                     break;
                 case "info":
                     cmd = new Book_Search_Command(parsedcommand);
                     break;
                 case "borrow":
-                    cmd = new Borrow_Command(Long.parseLong(parsedcommand.get(1).toString()), (ArrayList) parsedcommand.get(2), false);
+                    cmd = new Borrow_Command(Long.parseLong(parsedcommand.get(2).toString()), (ArrayList) parsedcommand.get(3), false);
                     break;
                 case "borrowed":
-                    cmd = new Find_Borrowed_Command(Long.parseLong(parsedcommand.get(1).toString()));
+                    cmd = new Find_Borrowed_Command(Long.parseLong(parsedcommand.get(2).toString()));
                     break;
                 case "return":
-                    cmd = new Return_Command(Long.parseLong(parsedcommand.get(1).toString()), (ArrayList) parsedcommand.get(2), false);
+                    cmd = new Return_Command(Long.parseLong(parsedcommand.get(2).toString()), (ArrayList) parsedcommand.get(3), false);
                     break;
                 case "pay":
-                    cmd = new Pay_Fine_Command(Long.parseLong(parsedcommand.get(1).toString()), Double.parseDouble(parsedcommand.get(2).toString()), false);
+                    cmd = new Pay_Fine_Command(Long.parseLong(parsedcommand.get(2).toString()), Double.parseDouble(parsedcommand.get(3).toString()), false);
                     break;
                 case "search":
                     cmd = new Book_Store_Command(parsedcommand);
                     break;
                 case "buy":
-                    cmd = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(1).toString()), (ArrayList) parsedcommand.get(2), false);
+                    cmd = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(2).toString()), (ArrayList) parsedcommand.get(3), false);
                     break;
                 case "advance":
-                    int day = Integer.parseInt(parsedcommand.get(1).toString());
+                    int day = Integer.parseInt(parsedcommand.get(2).toString());
                     int hour;
-                    if (parsedcommand.size() < 3)
+                    if (parsedcommand.size() < 4)
                         hour = 0;
                     else
-                        hour = Integer.parseInt(parsedcommand.get(2).toString());
+                        hour = Integer.parseInt(parsedcommand.get(3).toString());
 
                     cmd = new Advance_Time_Command(day, hour);
                     break;
