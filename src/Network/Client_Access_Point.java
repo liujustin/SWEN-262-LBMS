@@ -218,14 +218,14 @@ public class Client_Access_Point {
         {
             if(parsedcommand.size() < 3)
             {
-                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {amount};";
+                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {amount};";
                 throw new Exception(errormessage);
             }
         }else if(parsedcommand.get(1).equals("search"))
         {
             if(parsedcommand.size() < 3)
             {
-                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {title};";
+                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {title};";
                 throw new Exception(errormessage);
             }
         }else if(parsedcommand.get(1).equals("buy"))
@@ -233,7 +233,7 @@ public class Client_Access_Point {
             if(parsedcommand.size() < 3)
             {
                 commandsize = parsedcommand.size();
-                errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {";
+                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {";
                 while(commandsize < 3)
                 {
                     if(commandsize == 1)
@@ -257,11 +257,62 @@ public class Client_Access_Point {
                 throw new Exception(errormessage);
             }
         }
+        else if(parsedcommand.get(1).equals("create")){
+            commandsize = parsedcommand.size();
+            errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {";
+            while(commandsize < 6)
+            {
+                if(commandsize == 2)
+                {
+                    errormessage += "username,";
+                    commandsize++;
+                }
+                if(commandsize == 3)
+                {
+                    errormessage += "password,";
+                    commandsize++;
+                }
+                if(commandsize == 4)
+                {
+                    errormessage += "role,";
+                    commandsize++;
+                }
+                if(commandsize == 5)
+                {
+                    errormessage += "visitor ID};";
+                    commandsize++;
+                }
+            }
+            throw new Exception(errormessage);
+        }
+        else if(parsedcommand.get(1).equals("login")){
+            commandsize = parsedcommand.size();
+            errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {";
+            while(commandsize < 4)
+            {
+                if(commandsize == 2)
+                {
+                    errormessage += "username,";
+                    commandsize++;
+                }
+                if(commandsize == 3)
+                {
+                    errormessage += "password};";
+                    commandsize++;
+                }
+            }
+            throw new Exception(errormessage);
+        }
+        else if(parsedcommand.get(1).equals("service")){
+            errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {info-service};";
+
+            throw new Exception(errormessage);
+        }
+
         else if(parsedcommand.get(1).equals("datetime") || parsedcommand.get(1).equals("shutdown")
                 || parsedcommand.get(1).equals("report") || parsedcommand.get(0).equals("connect")
-                || parsedcommand.get(1).equals("create") || parsedcommand.get(1).equals("disconnect")
-                || parsedcommand.get(1).equals("login") || parsedcommand.get(1).equals("logout")
-                ||parsedcommand.get(1).equals("undo") || parsedcommand.get(1).equals("redo")
+                || parsedcommand.get(1).equals("disconnect") || parsedcommand.get(1).equals("logout")
+                || parsedcommand.get(1).equals("undo") || parsedcommand.get(1).equals("redo")
                 || parsedcommand.get(1).equals("service") || parsedcommand.get(1).equals("arrive")
                 || parsedcommand.get(1).equals("depart") || parsedcommand.get(1).equals("borrowed"))
         {
