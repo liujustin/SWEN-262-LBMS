@@ -3,11 +3,13 @@ package GUI;
 import Client.Visitor.Begin_Visit_Command;
 import Client.Visitor.End_Visit_Command;
 import Client.Visitor.LBMS_VisitorKeeper;
+import Time.Advance_Time_Command;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
@@ -40,6 +42,8 @@ public class Connect_View extends Application{
         btn3.setText("SearchToBuy");
         Button btn4 = new Button();
         btn4.setText("Arrive");
+        Button btn5 = new Button();
+        btn5.setText("Advance");
         VBox client = new VBox();
         Label clientText = new Label();
         Label visitorText = new Label();
@@ -48,6 +52,7 @@ public class Connect_View extends Application{
         client.maxWidth(Double.MAX_VALUE);
         btn3.setDisable(true);
         btn4.setDisable(true);
+        btn5.setDisable(true);
         visitorTextField.setDisable(true);
         Button depart = new Button("Depart");
 
@@ -66,6 +71,7 @@ public class Connect_View extends Application{
                 clientID = Integer.parseInt(clientMessage.split(",|\\;")[1]);
                 btn3.setDisable(false);
                 btn4.setDisable(false);
+                btn5.setDisable(false);
                 visitorTextField.setDisable(false);
                 client.getChildren().addAll(clientText);
             }
@@ -81,7 +87,6 @@ public class Connect_View extends Application{
                 finally {
                     restart(primaryStage);
                 }
-
             }
         });
         btn3.setOnAction(new EventHandler<ActionEvent>() {
@@ -101,15 +106,12 @@ public class Connect_View extends Application{
                 Begin_Visit_Command bvc = new Begin_Visit_Command(visitor,false);
                 String result = bvc.execute();
                 String visitorID = result.split(",")[1];
-                for(String s : result.split(",")){
-                    System.out.println(s);
-                }
                 visitorText.setText("Visitor: " + visitorID);
                 visitorText.setDisable(true);
-                depart.setDisable(false);
                 depart.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
+                        depart.setDisable(false);
                         End_Visit_Command evc = new End_Visit_Command(Long.parseLong(visitorID), false);
                         evc.execute();
                         depart.setDisable(true);
@@ -118,7 +120,25 @@ public class Connect_View extends Application{
                 client.getChildren().add(depart);
             }
         });
-        client.getChildren().addAll(btn,btn2,btn3,btn4,visitorTextField,visitorText,clientText);
+        Label advance = new Label("Advance Time");
+        Label days = new Label("Days:");
+        ComboBox daysToAdvance = new ComboBox();
+        for(int i = 0; i < 7; i++)
+            daysToAdvance.getItems().add(i);
+        daysToAdvance.setValue(0);
+        Label hours = new Label("Hours:");
+        final ComboBox hoursToAdd = new ComboBox();
+        for(int i = 0; i < 24; i++)
+            hoursToAdd.getItems().add(i);
+        hoursToAdd.setValue(0);
+        btn5.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Advance_Time_Command atc = new Advance_Time_Command(Integer.parseInt(daysToAdvance.getValue().toString()),Integer.parseInt(hoursToAdd.getValue().toString()));
+                atc.execute();
+            }
+        });
+        client.getChildren().addAll(btn,btn2,btn3,btn4,visitorTextField,visitorText,clientText,advance,days,daysToAdvance,hours,hoursToAdd,btn5);
         root.setLeft(clientBox);
         timeGUI timer = new timeGUI();
         HBox currentTime = timer.start();
