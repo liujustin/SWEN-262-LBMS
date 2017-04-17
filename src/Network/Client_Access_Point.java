@@ -209,7 +209,7 @@ public class Client_Access_Point {
         {
             if(parsedcommand.size() < 4) {
                 ArrayList<String> returntest = (ArrayList) parsedcommand.get(2);
-                if (parsedcommand.size() < 4 && returntest.get(0).length() == 10) {
+                if (returntest.get(0).length() == 10) {
                     errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {id};";
                     throw new Exception(errormessage);
                 }
@@ -296,6 +296,7 @@ public class Client_Access_Point {
     public Command ConcreteCommand(ArrayList parsedcommand) throws Exception
     {
         Command cmd;
+        ArrayList arraylistparameter = new ArrayList<>();
         Long visitorID = 0L;
         HashMap<Integer,Account> connections = LBMS_VisitorKeeper.getActiveConnections();
         if(parsedcommand.get(0).equals("connect")) {
@@ -364,7 +365,18 @@ public class Client_Access_Point {
                     cmd = new Find_Borrowed_Command(visitorID);
                     break;
                 case "return":
-                    cmd = new Return_Command(Long.parseLong(parsedcommand.get(2).toString()), (ArrayList) parsedcommand.get(3), false);
+                    if(parsedcommand.size() < 4) {
+                        arraylistparameter = (ArrayList) parsedcommand.get(2);
+                        for (Integer key : connections.keySet()) {
+                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
+                                visitorID = connections.get(key).getVisitorID();
+                            }
+                        }
+                    }else{
+                        visitorID = Long.parseLong(parsedcommand.get(2).toString());
+                        arraylistparameter = (ArrayList) parsedcommand.get(3);
+                    }
+                    cmd = new Return_Command(visitorID, arraylistparameter, false);
                     break;
                 case "pay":
                     if(parsedcommand.size() < 4) {
