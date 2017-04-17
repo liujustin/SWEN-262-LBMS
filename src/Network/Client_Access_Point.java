@@ -202,7 +202,6 @@ public class Client_Access_Point {
         {
             if(parsedcommand.size() < 3)
             {
-                commandsize = parsedcommand.size();
                 errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {id};";
                 throw new Exception(errormessage);
             }
@@ -224,7 +223,7 @@ public class Client_Access_Point {
             }
         }else if(parsedcommand.get(1).equals("search"))
         {
-            if(parsedcommand.size() < 2)
+            if(parsedcommand.size() < 3)
             {
                 errormessage = "<" + parsedcommand.get(0) + ">, missing parameters, {title};";
                 throw new Exception(errormessage);
@@ -353,13 +352,31 @@ public class Client_Access_Point {
                     cmd = new Borrow_Command(Long.parseLong(parsedcommand.get(2).toString()), (ArrayList) parsedcommand.get(3), false);
                     break;
                 case "borrowed":
-                    cmd = new Find_Borrowed_Command(Long.parseLong(parsedcommand.get(2).toString()));
+                    if(parsedcommand.size() < 3) {
+                        for (Integer key : connections.keySet()) {
+                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
+                                visitorID = connections.get(key).getVisitorID();
+                            }
+                        }
+                    }else{
+                        visitorID = Long.parseLong(parsedcommand.get(2).toString());
+                    }
+                    cmd = new Find_Borrowed_Command(visitorID);
                     break;
                 case "return":
                     cmd = new Return_Command(Long.parseLong(parsedcommand.get(2).toString()), (ArrayList) parsedcommand.get(3), false);
                     break;
                 case "pay":
-                    cmd = new Pay_Fine_Command(Long.parseLong(parsedcommand.get(2).toString()), Double.parseDouble(parsedcommand.get(3).toString()), false);
+                    if(parsedcommand.size() < 4) {
+                        for (Integer key : connections.keySet()) {
+                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
+                                visitorID = connections.get(key).getVisitorID();
+                            }
+                        }
+                    }else{
+                        visitorID = Long.parseLong(parsedcommand.get(3).toString());
+                    }
+                    cmd = new Pay_Fine_Command(Double.parseDouble(parsedcommand.get(2).toString()),visitorID, false);
                     break;
                 case "search":
                     cmd = new Book_Store_Command(parsedcommand);

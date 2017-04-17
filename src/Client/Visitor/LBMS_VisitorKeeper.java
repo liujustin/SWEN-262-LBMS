@@ -293,7 +293,7 @@ public class LBMS_VisitorKeeper
      * @param amount
      * @throws Exception
      */
-    public void payFine(Long visitorID, double amount)throws Exception
+    public void payFine(double amount,Long visitorID)throws Exception
     {
         if (!this.visitorRegistry.containsKey(visitorID)) {
             throw new Exception("pay,invalid-visitor-id;");
@@ -502,7 +502,7 @@ public class LBMS_VisitorKeeper
         }
         else if(activeConnections.containsKey(clientID)){
             activeConnections.remove(clientID);
-            return String.format("%d%n,disconnect",clientID);
+            return String.format("%d,disconnect",clientID);
         }
         else{
             return "";

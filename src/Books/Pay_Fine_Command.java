@@ -20,7 +20,7 @@ public class Pay_Fine_Command implements Command {
      * @param visitorID
      * @param amount
      */
-    public Pay_Fine_Command(Long visitorID, Double amount,boolean isUndo){
+    public Pay_Fine_Command(Double amount,Long visitorID,boolean isUndo){
         this.visitorID = visitorID;
         this.amount = amount;
         this.isUndo = isUndo;
@@ -31,16 +31,16 @@ public class Pay_Fine_Command implements Command {
     public String execute() {
         try {
             if (this.isUndo) {
-                Refund_Payment_Command r = new Refund_Payment_Command(this.visitorID,this.amount,false);
+                Refund_Payment_Command r = new Refund_Payment_Command(this.amount,this.visitorID,false);
                 Memento m = new Memento(r);
                 UndoRedoCaretaker.getCaretaker().getRedoStack().add(m);
             }
             else {
-                Refund_Payment_Command r = new Refund_Payment_Command(this.visitorID,this.amount,true);
+                Refund_Payment_Command r = new Refund_Payment_Command(this.amount,this.visitorID,true);
                 Memento m = new Memento(r);
                 UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
             }
-            visitorKeeper.payFine(this.visitorID,this.amount);
+            visitorKeeper.payFine(this.amount,this.visitorID);
         } catch (Exception e) {
             e.printStackTrace();
         }
