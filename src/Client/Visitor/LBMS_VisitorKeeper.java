@@ -164,13 +164,15 @@ public class LBMS_VisitorKeeper
             Date start = activeVisitor.get(visitorID);
             Date end =  dateFormat.parse(currentTime);
 
-            long difference = start.getTime() - end.getTime();
+            long difference = end.getTime() - start.getTime();
             long hours = difference/hour;
-            long minutes = hours/minute;
-            long seconds = (minutes/second);
+            difference -= hours*hour;
+            long minutes = difference/minute;
+            difference -= minutes*minute;
+            long seconds = (difference/second);
 
             this.activeVisitor.remove(visitorID);
-            String output = ("depart," + visitorID + "," + currentTime + "," + hours + ":" + minutes + ":" + seconds);
+            String output = String.format("depart," + visitorID + "," + currentTime + ",%02d:%02d:%02d",hours,minutes,seconds);
             System.out.print(output);
             visitLength.add(currentTime);
             return output;
