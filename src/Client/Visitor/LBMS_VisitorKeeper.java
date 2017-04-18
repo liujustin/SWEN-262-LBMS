@@ -11,17 +11,19 @@ import java.io.*;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Period;
 import java.util.*;
 
-public class LBMS_VisitorKeeper
+public class LBMS_VisitorKeeper implements Serializable
 {
+    public byte version = 100;
+    public byte count = 0;
     private static final LBMS_VisitorKeeper visitorKeeper = new LBMS_VisitorKeeper();
     private static HashMap<Long, Visitor> visitorRegistry;
     private static HashMap<Long, Date> activeVisitor;
     private static ArrayList<String> visitLength;
     private Long newID = 999999999L;
     private Double finesCollected;
+    private static HashMap<String, Account> activeAccounts = new HashMap<>();
 
     //================================================================================
     // Visitors
@@ -36,6 +38,8 @@ public class LBMS_VisitorKeeper
         this.activeVisitor = new HashMap<>();
 
         this.visitLength = new ArrayList<String>();
+
+        this.activeAccounts = new HashMap<>();
 
         try
         {
@@ -73,6 +77,25 @@ public class LBMS_VisitorKeeper
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+//        try {
+//            FileInputStream fileIn = new FileInputStream("accounts.ser");
+//            ObjectInputStream in = new ObjectInputStream(fileIn);
+//            String tempaccount = (String) in.readObject();
+//            while (tempaccount != null) {
+//                String[] account = tempaccount.split(":");
+//                String username = account[0];
+//                Account user = new Account(account[1],account[2],account[3], Long.parseLong(account[4]));
+//                activeAccounts.put(username,user);
+//                tempaccount = (String) in.readObject();
+//            }
+//            in.close();
+//            fileIn.close();
+//        }catch(IOException i) {
+//            return;
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
     }
 
     public static LBMS_VisitorKeeper getInstance(){
@@ -82,6 +105,7 @@ public class LBMS_VisitorKeeper
     public Double getFinesCollected(){
         return finesCollected;
     }
+
 
     private long average = 0;
 
@@ -121,6 +145,15 @@ public class LBMS_VisitorKeeper
     public static HashMap<Long, Visitor> getVisitorRegistry()
     {
         return visitorRegistry;
+    }
+
+    /**
+     *
+     * @return active accounts
+     */
+    public HashMap<String, Account> getActiveAccounts()
+    {
+        return this.activeAccounts;
     }
 
     /**
@@ -391,7 +424,6 @@ public class LBMS_VisitorKeeper
     // Accounts
     //================================================================================
 
-    private static HashMap<String, Account> activeAccounts = new HashMap<>();
 
     /**
      * This method takes in a username string, a password string, a role (0 for visitor, 1 for employee),
@@ -608,5 +640,19 @@ public class LBMS_VisitorKeeper
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        try {
+            FileOutputStream fileOut = new FileOutputStream("accounts.ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            for(Map.Entry<String, Account> entry : this.getActiveAccounts().entrySet())
+            out.writeObject(entry.getKey() + ":" + entry.getValue().getUsername() + ":" + entry.getValue().getPassword() + ":" +
+                    entry.getValue().getRole() + ":" + entry.getValue().getVisitorID() + "\n");
+            out.flush();
+            out.close();
+            fileOut.close();
+        }catch(IOException i) {
+            i.printStackTrace();
+        }
+
     }
 }
