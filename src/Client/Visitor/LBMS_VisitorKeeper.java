@@ -495,7 +495,7 @@ public class LBMS_VisitorKeeper
         }
         activeConnections.put(tempClient,null);
         if(activeAccounts.size() == 0) {
-            Long visitorID= 2365153268L;
+            Long visitorID= 4561235867L;
             Account newAccount = new Account("admin","admin","employee",visitorID);
             activeAccounts.put(newAccount.getUsername(), newAccount);
         }

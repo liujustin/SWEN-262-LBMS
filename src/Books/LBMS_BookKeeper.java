@@ -139,7 +139,6 @@ public class LBMS_BookKeeper
             }
         }
         System.out.println(String.format("buy,success,%d,\n%s", amount , out));
-        System.out.println(this.purchasedBooks);
     }
     /**
      *
@@ -201,6 +200,7 @@ public class LBMS_BookKeeper
             for (int j = 0; j < SearchForInfo.getLastSearched().size(); j++)
             {
                 visitor.add_book(new Book_Loan(visitor, listofbooks.get(i), 0.0, true, LBMS_StatisticsKeeper.Get_Time(), futDate));
+                break;
             }
         }
 
