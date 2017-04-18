@@ -1,6 +1,6 @@
 package Books;
 
-import Client.Visitor.LBMS_VisitorKeeper;
+import Client.Visitor.Visitor_Operations;
 import Client.Visitor.Memento;
 import Client.Visitor.UndoRedoCaretaker;
 import Network.Command;
@@ -10,7 +10,7 @@ import Network.Command;
  */
 public class Refund_Payment_Command implements Command {
 
-    LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
+    Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
     private Long visitorID;
     private double amount;
     private boolean isUndo;

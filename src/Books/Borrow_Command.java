@@ -3,8 +3,6 @@ package Books;
 import Client.Visitor.Memento;
 import Client.Visitor.UndoRedoCaretaker;
 import Network.Command;
-import Network.Main;
-import Client.Visitor.Visitor;
 
 import java.util.ArrayList;
 
@@ -13,7 +11,7 @@ import java.util.ArrayList;
 //DATE::Feb.25.2017
 public class Borrow_Command implements Command {
 
-     LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
+     Book_Operations bookKeeper = Book_Operations.getInstance();
      private Long visitorID;
      private ArrayList<String> bookISBNS;
      private boolean isUndo;

@@ -2,7 +2,7 @@ package GUI;
 
 import Client.Visitor.Begin_Visit_Command;
 import Client.Visitor.End_Visit_Command;
-import Client.Visitor.LBMS_VisitorKeeper;
+import Client.Visitor.Visitor_Operations;
 import Time.Advance_Time_Command;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -41,7 +41,7 @@ public class Connect_View extends Application{
     public void start(Stage primaryStage) {
         visitorNumber = null;
         Stage stage = primaryStage;
-        LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
+        Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
         BorderPane root = new BorderPane();
         primaryStage.setTitle("LBMS");
         Button btn = new Button();

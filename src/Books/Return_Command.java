@@ -1,10 +1,9 @@
 package Books;
 
-import Client.Visitor.LBMS_VisitorKeeper;
+import Client.Visitor.Visitor_Operations;
 import Client.Visitor.Memento;
 import Client.Visitor.UndoRedoCaretaker;
 import Network.Command;
-import Network.Main;
 
 import java.util.ArrayList;
 
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 //AUTHOR::Ryan Connors, Adam Nowak
 //DATE::Feb.25.2017
 public class Return_Command implements Command {
-    LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
+    Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
     private Long visitor_ID;
     private ArrayList<String> ISBNS;
     private boolean isUndo;

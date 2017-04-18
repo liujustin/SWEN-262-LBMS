@@ -1,13 +1,12 @@
 package Client.Visitor;
 
 import Network.Command;
-import Network.Main;
 
 //FILE::Client.Visitor.Register_Command.java
 //AUTHOR::Ryan Connors, Adam Nowak
 //DATE::Feb.25.2017
 public class Register_Command implements Command {
-    LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
+    Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
     private String last;
     private String first;
     private String address;

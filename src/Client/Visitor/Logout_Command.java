@@ -7,7 +7,7 @@ package Client.Visitor;
 import Network.Command;
 
 public class Logout_Command implements Command{
-    LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
+    Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
     private int clientID;
 
     public Logout_Command(int clientID){
