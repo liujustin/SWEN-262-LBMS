@@ -399,18 +399,18 @@ public class LBMS_VisitorKeeper
      */
     public void loginAccount(Integer clientID, String username, String password) throws Exception
     {
-        String errormessage;
+        String outputmessage = "";
         if(!activeConnections.containsKey(clientID))
         {
-            errormessage = clientID + ",<invalid-client-id>;";
-            throw new Exception(errormessage);
+            outputmessage = clientID + ",<invalid-client-id>;";
+            throw new Exception(outputmessage);
         }
 
         for( Integer key: activeConnections.keySet())
         {
             if(activeAccounts.keySet().size() == 0){
-                errormessage = clientID + ",bad-username-or-password;";
-                throw new Exception(errormessage);
+                outputmessage = clientID + ",bad-username-or-password;";
+                throw new Exception(outputmessage);
             }
             if(key.equals(clientID))
             {
@@ -420,18 +420,14 @@ public class LBMS_VisitorKeeper
                         if (password.equals(activeAccounts.get(keys).getPassword()))
                         {
                             activeConnections.put(key, activeAccounts.get(keys));
+                            outputmessage = clientID + ",login,success;";
                             System.out.println(clientID + ",login,success;");
-                        }else
-                        {
-                            errormessage = clientID + ",bad-username-or-password;";
-                            throw new Exception(errormessage);
                         }
-                    }else
-                    {
-                        errormessage = clientID + ",bad-username-or-password;";
-                        throw new Exception(errormessage);
-
                     }
+                }
+                if(outputmessage.equals("")){
+                    outputmessage = clientID + ",bad-username-or-password;";
+                    throw new Exception(outputmessage);
                 }
             }
         }
