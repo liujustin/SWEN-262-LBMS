@@ -56,7 +56,8 @@ public class Visitor_Operations
         try{
             Scanner loadFines = new Scanner(new File("fines.log"));
 
-            this.finesCollected = Double.parseDouble(loadFines.nextLine());
+            if(loadFines.hasNextLine())
+                this.finesCollected = Double.parseDouble(loadFines.nextLine());
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
