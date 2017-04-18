@@ -1,5 +1,6 @@
 package Network;
 
+import GUI.Connect_View;
 import GUI.Graphics_View;
 
 import java.util.ArrayList;
@@ -89,7 +90,8 @@ public class Main
 
             main.startLoop(args, null);
         }
-        else
-            Graphics_View.load(args, main);
+        else if (args[0].equals("gui")) {
+            Connect_View.main(args);
+        }
     }
 }

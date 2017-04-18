@@ -61,7 +61,7 @@ public class Book_Search_Command implements Command
                 break;
             case 4: searchedBooks = SearchForInfo.search(this.title, this.authors, this.isbn, this.publisher, bookKeeper.getPurchasedBooks());
                 break;
-            case 5: searchedBooks = SearchToBuy.search(this.title, this.authors, this.isbn, this.publisher, this.sort_order,  bookKeeper.getBooksForPurchase());
+            case 5: searchedBooks = SearchForInfo.search(this.title, this.authors, this.isbn, this.publisher, this.sort_order, bookKeeper.getPurchasedBooks());
                 break;
         }
 

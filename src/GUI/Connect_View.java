@@ -24,12 +24,21 @@ public class Connect_View extends Application{
 
     private String clientMessage;
     private Integer clientID;
+    Stage prevStage;
+    String visitorNumber;
+
 
     public static void main(String[] args) {
         launch(args);
     }
+
+    public void setPrevStage(Stage stage){
+        prevStage = stage;
+    }
+
     @Override
     public void start(Stage primaryStage) {
+        visitorNumber = null;
         Stage stage = primaryStage;
         LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
         BorderPane root = new BorderPane();
@@ -43,7 +52,11 @@ public class Connect_View extends Application{
         Button btn4 = new Button();
         btn4.setText("Arrive");
         Button btn5 = new Button();
-        btn5.setText("Advance");
+        btn5.setText("SearchToBorrow");
+        Button borrowed = new Button();
+        borrowed.setText("Borrowed");
+        Button btn6 = new Button();
+        btn6.setText("Advance");
         VBox client = new VBox();
         Label clientText = new Label();
         Label visitorText = new Label();
@@ -53,14 +66,21 @@ public class Connect_View extends Application{
         btn3.setDisable(true);
         btn4.setDisable(true);
         btn5.setDisable(true);
+        btn6.setDisable(true);
         visitorTextField.setDisable(true);
         Button depart = new Button("Depart");
-
+        VBox mainBox = new VBox();
         VBox visitorBox = new VBox();
+        VBox borrowBox = new VBox();
         VBox clientBox = client;
+        VBox borrowedBox = new VBox();
+        timeGUI timer = new timeGUI();
+        HBox currentTime = timer.start();
 
-        Scene scene1 = new Scene(visitorBox);
-//        Scene scene2 = new Scene(visitorBox);
+        Scene home = new Scene(mainBox);
+        Scene scene1 = new Scene(visitorBox,1700,1000);
+        Scene scene2 = new Scene(borrowBox,1700,1000);
+        Scene scene3 = new Scene(borrowedBox,1700,1000);
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -71,7 +91,7 @@ public class Connect_View extends Application{
                 clientID = Integer.parseInt(clientMessage.split(",|\\;")[1]);
                 btn3.setDisable(false);
                 btn4.setDisable(false);
-                btn5.setDisable(false);
+                btn6.setDisable(false);
                 visitorTextField.setDisable(false);
                 client.getChildren().addAll(clientText);
             }
@@ -81,6 +101,7 @@ public class Connect_View extends Application{
             public void handle(ActionEvent event) {
                 try {
                     visitorKeeper.disconnectConnection(clientID);
+                    visitorKeeper.endVisit(Long.parseLong(visitorNumber));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -95,31 +116,69 @@ public class Connect_View extends Application{
                 Book_Search_View bsv = new Book_Search_View();
                 GridPane gp = bsv.order(clientID);
                 gp.add(clientBox,0,1);
-                visitorBox.getChildren().addAll(gp);
+                if(visitorBox.getChildren().contains(gp)){
+
+                }
+                else{
+                    visitorBox.getChildren().addAll(currentTime, gp);
+                }
                 stage.setScene(scene1);
             }
         });
         btn4.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                String visitorID;
+                btn3.setDisable(false);
                 long visitor = Long.parseLong(visitorTextField.getText());
                 Begin_Visit_Command bvc = new Begin_Visit_Command(visitor,false);
                 String result = bvc.execute();
-                String visitorID = result.split(",")[1];
-                visitorText.setText("Visitor: " + visitorID);
-                visitorText.setDisable(true);
-                depart.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
-                    public void handle(ActionEvent event) {
-                        depart.setDisable(false);
-                        End_Visit_Command evc = new End_Visit_Command(Long.parseLong(visitorID), false);
-                        evc.execute();
-                        depart.setDisable(true);
-                    }
-                });
-                client.getChildren().add(depart);
+                String[] visitorString = result.split(",");
+                if (visitorString.length == 1){
+                    visitorID = visitorString[0];
+                    visitorText.setText(visitorID);
+                }
+                else {
+                    visitorID = visitorString[1];
+                    visitorNumber = visitorID;
+                    visitorText.setText("Visitor: " + visitorID);
+                    visitorText.setDisable(true);
+                    btn5.setDisable(false);
+                    depart.setOnAction(new EventHandler<ActionEvent>() {
+                        @Override
+                        public void handle(ActionEvent event) {
+                            depart.setDisable(false);
+                            End_Visit_Command evc = new End_Visit_Command(Long.parseLong(visitorID), false);
+                            evc.execute();
+                            depart.setDisable(true);
+                        }
+                    });
+                    client.getChildren().add(depart);
+                }
             }
         });
+        btn5.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                setPrevStage(stage);
+                btn3.setDisable(false);
+                Book_Info_View ifv = new Book_Info_View();
+                GridPane gp = ifv.order(visitorNumber);
+                gp.add(clientBox,0,3);
+                borrowBox.getChildren().addAll(currentTime, gp);
+                stage.setScene(scene2);
+            }
+        });
+
+        borrowed.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                setPrevStage(stage);
+                stage.setScene(scene3);
+
+            }
+        });
+
         Label advance = new Label("Advance Time");
         Label days = new Label("Days:");
         ComboBox daysToAdvance = new ComboBox();
@@ -131,19 +190,17 @@ public class Connect_View extends Application{
         for(int i = 0; i < 24; i++)
             hoursToAdd.getItems().add(i);
         hoursToAdd.setValue(0);
-        btn5.setOnAction(new EventHandler<ActionEvent>() {
+        btn6.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 Advance_Time_Command atc = new Advance_Time_Command(Integer.parseInt(daysToAdvance.getValue().toString()),Integer.parseInt(hoursToAdd.getValue().toString()));
                 atc.execute();
             }
         });
-        client.getChildren().addAll(btn,btn2,btn3,btn4,visitorTextField,visitorText,clientText,advance,days,daysToAdvance,hours,hoursToAdd,btn5);
+        client.getChildren().addAll(currentTime,btn,btn2,btn3,btn4,visitorTextField,btn5,visitorText,clientText,advance,days,daysToAdvance,hours,hoursToAdd,btn6);
         root.setLeft(clientBox);
-        timeGUI timer = new timeGUI();
-        HBox currentTime = timer.start();
-        root.setBottom(currentTime);
-        primaryStage.setScene(new Scene(root, 300, 250));
+        root.setTop(currentTime);
+        primaryStage.setScene(new Scene(root, 3000, 3000));
         primaryStage.show();
 
     }

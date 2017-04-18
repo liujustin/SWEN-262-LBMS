@@ -25,14 +25,14 @@ public class Book_Store_Command implements Command
         this.authors = new ArrayList<>();
         try
         {
-            this.title = (String) params.get(1);
+            this.title = (String) params.get(2);
 
-            for(Object s: (ArrayList)params.get(2))
+            for(Object s: (ArrayList)params.get(3))
                 this.authors.add((String) s);
 
-            this.isbn = (String) params.get(3);
-            this.publisher = (String) params.get(4);
-            this.sort_order = (String) params.get(5);
+            this.isbn = (String) params.get(4);
+            this.publisher = (String) params.get(5);
+            this.sort_order = (String) params.get(6);
             this.paramCount = params.size();
         }
         catch(Exception e){this.paramCount = params.size();}
@@ -53,7 +53,7 @@ public class Book_Store_Command implements Command
     public String execute()
     {
         ArrayList<Book> searchedBooks = new ArrayList<>();
-        switch(paramCount-1)
+        switch(paramCount-2)
         {
             case 1: searchedBooks = SearchToBuy.search(this.title, bookKeeper.getBooksForPurchase());
                 break;

@@ -83,7 +83,7 @@ public class SearchToBuy
 
     public static ArrayList<Book> search(String title, ArrayList<String> authors, String isbn, String publisher, String sortOrder, HashMap<String, Book> booksForPurchase)
     {
-        ArrayList<Book> tempBookBuffer = search(title, authors, isbn, publisher,booksForPurchase);
+        ArrayList<Book> tempBookBuffer = search(title, authors, isbn, publisher, booksForPurchase);
         ArrayList<Book> searchedBooks = new ArrayList<>();
 
         for(Book b: tempBookBuffer) {
