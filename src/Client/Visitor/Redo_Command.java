@@ -2,9 +2,9 @@ package Client.Visitor;
 
 import Network.Command;
 
-/**
- * Created by Ryan on 4/15/2017.
- */
+//FILE::Redo_Command.java
+//AUTHOR::Ryan Connors
+//DATE::Apr.15.2017
 public class Redo_Command implements Command{
     private Memento command;
 

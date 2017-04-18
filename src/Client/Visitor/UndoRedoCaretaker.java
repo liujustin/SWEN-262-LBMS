@@ -3,9 +3,9 @@ package Client.Visitor;
 import java.util.Stack;
 import Network.Command;
 
-/**
- * Created by Ryan on 4/12/2017.
- */
+//FILE::UndoRedoCaretaker.java
+//AUTHOR::Ryan Connors
+//DATE::Apr.12.2017
 public class UndoRedoCaretaker {
     private Stack<Memento> UndoStack;
     private Stack<Memento> RedoStack;

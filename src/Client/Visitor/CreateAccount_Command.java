@@ -2,9 +2,9 @@ package Client.Visitor;
 
 import Network.Command;
 
-/**
- * Created by adamn on 4/16/2017.
- */
+//FILE::CreateAccount_Command.java
+//AUTHOR::Adam Nowak
+//DATE::Apr.16.2017
 public class CreateAccount_Command implements Command{
     LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
     private int clientID;

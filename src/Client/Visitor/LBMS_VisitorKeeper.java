@@ -385,7 +385,7 @@ public class LBMS_VisitorKeeper
                 activeConnections.put(key,newAccount);
             }
         }
-        System.out.println("create,success");
+        System.out.println("create,success;");
         activeAccounts.put(newAccount.getUsername(),newAccount);
     }
 

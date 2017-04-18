@@ -1,8 +1,8 @@
 package Client.Visitor;
 
-/**
- * Created by Ryan on 4/7/2017.
- */
+//FILE::Account.java
+//AUTHOR::Ryan Connors
+//DATE::Apr.7.2017
 public class Account {
 
     LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();

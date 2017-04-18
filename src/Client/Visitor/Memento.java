@@ -1,9 +1,9 @@
 package Client.Visitor;
 
 import Network.Command;
-/**
- * Created by Ryan on 4/12/2017.
- */
+//FILE::Memento.java
+//AUTHOR::Ryan Connors
+//DATE::Apr.12.2017
 public class Memento {
     private Command state;
 
