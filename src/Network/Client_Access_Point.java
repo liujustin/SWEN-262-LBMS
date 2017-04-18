@@ -258,56 +258,55 @@ public class Client_Access_Point {
                 throw new Exception(errormessage);
             }
         }
-        else if(parsedcommand.get(1).equals("create")){
+        else if(parsedcommand.get(1).equals("create")) {
             commandsize = parsedcommand.size();
-            errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {";
-            while(commandsize < 6)
-            {
-                if(commandsize == 2)
-                {
-                    errormessage += "username,";
-                    commandsize++;
+            if (commandsize < 6) {
+                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {";
+                while (commandsize < 6) {
+                    if (commandsize == 2) {
+                        errormessage += "username,";
+                        commandsize++;
+                    }
+                    if (commandsize == 3) {
+                        errormessage += "password,";
+                        commandsize++;
+                    }
+                    if (commandsize == 4) {
+                        errormessage += "role,";
+                        commandsize++;
+                    }
+                    if (commandsize == 5) {
+                        errormessage += "visitor ID};";
+                        commandsize++;
+                    }
                 }
-                if(commandsize == 3)
-                {
-                    errormessage += "password,";
-                    commandsize++;
-                }
-                if(commandsize == 4)
-                {
-                    errormessage += "role,";
-                    commandsize++;
-                }
-                if(commandsize == 5)
-                {
-                    errormessage += "visitor ID};";
-                    commandsize++;
-                }
+                throw new Exception(errormessage);
             }
-            throw new Exception(errormessage);
         }
-        else if(parsedcommand.get(1).equals("login")){
+        else if(parsedcommand.get(1).equals("login")) {
             commandsize = parsedcommand.size();
-            errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {";
-            while(commandsize < 4)
-            {
-                if(commandsize == 2)
-                {
-                    errormessage += "username,";
-                    commandsize++;
+            if (commandsize < 4) {
+                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {";
+                while (commandsize < 4) {
+                    if (commandsize == 2) {
+                        errormessage += "username,";
+                        commandsize++;
+                    }
+                    if (commandsize == 3) {
+                        errormessage += "password};";
+                        commandsize++;
+                    }
                 }
-                if(commandsize == 3)
-                {
-                    errormessage += "password};";
-                    commandsize++;
-                }
+                throw new Exception(errormessage);
             }
-            throw new Exception(errormessage);
         }
-        else if(parsedcommand.get(1).equals("service")){
-            errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {info-service};";
+        else if(parsedcommand.get(1).equals("service")) {
+            commandsize = parsedcommand.size();
+            if (commandsize < 3) {
+                errormessage = "<" + parsedcommand.get(1) + ">, missing parameters, {info-service};";
 
-            throw new Exception(errormessage);
+                throw new Exception(errormessage);
+            }
         }
 
         else if(parsedcommand.get(1).equals("datetime") || parsedcommand.get(1).equals("shutdown")
@@ -371,12 +370,36 @@ public class Client_Access_Point {
                     cmd = new Logout_Command(Integer.parseInt(parsedcommand.get(0).toString()));
                     break;
                 case "create":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     cmd = new CreateAccount_Command(Integer.parseInt(parsedcommand.get(0).toString()), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), Long.parseLong(parsedcommand.get(5).toString()));
                     break;
                 case "register":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     cmd = new Register_Command(parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), parsedcommand.get(5).toString());
                     break;
                 case "arrive":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null ){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     if(parsedcommand.size() < 3) {
                         for (Integer key : connections.keySet()) {
                             if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
@@ -389,6 +412,14 @@ public class Client_Access_Point {
                     cmd = new Begin_Visit_Command(visitorID, false);
                     break;
                 case "depart":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null ){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     if(parsedcommand.size() < 3) {
                         for (Integer key : connections.keySet()) {
                             if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
@@ -401,12 +432,36 @@ public class Client_Access_Point {
                     cmd = new End_Visit_Command(visitorID, false);
                     break;
                 case "info":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null ){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     cmd = new Book_Search_Command(parsedcommand);
                     break;
                 case "borrow":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null ){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     cmd = new Borrow_Command(Long.parseLong(parsedcommand.get(2).toString()), (ArrayList) parsedcommand.get(3), false);
                     break;
                 case "borrowed":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     if(parsedcommand.size() < 3) {
                         for (Integer key : connections.keySet()) {
                             if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
@@ -419,6 +474,14 @@ public class Client_Access_Point {
                     cmd = new Find_Borrowed_Command(visitorID);
                     break;
                 case "return":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     if(parsedcommand.size() < 4) {
                         arraylistparameter = (ArrayList) parsedcommand.get(2);
                         for (Integer key : connections.keySet()) {
@@ -433,6 +496,14 @@ public class Client_Access_Point {
                     cmd = new Return_Command(visitorID, arraylistparameter, false);
                     break;
                 case "pay":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     if(parsedcommand.size() < 4) {
                         for (Integer key : connections.keySet()) {
                             if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
@@ -445,12 +516,36 @@ public class Client_Access_Point {
                     cmd = new Pay_Fine_Command(Double.parseDouble(parsedcommand.get(2).toString()),visitorID, false);
                     break;
                 case "search":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     cmd = new Book_Store_Command(parsedcommand);
                     break;
                 case "buy":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     cmd = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(2).toString()), (ArrayList) parsedcommand.get(3), false);
                     break;
                 case "advance":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     int day = Integer.parseInt(parsedcommand.get(2).toString());
                     int hour;
                     if (parsedcommand.size() < 4)
@@ -461,9 +556,25 @@ public class Client_Access_Point {
                     cmd = new Advance_Time_Command(day, hour);
                     break;
                 case "datetime":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     cmd = new Current_Time_Command();
                     break;
                 case "report":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     int days;
                     if (parsedcommand.size() < 2) {
                         days = 100000;
@@ -479,6 +590,14 @@ public class Client_Access_Point {
                     cmd = new Redo_Command();
                     break;
                 case "shutdown":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     cmd = new Shut_Down_Command();
                     break;
                 default:

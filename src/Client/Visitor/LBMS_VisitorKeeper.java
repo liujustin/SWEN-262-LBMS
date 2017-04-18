@@ -454,7 +454,7 @@ public class LBMS_VisitorKeeper
                 break;
             }
         }
-        System.out.println(clientID + ",logout;");
+        System.out.println(clientID + ",logout,success;");
     }
 
     //================================================================================
@@ -491,6 +491,11 @@ public class LBMS_VisitorKeeper
             startConnection();
         }
         activeConnections.put(tempClient,null);
+        if(activeAccounts.size() == 0) {
+            Long visitorID= 2365153268L;
+            Account newAccount = new Account("admin","admin","employee",visitorID);
+            activeAccounts.put(newAccount.getUsername(), newAccount);
+        }
         return String.format("connect,%d;\n",tempClient);
     }
 
