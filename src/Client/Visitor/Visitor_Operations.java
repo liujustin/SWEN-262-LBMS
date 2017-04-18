@@ -13,12 +13,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class LBMS_VisitorKeeper implements Serializable
 public class Visitor_Operations
 {
     public byte version = 100;
     public byte count = 0;
-    private static final LBMS_VisitorKeeper visitorKeeper = new LBMS_VisitorKeeper();
     private static final Visitor_Operations visitorKeeper = new Visitor_Operations();
     private static HashMap<Long, Visitor> visitorRegistry;
     private static HashMap<Long, Date> activeVisitor;
