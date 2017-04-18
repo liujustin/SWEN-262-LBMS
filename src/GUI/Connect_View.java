@@ -15,10 +15,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-import java.util.ArrayList;
 
 /**
- * Created by DemonicVampire on 4/17/17.
+ * Created by Justin on 4/17/17.
  */
 public class Connect_View extends Application{
 
@@ -114,7 +113,7 @@ public class Connect_View extends Application{
             @Override
             public void handle(ActionEvent event) {
                 Book_Search_View bsv = new Book_Search_View();
-                GridPane gp = bsv.order(clientID);
+                GridPane gp = bsv.order();
                 gp.add(clientBox,0,1);
                 if(visitorBox.getChildren().contains(gp)){
 
@@ -174,8 +173,13 @@ public class Connect_View extends Application{
             @Override
             public void handle(ActionEvent event) {
                 setPrevStage(stage);
+                Borrowed_View bv = new Borrowed_View();
+                GridPane gp = null;
+                cleanup();
+                gp = bv.order(Long.parseLong(visitorNumber));
+                gp.add(clientBox,0,0);
+                borrowedBox.getChildren().addAll(currentTime, gp);
                 stage.setScene(scene3);
-
             }
         });
 
@@ -197,7 +201,7 @@ public class Connect_View extends Application{
                 atc.execute();
             }
         });
-        client.getChildren().addAll(currentTime,btn,btn2,btn3,btn4,visitorTextField,btn5,visitorText,clientText,advance,days,daysToAdvance,hours,hoursToAdd,btn6);
+        client.getChildren().addAll(currentTime,btn,btn2,btn3,btn4,visitorTextField,borrowed,btn5,visitorText,clientText,advance,days,daysToAdvance,hours,hoursToAdd,btn6);
         root.setLeft(clientBox);
         root.setTop(currentTime);
         primaryStage.setScene(new Scene(root, 3000, 3000));

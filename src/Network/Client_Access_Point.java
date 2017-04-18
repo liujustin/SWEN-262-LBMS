@@ -51,7 +51,8 @@ public class Client_Access_Point {
         String errormessage;
         Object firstindex;
         Object secondindex;
-        ArrayList<Object> thirdindex = new ArrayList<>();
+        Object thirdindex;
+        ArrayList<Object> fourthindex = new ArrayList<>();
 
         //deletes the semicolon at the end of the command
 
@@ -331,15 +332,17 @@ public class Client_Access_Point {
          *  Fixes parsing for buy and return command
          */
         if (parsedcommand.get(1).equals("buy") || parsedcommand.get(1).equals("return")) {
-            firstindex = parsedcommand.get(1);
-            secondindex = parsedcommand.get(2);
+            firstindex = parsedcommand.get(0);
+            secondindex = parsedcommand.get(1);
+            thirdindex = parsedcommand.get(2);
             for (int i = 3; i < parsedcommand.size(); i++) {
-                thirdindex.add(parsedcommand.get(i));
+                fourthindex.add(parsedcommand.get(i));
             }
             parsedcommand.clear();
             parsedcommand.add(firstindex);
             parsedcommand.add(secondindex);
             parsedcommand.add(thirdindex);
+            parsedcommand.add(fourthindex);
         }
         return parsedcommand;
     }

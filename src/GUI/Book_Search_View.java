@@ -28,17 +28,12 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
- * Created by Ryan,Justin on 4/16/2017.
+ * Created by Justin on 4/18/2017.
  */
 public class Book_Search_View extends Connect_View {
-    //private static Main bootInstance;
-    private Stage primaryStage;
-    private Scene primaryScene;
-
-    private static String[] arguments;
 
 
-    public GridPane order(Integer clientID){
+    public GridPane order(){
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER_LEFT);
         grid.setHgap(10);

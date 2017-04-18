@@ -1,19 +1,10 @@
 package GUI;
 
-import Books.Book_Purchase_Command;
-import Books.LBMS_BookKeeper;
-import Books.SearchToBuy;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+import Client.Visitor.LBMS_VisitorKeeper;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -21,10 +12,10 @@ import javafx.scene.text.Text;
 import java.util.ArrayList;
 
 /**
- * Created by DemonicVampire on 4/17/17.
+ * Created by Justin on 4/17/17.
  */
-public class Borrowed_View {
-    public GridPane order(Integer clientID){
+public class Borrowed_View extends Connect_View{
+    public GridPane order(Long visitorID){
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER_LEFT);
         grid.setHgap(10);
@@ -32,8 +23,22 @@ public class Borrowed_View {
         grid.setPadding(new Insets(25, 25, 25, 25));
         Text scenetitle = new Text("Borrowed Books:");
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
-        grid.add(scenetitle, 0, 0, 4, 1);
-
+        grid.add(scenetitle, 1, 0);
+        LBMS_VisitorKeeper visitorKeeper= LBMS_VisitorKeeper.getInstance();
+        String borrowed = null;
+        try {
+            borrowed = visitorKeeper.borrowedBooks(visitorID);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String[] result = borrowed.split("\n");
+        for(int i = 0;i < result.length;i++){
+            Label books = new Label();
+            books.setText(result[i]);
+            grid.add(books,1,i+1);
+        }
+//        String borrowedBooks = result[1].split(",", 2)[1];
+//        System.out.println(borrowedBooks);
 //                LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
 //                SearchToBuy.initializeSearch();
 //                ArrayList result = SearchToBuy.search(title,authorList,isbn, publisher, sortOrder,bookKeeper.getBooksForPurchase());
