@@ -9,6 +9,7 @@ import Time.Time_Operations;
 
 import java.io.*;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -577,25 +578,29 @@ public class Visitor_Operations
      * this function shuts down the system
      *
      */
-    public void shutdown() {
-        try {
+    public void shutdown()
+    {
+        try
+        {
             PrintStream saveState = new PrintStream(new FileOutputStream(new File("visitor.log")));
             saveState.flush();
 
-            for (Visitor v : this.visitorRegistry.values())
+            for(Visitor v : this.visitorRegistry.values())
                 saveState.println(v.toString());
 
-        } catch (FileNotFoundException e) {
+        }catch(FileNotFoundException e)
+        {
             e.printStackTrace();
         }
+    }
 
         /**
-     *
-     * @param args
-     * main function used for testing purposes
-     */
+         *
+         * @param args
+         * main function used for testing purposes
+         */
 
-    public static void main(String[] args)
+    /*public static void main(String[] args)
     {
         Visitor_Operations mainTest = new Visitor_Operations();
 
@@ -621,5 +626,5 @@ public class Visitor_Operations
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }
