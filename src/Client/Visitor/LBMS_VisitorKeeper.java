@@ -197,6 +197,7 @@ public class LBMS_VisitorKeeper
         if (!this.visitorRegistry.containsKey(visitorID)) {
             throw new Exception("return,invalid-visitor-id;");
         }
+        System.out.println(ISBNS);
         for(String isbn : ISBNS){
             if(LBMS_BookKeeper.getInstance().getBookRegistry().containsKey(isbn)){
                 booklist.add(LBMS_BookKeeper.getInstance().getBookRegistry().get(isbn));

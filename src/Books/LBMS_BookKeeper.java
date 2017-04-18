@@ -13,6 +13,8 @@ import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LBMS_BookKeeper
 {
@@ -68,14 +70,15 @@ public class LBMS_BookKeeper
         {
             e.printStackTrace();
         }
-
-        PrintStream purchasedBooksReader;
-        try
-        {
-            purchasedBooksReader = new PrintStream(new FileOutputStream(new File("purchasedBooks.log")));
-        }
-        catch(Exception e)
-        {
+        try{
+            bookListReader = new Scanner(new File("purchasedBooks.log"));
+            while(bookListReader.hasNextLine()){
+                String templine = bookListReader.nextLine();
+                String quantity = bookListReader.nextLine().split("=")[1];
+                String bookObject = templine.split(",")[0];
+                this.getPurchasedBooks().put(this.bookRegistry.get(bookObject),Integer.parseInt(quantity));
+            }
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
@@ -219,8 +222,9 @@ public class LBMS_BookKeeper
             PrintStream saveState = new PrintStream(new FileOutputStream(new File("purchasedBooks.log")));
             saveState.flush();
 
-            for(Map.Entry<Book, Integer> entry:this.purchasedBooks.entrySet())
-                saveState.println(entry.getKey().toString()+":"+entry.getValue());
+            for(Map.Entry<Book, Integer> entry:this.purchasedBooks.entrySet()) {
+                saveState.format(entry.getKey().toString() + "=" + entry.getValue());
+            }
         }
         catch(Exception e)
         {

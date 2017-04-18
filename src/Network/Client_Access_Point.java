@@ -451,7 +451,7 @@ public class Client_Access_Point {
                             }
                         }
                     }
-                    cmd = new Borrow_Command(Long.parseLong(parsedcommand.get(2).toString()), (ArrayList) parsedcommand.get(3), false);
+                    cmd = new Borrow_Command(Long.parseLong(parsedcommand.get(3).toString()), (ArrayList) parsedcommand.get(2), false);
                     break;
                 case "borrowed":
                     for (Integer key : connections.keySet()) {
