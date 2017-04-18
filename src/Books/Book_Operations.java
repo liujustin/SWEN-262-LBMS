@@ -88,34 +88,21 @@ public class Book_Operations
             e.printStackTrace();
         }
     }
-    public void undoBuyBook(Integer quantity, ArrayList<String> ISBNS){
-        //total amount of books that were purchased
-        ArrayList<Book> purchasedbooks = new ArrayList<Book>(bookKeeper.getPurchasedBooks().keySet());
-
-        //list of books that you want removed
-        ArrayList<Book> removedbooks = new ArrayList<Book>();
-
-        //loops through everybook in purchased book and if it is a book that you want to remove, add it to the removedbooks arraylist
-        for(String isbn : ISBNS){
-            for(Book book : purchasedbooks){
-                if(book.getBookID().equals(isbn)){
-                    removedbooks.add(book);
-                    break;
-                }
-            }
-        }
+    public void undoBuyBook(Integer quantity, ArrayList<String> ISBNS)throws Exception
+    {
         // loop through all purchased books and remove those books with corresponding quantity
-        for(Book booksToRemove : removedbooks) {
-            if(getPurchasedBooks().containsKey(booksToRemove)){
-                int bookvalue = getPurchasedBooks().get(booksToRemove).intValue();
-                bookvalue -= quantity;
-                getPurchasedBooks().put(booksToRemove,bookvalue);
-                if(getPurchasedBooks().get(booksToRemove).intValue() == 0){
-                    getPurchasedBooks().remove(booksToRemove);
+        for (Book bookToRemove : SearchToBuy.getLastSearched()) {
+            for(Book purchasedbook : getPurchasedBooks().keySet()) {
+                if (bookToRemove.equals(purchasedbook)) {
+                    int bookvalue = this.purchasedBooks.get(purchasedbook);
+                    bookvalue -= quantity;
+                    this.purchasedBooks.put(bookToRemove, bookvalue);
+                   if (this.purchasedBooks.get(bookToRemove) == 0) {
+                        this.purchasedBooks.remove(purchasedbook);
+                    }
                 }
             }
         }
-        System.out.println("undo,success;");
     }
 
     /**

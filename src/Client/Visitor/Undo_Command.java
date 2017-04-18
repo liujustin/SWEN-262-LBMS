@@ -17,7 +17,7 @@ public class Undo_Command implements Command{
 
     public String execute() {
         this.command.getState().execute();
-        return "undo,success";
+        return "undo,success;";
     }
 
 }
