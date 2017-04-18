@@ -589,7 +589,7 @@ public class Client_Access_Point {
                     if (parsedcommand.size() < 2) {
                         days = 100000;
                     } else {
-                        days = Integer.parseInt(parsedcommand.get(1).toString());
+                        days = Integer.parseInt(parsedcommand.get(2).toString());
                     }
                     cmd = new Statistics_Report_Command(days);
                     break;

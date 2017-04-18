@@ -19,9 +19,9 @@ public class LBMS_VisitorKeeper
     private static final LBMS_VisitorKeeper visitorKeeper = new LBMS_VisitorKeeper();
     private static HashMap<Long, Visitor> visitorRegistry;
     private static HashMap<Long, Date> activeVisitor;
-    private static HashMap<Long, ArrayList<String>> visitorLog;
-    public static ArrayList<String> visitLength = new ArrayList<>();
+    private static ArrayList<String> visitLength;
     private Long newID = 999999999L;
+    private Double finesCollected;
 
     //================================================================================
     // Visitors
@@ -35,7 +35,7 @@ public class LBMS_VisitorKeeper
         //This stores the currently visiting visitors//
         this.activeVisitor = new HashMap<>();
 
-        this.visitorLog = new HashMap<>();
+        this.visitLength = new ArrayList<String>();
 
         try
         {
@@ -53,10 +53,64 @@ public class LBMS_VisitorKeeper
         {
             e.printStackTrace();
         }
+
+        try{
+            Scanner loadFines = new Scanner(new File("fines.log"));
+
+            this.finesCollected = Double.parseDouble(loadFines.nextLine());
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        try{
+            Scanner loadVisitorLengths = new Scanner(new File("visitLengths.log"));
+
+            while(loadVisitorLengths.hasNextLine()){
+                visitLength.add(loadVisitorLengths.nextLine());
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
     public static LBMS_VisitorKeeper getInstance(){
         return visitorKeeper;
+    }
+
+    public Double getFinesCollected(){
+        return finesCollected;
+    }
+
+    private long average = 0;
+
+    public String getAvgVisit(){
+        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        for(int i = 0; i < visitLength.size(); i+=2) {
+            Date start = null;
+            try {
+                start = dateFormat.parse(visitLength.get(i));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            Date end = null;
+            try {
+                end = dateFormat.parse(visitLength.get(i + 1));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            long difference = end.getTime() - start.getTime();
+            average = (average + difference) / 2;
+        }
+        int hours = (int) (average / hour);
+        average -= hours*hour;
+        int minutes = (int) (average/minute);
+        average -= minutes*minute;
+        int seconds = (int) (average/second);
+
+        String output = String.format("%02d:%02d:%02d",hours,minutes,seconds);
+        return output;
     }
 
     public static HashMap<Long,Date> getActiveVisitors(){ return activeVisitor;}
@@ -533,51 +587,26 @@ public class LBMS_VisitorKeeper
             for (Visitor v : this.visitorRegistry.values())
                 saveState.println(v.toString());
 
-            try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("visitLengths.txt"), "utf-8"))) {
-                for (String time : visitLength) {
-                    writer.write(time);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
 
-        /**
-     *
-     * @param args
-     * main function used for testing purposes
-     */
-
-    public static void main(String[] args)
-    {
-        LBMS_VisitorKeeper mainTest = new LBMS_VisitorKeeper();
-
-        //Validate that Client.Visitor.Client.Visitor File was Read Correctly//
-        System.out.println(mainTest.getVisitorRegistry().get(2365153268L));
-        System.out.println(mainTest.getVisitorRegistry().get(4561235867L));
-
-        //Validate Registering User//
         try {
-            System.out.println(mainTest.registerVisitor("Hubert", "Humphrey", "200 East Landia Street", "3194912816"));
-        } catch (Exception e) {
+            PrintStream saveState = new PrintStream(new FileOutputStream(new File("fines.log")));
+            saveState.flush();
+            saveState.println(finesCollected);
+
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        //Validate Begining Visit//
-        try{mainTest.beginVisit(4561235867L);}
-        catch(Exception e){e.printStackTrace();}
-        System.out.println(mainTest.getActiveVisitor().size());
+        try (Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("visitLengths.log"), "utf-8"))) {
+            for (String time : visitLength) {
+                writer.write(time+ "\n");
+            }
 
-        //Validate End Visit//
-        try{mainTest.endVisit(4561235867L);}
-        catch(Exception e){e.printStackTrace();}
-        System.out.println(mainTest.getActiveVisitor().size());
-
-        //Validate Shutting Down//
-        mainTest.shutdown();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

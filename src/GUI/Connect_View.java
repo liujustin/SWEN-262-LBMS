@@ -5,6 +5,7 @@ import Client.Visitor.End_Visit_Command;
 import Client.Visitor.LBMS_VisitorKeeper;
 import Time.Advance_Time_Command;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -14,6 +15,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 
 /**
@@ -210,7 +212,13 @@ public class Connect_View extends Application{
         root.setTop(currentTime);
         primaryStage.setScene(new Scene(root, 3000, 3000));
         primaryStage.show();
-
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                Platform.exit();
+                System.exit(0);
+            }
+        });
     }
     void cleanup(){
 

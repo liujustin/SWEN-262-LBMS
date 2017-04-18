@@ -22,6 +22,7 @@ public class LBMS_BookKeeper
     private final String bookListURI = "books.txt";
     private HashMap<Book, Integer> purchasedBooks;
     private HashMap<String, Book> bookRegistry;
+    private static int bookTotal;
 
 
     public LBMS_BookKeeper()
@@ -29,6 +30,10 @@ public class LBMS_BookKeeper
         this.purchasedBooks = new HashMap<>();
         this.bookRegistry = new HashMap<>();
         getBookList();
+    }
+
+    public Integer getBookTotal(){
+        return bookTotal;
     }
 
     public static LBMS_BookKeeper getInstance(){
@@ -72,6 +77,9 @@ public class LBMS_BookKeeper
         }
         try{
             bookListReader = new Scanner(new File("purchasedBooks.log"));
+
+            bookTotal = Integer.parseInt(bookListReader.nextLine());
+
             while(bookListReader.hasNextLine()){
                 String templine = bookListReader.nextLine();
                 String quantity = bookListReader.nextLine().split("=")[1];
@@ -130,9 +138,11 @@ public class LBMS_BookKeeper
                         if (this.purchasedBooks.containsKey(this.bookRegistry.get(isbn))){
                             this.purchasedBooks.put(this.bookRegistry.get(isbn), this.purchasedBooks.get(this.bookRegistry.get(isbn)) + 1);
                             amount++;
+                            bookTotal++;
                         }else {
                             this.purchasedBooks.put(this.bookRegistry.get(isbn), 1);
                             amount++;
+                            bookTotal++;
                         }
                     }
                 }
@@ -222,8 +232,10 @@ public class LBMS_BookKeeper
             PrintStream saveState = new PrintStream(new FileOutputStream(new File("purchasedBooks.log")));
             saveState.flush();
 
+            saveState.println(bookTotal);
+
             for(Map.Entry<Book, Integer> entry:this.purchasedBooks.entrySet()) {
-                saveState.format(entry.getKey().toString() + "=" + entry.getValue());
+                saveState.println(entry.getKey().toString() + "=" + entry.getValue());
             }
         }
         catch(Exception e)

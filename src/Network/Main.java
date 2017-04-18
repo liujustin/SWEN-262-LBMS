@@ -1,9 +1,9 @@
 package Network;
 
 import GUI.Connect_View;
-import GUI.Graphics_View;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 //FILE::Network.Main.java
 //AUTHOR::Ryan Connors, Adam Nowak, Kevin Barnett, Justin Liu
@@ -13,7 +13,6 @@ public class Main
 
     private Client_Access_Point clientPoint = new Client_Access_Point();
     private Client_Access_Invoker clientCommand = new Client_Access_Invoker();
-    private Graphics_View graphics_view;
 
 
     private void graphicsOutput(String outPut)
@@ -26,19 +25,13 @@ public class Main
         System.out.println(outPut);
     }
 
-    public void startLoop(String[] args, Graphics_View graphics_view)
+    public void startLoop()
     {
-        this.graphics_view = graphics_view;
-
         String command;
 
         while(true)
         {
-            if(args[0].equals("text"))
-                command = clientPoint.getCommand();
-            else
-                command = this.graphics_view.getCommand();
-
+            command = clientPoint.getCommand();
             if(!command.equals(""))
             {
                 ArrayList<Object> parsedCommand = null;
@@ -49,18 +42,14 @@ public class Main
                 }
 
                 try
-            {
+                {
                 Command concreteCommand = clientPoint.ConcreteCommand(parsedCommand);
                 clientCommand.receiveCommand(concreteCommand);
-
-                if(args[0].equals("text"))
-                    textOutput(clientCommand.executeCommand());
-                else
-                    graphicsOutput(clientCommand.executeCommand());
-            }
-            catch(NullPointerException e){} catch (Exception e) {
-                e.printStackTrace();
-            }
+                textOutput(clientCommand.executeCommand());
+                }
+                catch(NullPointerException e){} catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -75,8 +64,13 @@ public class Main
     {
         Main main = new Main();
 
-        if(args[0].equals("text"))
-        {
+        System.out.println("Would you like to use the gui?");
+        Scanner sc = new Scanner(System.in);
+        String response = sc.nextLine();
+        if(response.toLowerCase().equals("yes")) {
+            Connect_View.main(args);
+        }
+        else{
             System.out.println("Welcome to the Library Book Management System!");
             System.out.println("Here are the available commands!");
             System.out.println("Commands:");
@@ -87,11 +81,7 @@ public class Main
             System.out.println("buy, \t     advance, \t datetime");
             System.out.println("report, \t shutdown");
             System.out.println();
-
-            main.startLoop(args, null);
-        }
-        else if (args[0].equals("gui")) {
-            Connect_View.main(args);
+            main.startLoop();
         }
     }
 }

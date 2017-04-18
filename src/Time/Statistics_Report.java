@@ -6,6 +6,7 @@ import Client.Visitor.LBMS_VisitorKeeper;
 import Client.Visitor.Visitor;
 import Time.LBMS_StatisticsKeeper;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,17 +42,27 @@ public class Statistics_Report {
         for(int copies : bookcopies) {
             numberOfBooksTotal += copies;
         }
-        reportString += "Number of books: " + numberOfBooksTotal + "\n";
+
+        // gets total number of books in the library
+        reportString += "Number of Books: " + numberOfBooksTotal + "\n";
 
         //get total number of visitors
         numberofvisitors = registeredVisitors.size();
         reportString += "Number of Visitors: " + numberofvisitors + "\n";
 
+        //gets average legnth of visits
+        reportString += "Average Length of Visits: " + visitorKeeper.getAvgVisit() + "\n";
+
         //Number of Books Purchased
         for(int copies : bookcopies) {
             numberOfBooks += copies;
         }
-        reportString += "Number of Books Purchased: " + numberOfBooks + "\n";
+
+        //gets total number of books purchased
+        reportString += "Number of Books Purchased: " + bookKeeper.getBookTotal() + "\n";
+
+        DecimalFormat df = new DecimalFormat("#.00");
+        reportString += "Fines Collected: " + df.format(visitorKeeper.getFinesCollected());
 
         //Number of fines outstanding
         for(Visitor visitor : registeredVisitors ){

@@ -7,7 +7,7 @@ import javafx.concurrent.Task;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
-public class timeGUI extends Graphics_View {
+public class timeGUI extends Connect_View {
 
     LBMS_StatisticsKeeper sk = LBMS_StatisticsKeeper.getInstance();
     public HBox start() {
