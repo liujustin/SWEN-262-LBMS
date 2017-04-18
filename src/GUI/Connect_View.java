@@ -66,6 +66,7 @@ public class Connect_View extends Application{
         btn4.setDisable(true);
         btn5.setDisable(true);
         btn6.setDisable(true);
+        borrowed.setDisable(true);
         visitorTextField.setDisable(true);
         Button depart = new Button("Depart");
         VBox mainBox = new VBox();
@@ -142,7 +143,10 @@ public class Connect_View extends Application{
                     visitorNumber = visitorID;
                     visitorText.setText("Visitor: " + visitorID);
                     visitorText.setDisable(true);
+                    visitorTextField.setDisable(true);
+                    btn4.setDisable(true);
                     btn5.setDisable(false);
+                    borrowed.setDisable(false);
                     depart.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
