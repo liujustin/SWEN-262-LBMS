@@ -1,7 +1,7 @@
 package Shutdown;
 
-import Time.LBMS_StatisticsKeeper;
-import Client.Visitor.LBMS_VisitorKeeper;
+import Client.Visitor.Visitor_Operations;
+import Time.Time_Operations;
 
 //FILE::Shutdown.Library_Close_Thread.java
 //AUTHOR::Adam Nowak
@@ -11,8 +11,8 @@ public class Library_Close_Thread implements Runnable {
     @Override
     public void run() {
         try {
-            if(!LBMS_StatisticsKeeper.getIsopen(LBMS_StatisticsKeeper.Get_Time())){
-                LBMS_VisitorKeeper.getActiveVisitors().clear();
+            if(! Time_Operations.getIsopen(Time_Operations.Get_Time())){
+                Visitor_Operations.getActiveVisitors().clear();
             }
         } catch (Exception e) {
             e.printStackTrace();

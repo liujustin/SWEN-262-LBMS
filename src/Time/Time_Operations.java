@@ -1,4 +1,4 @@
-package Time;//FILE::Time.LBMS_StatisticsKeeper.java
+package Time;//FILE::Time.Time_Operations.java
 //AUTHOR::Justin Liu, Adam Nowak
 //DATE::Mar.04.2017
 
@@ -10,9 +10,9 @@ import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class LBMS_StatisticsKeeper
+public class Time_Operations
 {
-	private static final LBMS_StatisticsKeeper statisticsKeeper = new LBMS_StatisticsKeeper();
+	private static final Time_Operations statisticsKeeper = new Time_Operations();
 	private static Date date;
 	private Calendar calendar;
 	private static boolean isOpen;
@@ -27,12 +27,12 @@ public class LBMS_StatisticsKeeper
 		}
 	};
 
-	private LBMS_StatisticsKeeper(){
+	private Time_Operations(){
 		this.calendar = Calendar.getInstance();
 		this.date = new Date();
 	}
 
-	public static LBMS_StatisticsKeeper getInstance(){
+	public static Time_Operations getInstance(){
 		return statisticsKeeper;
 	}
 
@@ -80,7 +80,7 @@ public class LBMS_StatisticsKeeper
 	 * Prints the GUI.timeGUI for the datetime command
 	 */
 	public String printTime(){
-		String d2 = LBMS_StatisticsKeeper.Get_Time();
+		String d2 = Time_Operations.Get_Time();
 		return "datetime," + d2;
 	}
 

@@ -6,7 +6,7 @@ import Network.Command;
 //AUTHOR:: Adam Nowak
 //DATE::Apr.16.2017
 public class Disconnect_Command implements Command{
-    LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
+    Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
     private int clientID;
 
     public Disconnect_Command(int clientID){

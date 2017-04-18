@@ -6,7 +6,7 @@ import Network.Command;
 //AUTHOR::Kevin.P.Barnett
 //DATE::Feb.25.2017
 public class End_Visit_Command implements Command {
-    LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
+    Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
     private Long visitorID;
     private boolean isUndo;
 

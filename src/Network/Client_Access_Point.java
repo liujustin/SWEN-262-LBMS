@@ -5,20 +5,18 @@ package Network;
 
 import Books.*;
 import Client.Visitor.*;
-import Network.Command;
 import Shutdown.Shut_Down_Command;
 import Time.*;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
 
 public class Client_Access_Point {
-    LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
-    LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
-    LBMS_StatisticsKeeper statisticsKeeper = LBMS_StatisticsKeeper.getInstance();
+    Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
+    Book_Operations bookKeeper = Book_Operations.getInstance();
+    Time_Operations statisticsKeeper = Time_Operations.getInstance();
 
     /**
      * This Function allows the employee to issue a command via scanner
@@ -351,7 +349,7 @@ public class Client_Access_Point {
         Command cmd;
         ArrayList arraylistparameter;
         Long visitorID = 0L;
-        HashMap<Integer,Account> connections = LBMS_VisitorKeeper.getActiveConnections();
+        HashMap<Integer,Account> connections = Visitor_Operations.getActiveConnections();
         if(parsedcommand.get(0).equals("connect")) {
             cmd = new Connect_Command();
             return cmd;

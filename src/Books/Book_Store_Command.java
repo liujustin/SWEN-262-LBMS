@@ -1,9 +1,6 @@
 package Books;
 
-import Books.Book;
-import Books.SearchToBuy;
 import Network.Command;
-import Network.Main;
 
 import java.util.ArrayList;
 
@@ -12,7 +9,7 @@ import java.util.ArrayList;
 //DATE::Feb.25.2017
 public class Book_Store_Command implements Command
 {
-    LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
+    Book_Operations bookKeeper = Book_Operations.getInstance();
     private String title;
     private ArrayList<String> authors;
     private String isbn;

@@ -1,22 +1,20 @@
-package Client.Visitor;//FILE::Client.Visitor.LBMS_VisitorKeeper.java
+package Client.Visitor;//FILE::Client.Visitor.Visitor_Operations.java
 //AUTHOR::Kevin.P.Barnett, Adam Nowak
 //DATE::Mar.04.2017
 
 import Books.Book;
 import Books.Book_Loan;
-import Books.LBMS_BookKeeper;
-import Time.LBMS_StatisticsKeeper;
+import Books.Book_Operations;
+import Time.Time_Operations;
 
 import java.io.*;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Period;
 import java.util.*;
 
-public class LBMS_VisitorKeeper
+public class Visitor_Operations
 {
-    private static final LBMS_VisitorKeeper visitorKeeper = new LBMS_VisitorKeeper();
+    private static final Visitor_Operations visitorKeeper = new Visitor_Operations();
     private static HashMap<Long, Visitor> visitorRegistry;
     private static HashMap<Long, Date> activeVisitor;
     private static ArrayList<String> visitLength;
@@ -27,7 +25,7 @@ public class LBMS_VisitorKeeper
     // Visitors
     //================================================================================
 
-    public LBMS_VisitorKeeper()
+    public Visitor_Operations()
     {
         //This stores all visitors that have ever been registered//
         this.visitorRegistry = new HashMap<>();
@@ -75,7 +73,7 @@ public class LBMS_VisitorKeeper
         }
     }
 
-    public static LBMS_VisitorKeeper getInstance(){
+    public static Visitor_Operations getInstance(){
         return visitorKeeper;
     }
 
@@ -142,7 +140,7 @@ public class LBMS_VisitorKeeper
      */
     public Visitor registerVisitor(String firstName, String lastName, String address, String phoneNumber) throws Exception
     {
-        String time = LBMS_StatisticsKeeper.Get_Time();
+        String time = Time_Operations.Get_Time();
         Long id = incrementID(); // starts visitor id as 1000000000 and increments by 1 each GUI.timeGUI register visitor is called
 
         for(Long key: this.visitorRegistry.keySet())
@@ -174,8 +172,8 @@ public class LBMS_VisitorKeeper
      */
     public String beginVisit(Long visitorID) throws Exception
     {
-        String time = LBMS_StatisticsKeeper.Get_Time();
-       // if(!LBMS_StatisticsKeeper.getIsopen(LBMS_StatisticsKeeper.Get_Time())){
+        String time = Time_Operations.Get_Time();
+       // if(!Time_Operations.getIsopen(Time_Operations.Get_Time())){
          //   throw new Exception("Library is currently closed.");
         //}
         if(this.visitorRegistry.containsKey(visitorID))
@@ -212,7 +210,7 @@ public class LBMS_VisitorKeeper
     {
         if(this.activeVisitor.containsKey(visitorID))
         {
-            String time = LBMS_StatisticsKeeper.Get_Time();
+            String time = Time_Operations.Get_Time();
             String currentTime = time.split(",")[1];
             DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
             Date start = activeVisitor.get(visitorID);
@@ -253,9 +251,9 @@ public class LBMS_VisitorKeeper
         }
         System.out.println(ISBNS);
         for(String isbn : ISBNS){
-            if(LBMS_BookKeeper.getInstance().getBookRegistry().containsKey(isbn)){
-                booklist.add(LBMS_BookKeeper.getInstance().getBookRegistry().get(isbn));
-                if(!LBMS_BookKeeper.getInstance().getPurchasedBooks().containsKey(booklist.get(index))){
+            if(Book_Operations.getInstance().getBookRegistry().containsKey(isbn)){
+                booklist.add(Book_Operations.getInstance().getBookRegistry().get(isbn));
+                if(! Book_Operations.getInstance().getPurchasedBooks().containsKey(booklist.get(index))){
                     booklist.remove(index);
                     errormessage1 += isbn + ",";
                 }else{
@@ -281,7 +279,7 @@ public class LBMS_VisitorKeeper
                 if (booklist.get(i).equals(visitor.getBorrowed_books().get(j).getBook()))
                 {
                     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
-                    Date time = dateFormat.parse(LBMS_StatisticsKeeper.Get_Time());
+                    Date time = dateFormat.parse(Time_Operations.Get_Time());
                     if (time.after(dateFormat.parse(visitor.getBorrowed_books().get(j).getDue_date())))
                     { // check if due date is before current date
                         book_balance += 8;
@@ -591,6 +589,21 @@ public class LBMS_VisitorKeeper
             e.printStackTrace();
         }
 
+        /**
+     *
+     * @param args
+     * main function used for testing purposes
+     */
+
+    public static void main(String[] args)
+    {
+        Visitor_Operations mainTest = new Visitor_Operations();
+
+        //Validate that Client.Visitor.Client.Visitor File was Read Correctly//
+        System.out.println(mainTest.getVisitorRegistry().get(2365153268L));
+        System.out.println(mainTest.getVisitorRegistry().get(4561235867L));
+
+        //Validate Registering User//
         try {
             PrintStream saveState = new PrintStream(new FileOutputStream(new File("fines.log")));
             saveState.flush();

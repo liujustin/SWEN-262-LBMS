@@ -5,7 +5,7 @@ package Client.Visitor;
 //DATE::Apr.7.2017
 public class Account {
 
-    LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
+    Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
     private String username;
     private String password;
     private String role;

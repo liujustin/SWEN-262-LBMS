@@ -6,7 +6,7 @@ import Network.Command;
 //AUTHOR::Ryan Connors, Justin Liu
 //DATE::Feb.25.2017
 public class Current_Time_Command implements Command {
-    LBMS_StatisticsKeeper statisticsKeeper = LBMS_StatisticsKeeper.getInstance();
+    Time_Operations statisticsKeeper = Time_Operations.getInstance();
 
     public Current_Time_Command(){
     }

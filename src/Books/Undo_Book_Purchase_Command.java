@@ -10,7 +10,7 @@ import java.util.ArrayList;
 //AUTHOR::Adam Nowak
 //DATE::Apr.15.2017
 public class Undo_Book_Purchase_Command implements Command{
-    LBMS_BookKeeper bookKeeper = LBMS_BookKeeper.getInstance();
+    Book_Operations bookKeeper = Book_Operations.getInstance();
     private int quantity;
     private ArrayList<String> ISBNS;
     private boolean isUndo;

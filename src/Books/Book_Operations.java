@@ -1,9 +1,9 @@
-package Books;//FILE::Books.LBMS_BookKeeper.java
+package Books;//FILE::Books.Book_Operations.java
 //AUTHOR::Kevin.P.Barnett
 //DATE::Feb.25.2017
 
-import Client.Visitor.LBMS_VisitorKeeper;
-import Time.LBMS_StatisticsKeeper;
+import Client.Visitor.Visitor_Operations;
+import Time.Time_Operations;
 import Client.Visitor.Visitor;
 
 import java.io.File;
@@ -13,19 +13,17 @@ import java.io.PrintStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public class LBMS_BookKeeper
+public class Book_Operations
 {
-    private static final LBMS_BookKeeper bookKeeper = new LBMS_BookKeeper();
+    private static final Book_Operations bookKeeper = new Book_Operations();
     private final String bookListURI = "books.txt";
     private HashMap<Book, Integer> purchasedBooks;
     private HashMap<String, Book> bookRegistry;
     private static int bookTotal;
 
 
-    public LBMS_BookKeeper()
+    public Book_Operations()
     {
         this.purchasedBooks = new HashMap<>();
         this.bookRegistry = new HashMap<>();
@@ -36,7 +34,7 @@ public class LBMS_BookKeeper
         return bookTotal;
     }
 
-    public static LBMS_BookKeeper getInstance(){
+    public static Book_Operations getInstance(){
         return bookKeeper;
     }
     public HashMap<String,Book> getBookRegistry(){ return this.bookRegistry; }
@@ -161,10 +159,10 @@ public class LBMS_BookKeeper
     public void borrowBook(Long visitorID, ArrayList<String> bookISBNS) throws Exception
     {
         ArrayList<Book> listofbooks = new ArrayList<>();
-        String time = LBMS_StatisticsKeeper.Get_Time();
-        LBMS_VisitorKeeper visitKeeper = LBMS_VisitorKeeper.getInstance();
+        String time = Time_Operations.Get_Time();
+        Visitor_Operations visitKeeper = Visitor_Operations.getInstance();
         HashMap<Long,Visitor> visitorlist = visitKeeper.getVisitorRegistry();
-        Visitor visitor = LBMS_VisitorKeeper.getVisitorRegistry().get(visitorID);
+        Visitor visitor = Visitor_Operations.getVisitorRegistry().get(visitorID);
         String errorString = "borrow,invalid-book-id,{";
 
         int index = 0;
@@ -172,7 +170,7 @@ public class LBMS_BookKeeper
             throw new Exception("borrow,invalid-visitor-id;");
         }
         //Book listofbooks = bookRegistry.get(bookISBNS);
-        //if(!LBMS_StatisticsKeeper.getIsopen(time)) {
+        //if(!Time_Operations.getIsopen(time)) {
           //  throw new Exception("Library is currently closed.");
         //}
         if(bookISBNS.size() > 5 - visitor.getBorrowed_books().size()) {
@@ -209,7 +207,7 @@ public class LBMS_BookKeeper
         {
             for (int j = 0; j < SearchForInfo.getLastSearched().size(); j++)
             {
-                visitor.add_book(new Book_Loan(visitor, listofbooks.get(i), 0.0, true, LBMS_StatisticsKeeper.Get_Time(), futDate));
+                visitor.add_book(new Book_Loan(visitor, listofbooks.get(i), 0.0, true, Time_Operations.Get_Time(), futDate));
                 break;
             }
         }
@@ -253,6 +251,6 @@ public class LBMS_BookKeeper
      */
     public static void main(String[] args)
     {
-        new LBMS_BookKeeper().getBookList();
+        new Book_Operations().getBookList();
     }
 }

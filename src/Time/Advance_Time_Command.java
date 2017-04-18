@@ -3,12 +3,11 @@ package Time;//FILE::Time.Advance_Time_Command.java
 //DATE::Feb.25.2017
 
 import Network.Command;
-import Network.Main;
 
 public class Advance_Time_Command implements Command {
     private int days;
     private int hours;
-    LBMS_StatisticsKeeper sk = LBMS_StatisticsKeeper.getInstance();
+    Time_Operations sk = Time_Operations.getInstance();
 
     public Advance_Time_Command(int days, int hours) {
         this.days = days;

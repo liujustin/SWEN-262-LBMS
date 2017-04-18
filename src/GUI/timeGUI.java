@@ -1,7 +1,6 @@
 package GUI;
 
-import Time.LBMS_StatisticsKeeper;
-import javafx.application.Application;
+import Time.Time_Operations;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Label;
@@ -9,7 +8,7 @@ import javafx.scene.layout.HBox;
 
 public class timeGUI extends Connect_View {
 
-    LBMS_StatisticsKeeper sk = LBMS_StatisticsKeeper.getInstance();
+    Time_Operations sk = Time_Operations.getInstance();
     public HBox start() {
         HBox time = new HBox();
         Label timer = new Label();

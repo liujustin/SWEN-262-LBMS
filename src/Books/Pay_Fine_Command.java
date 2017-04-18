@@ -2,15 +2,14 @@ package Books;//FILE::Books.Pay_Fine_Command.java
 //AUTHOR::Ryan Connors, Adam Nowak
 //DATE::Feb.25.2017
 
-import Client.Visitor.LBMS_VisitorKeeper;
+import Client.Visitor.Visitor_Operations;
 import Client.Visitor.Memento;
 import Client.Visitor.UndoRedoCaretaker;
 import Network.Command;
-import Network.Main;
 
 public class Pay_Fine_Command implements Command {
 
-    LBMS_VisitorKeeper visitorKeeper = LBMS_VisitorKeeper.getInstance();
+    Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
     private Long visitorID;
     private double amount;
     private boolean isUndo;
