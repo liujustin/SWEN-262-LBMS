@@ -9,7 +9,7 @@ public class Redo_Command implements Command{
     private Memento command;
 
     public Redo_Command() {
-        this.command = UndoRedoCaretaker.getCaretaker().getUndoStack().pop();
+        this.command = UndoRedoCaretaker.getCaretaker().getRedoStack().pop();
     }
 
     public String execute() {
