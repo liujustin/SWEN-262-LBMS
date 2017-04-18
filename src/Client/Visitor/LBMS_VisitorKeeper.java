@@ -531,7 +531,7 @@ public class LBMS_VisitorKeeper
      */
     public void shutdown() {
         try {
-            PrintStream saveState = new PrintStream(new FileOutputStream(new File("visitor.txt")));
+            PrintStream saveState = new PrintStream(new FileOutputStream(new File("visitor.log")));
             saveState.flush();
 
             for (Visitor v : this.visitorRegistry.values())
