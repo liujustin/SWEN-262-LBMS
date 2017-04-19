@@ -1,14 +1,16 @@
 package Network;
 
+import Client.Visitor.Visitor;
+import Client.Visitor.Visitor_Operations;
 import GUI.Connect_View;
 
 import java.util.ArrayList;
 import java.util.Scanner;
 
-//FILE::Network.Main.java
+//FILE::Network.Client_Access_View.java
 //AUTHOR::Ryan Connors, Adam Nowak, Kevin Barnett, Justin Liu
 //DATE::Feb.25.2017
-public class Main
+public class Client_Access_View
 {
 
     private Client_Access_Point clientPoint = new Client_Access_Point();
@@ -28,9 +30,10 @@ public class Main
     public void startLoop()
     {
         String command;
+        Visitor_Operations visitorOperations = Visitor_Operations.getInstance();
 
         while(true)
-        {
+        {//This loop allows the system to continually ask for input by the user. The data input will be parsed into commands.
             command = clientPoint.getCommand();
             if(!command.equals(""))
             {
@@ -62,7 +65,7 @@ public class Main
      */
     public static void main(String[] args)
     {
-        Main main = new Main();
+        Client_Access_View clientAccessView = new Client_Access_View();
 
         System.out.println("Would you like to use the gui?");
         Scanner sc = new Scanner(System.in);
@@ -72,16 +75,9 @@ public class Main
         }
         else{
             System.out.println("Welcome to the Library Book Management System!");
-            System.out.println("Here are the available commands!");
-            System.out.println("Commands:");
+            System.out.println("Please connect and then login.");
             System.out.println();
-            System.out.println("register, \t arrive, \t depart");
-            System.out.println("info, \t     borrow, \t borrowed");
-            System.out.println("return, \t pay, \t     search");
-            System.out.println("buy, \t     advance, \t datetime");
-            System.out.println("report, \t shutdown");
-            System.out.println();
-            main.startLoop();
+            clientAccessView.startLoop();
         }
     }
 }

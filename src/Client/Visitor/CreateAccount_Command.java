@@ -2,9 +2,10 @@ package Client.Visitor;
 
 import Network.Command;
 
-//FILE::CreateAccount_Command.java
+//FILE::Client.Visitor.CreateAccount_Command.java
 //AUTHOR::Adam Nowak
 //DATE::Apr.16.2017
+
 public class CreateAccount_Command implements Command{
     Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
     private int clientID;
@@ -13,7 +14,16 @@ public class CreateAccount_Command implements Command{
     private String role;
     private Long visitorID;
 
-    public CreateAccount_Command(int clientID,String username,String password,String role,Long visitorID){
+    /**
+     *
+     * @param clientID
+     * @param username
+     * @param password
+     * @param role
+     * @param visitorID
+     */
+    public CreateAccount_Command(int clientID,String username,String password,String role,Long visitorID)
+    {
         this.clientID = clientID;
         this.username = username;
         this.password = password;
@@ -22,10 +32,13 @@ public class CreateAccount_Command implements Command{
     }
 
     @Override
-    public String execute() {
-        try {
+    public String execute()
+    {
+        try
+        {
             visitorKeeper.createAccount(this.clientID,this.username,this.password,this.role,this.visitorID);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return "";

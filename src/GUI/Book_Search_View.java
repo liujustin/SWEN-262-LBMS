@@ -16,16 +16,19 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
 import java.util.ArrayList;
 
-/**
- * Created by Justin on 4/18/2017.
- */
+//FILE::GUI.Book_Search_View.java
+//AUTHOR::Justin Liu
+//DATE::Apr.17.2017
 public class Book_Search_View extends Connect_View {
 
-
-    public GridPane order(){
+    /**
+     * The GUI subclass for showing the Book_Search view which creates and returns a GridPane. This GUI view will allow the
+     * client to search for books in the library and display them for purchasing.
+     * @return
+     */
+    public GridPane start(){
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER_LEFT);
         grid.setHgap(10);
@@ -35,6 +38,7 @@ public class Book_Search_View extends Connect_View {
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 4, 1);
 
+        //Creating a bunch of labels and text fields for the parameters needed search for books
         Label title = new Label("Title:");
         grid.add(title, 0, 2);
 
@@ -65,15 +69,20 @@ public class Book_Search_View extends Connect_View {
         TextField sortOrderTextField = new TextField();
         grid.add(sortOrderTextField, 1, 6);
 
+        //Creating a search button and adding the button into a hBox
         Button btn = new Button("Search");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_LEFT);
         hbBtn.getChildren().add(btn);
         grid.add(hbBtn, 0, 7);
 
+        //Search button event handler method
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
+                //For all the parameters, if the user does not put in anything, it will assume that
+                //there is no input so it will be default set to *.
                 String title = String.valueOf(titleTextField.getText());
                 if(title.equals("")){
                     title = "*";
@@ -100,10 +109,14 @@ public class Book_Search_View extends Connect_View {
                 if(sortOrder.equals("")){
                     sortOrder = "*";
                 }
+
+                //Create a bookOperations instance and calls the SearchToBuy method while passing in the parameters for searching for a book
                 Book_Operations bookKeeper = Book_Operations.getInstance();
                 SearchToBuy.initializeSearch();
                 ArrayList result = SearchToBuy.search(title,authorList,isbn, publisher, sortOrder,bookKeeper.getBooksForPurchase());
                 SearchToBuy.setLastSearched(result);
+
+                //This will in turn show all the books that the library can purchase
                 Label bookText = new Label("Books:");
                 grid.add(bookText,2,2);
                 for(int i = 0;i < result.size();i++){
@@ -111,6 +124,9 @@ public class Book_Search_View extends Connect_View {
                     books.setText(result.get(i).toString());
                     grid.add(books, 2, i+3);
                     TextField quantity = new TextField();
+
+                    //This makes it so that the field the client can type in is only limited to numbers so they can't accidently pass
+                    //in a string value when choosing how many books to buy
                     quantity.textProperty().addListener(new ChangeListener<String>() {
                         @Override
                         public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
@@ -123,13 +139,20 @@ public class Book_Search_View extends Connect_View {
                     String[] getISBN = result.get(i).toString().split(",");
                     Button buy = new Button("Buy");
                     grid.add(buy, 4, i+3);
+
+                    //Buy button event handler
                     buy.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
+
+                            //Gets the number of books to buy
                             String numberToBuy = String.valueOf(quantity.getText());
                             Integer quantityToBuy = Integer.parseInt(numberToBuy);
                             ArrayList ISBN = new ArrayList();
                             ISBN.add(getISBN[0]);
+
+                            //Creates a new Book_Purchase_Command while passing in the parameters needed and executes it in order
+                            //for the library to purchase the books.
                             Book_Purchase_Command bpc = new Book_Purchase_Command(quantityToBuy,ISBN,false);
                             bpc.execute();
                         }

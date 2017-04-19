@@ -7,12 +7,9 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import Network.*;
 
@@ -21,7 +18,7 @@ import Network.*;
  */
 public class Visitor_View extends Connect_View{
 
-    //private static Main bootInstance;
+    //private static Client_Access_View bootInstance;
     private Stage primaryStage;
     private Scene primaryScene;
 
@@ -62,9 +59,9 @@ public class Visitor_View extends Connect_View{
 
     }
 
-    public static void load(String[] args, Main main) {
+    public static void load(String[] args, Client_Access_View clientAccessView) {
         arguments = args;
-        //bootInstance = main;
+        //bootInstance = clientAccessView;
         Application.launch(args);
      }
 

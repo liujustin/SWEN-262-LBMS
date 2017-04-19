@@ -5,7 +5,8 @@ import Network.Command;
 //FILE::Client.Visitor.Register_Command.java
 //AUTHOR::Ryan Connors, Adam Nowak
 //DATE::Feb.25.2017
-public class Register_Command implements Command {
+public class Register_Command implements Command
+{
     Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
     private String last;
     private String first;
@@ -27,10 +28,13 @@ public class Register_Command implements Command {
     }
 
     @Override
-    public String execute() {
-        try {
+    public String execute()
+    {
+        try
+        {
             visitorKeeper.registerVisitor(this.first,this.last,this.address,this.phone);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return "";

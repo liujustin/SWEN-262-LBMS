@@ -15,7 +15,7 @@ import Network.*;
  * Created by Ryan on 4/13/2017.
  */
 public class Employee_View extends Application {
-    private static Main bootInstance;
+    private static Client_Access_View bootInstance;
     private Stage primaryStage;
     private Scene primaryScene;
 
@@ -41,10 +41,10 @@ public class Employee_View extends Application {
 
     }
 
-     public static void load(String[] args, Main main)
+     public static void load(String[] args, Client_Access_View clientAccessView)
      {
      arguments = args;
-     bootInstance = main;
+     bootInstance = clientAccessView;
      Application.launch(args);
      }
 

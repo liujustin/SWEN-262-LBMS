@@ -1,4 +1,5 @@
-package Client.Visitor;//FILE::Client.Visitor.java
+package Client.Visitor;
+//FILE::Client.Visitor.java
 //AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 
@@ -34,6 +35,9 @@ public class Visitor
         this.phone_number = phone_number;
         this.visitor_ID = visitor_ID;
     }
+
+
+    //Getters and Setters for the visitor class
 
     /**
      *

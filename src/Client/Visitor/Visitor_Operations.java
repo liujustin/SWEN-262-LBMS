@@ -1,5 +1,6 @@
-package Client.Visitor;//FILE::Client.Visitor.Visitor_Operations.java
-//AUTHOR::Kevin.P.Barnett, Adam Nowak
+package Client.Visitor;
+//FILE::Client.Visitor.Visitor_Operations.java
+//AUTHOR::Kevin.P.Barnett, Adam Nowak, Justin Liu
 //DATE::Mar.04.2017
 
 import Books.Book;
@@ -15,9 +16,7 @@ import java.util.*;
 
 public class Visitor_Operations
 {
-    public byte version = 100;
-    public byte count = 0;
-    private static final Visitor_Operations visitorKeeper = new Visitor_Operations();
+    private static final Visitor_Operations visitorOperations = new Visitor_Operations();
     private static HashMap<Long, Visitor> visitorRegistry;
     private static HashMap<Long, Date> activeVisitor;
     private static ArrayList<String> visitLength;
@@ -29,12 +28,15 @@ public class Visitor_Operations
     public static boolean pFine = true;
     public static boolean rBook = true;
     public static boolean bBook = true;
+    private long average = 0;
+    private static HashMap<Integer,Account> activeConnections = new HashMap<>();
+    public static HashMap<Integer,Account> getActiveConnections(){return activeConnections; }
+
     //================================================================================
     // Visitors
     //================================================================================
 
-    public Visitor_Operations()
-    {
+    public Visitor_Operations() {
         //This stores all visitors that have ever been registered//
         this.visitorRegistry = new HashMap<>();
 
@@ -45,77 +47,90 @@ public class Visitor_Operations
 
         this.activeAccounts = new HashMap<>();
 
-        try
+
+        try //This try catch obtains data from the visitor log and stores visitor data to the system.
         {
             Scanner loadVisitorReg = new Scanner(new File("visitor.log"));
 
-            while(loadVisitorReg.hasNextLine())
-            {
+            while (loadVisitorReg.hasNextLine()) {
                 String[] visitor = loadVisitorReg.nextLine().split(":");
                 Visitor tempVisitor = new Visitor(visitor[0], visitor[1], visitor[2], Double.parseDouble(visitor[3]), visitor[4], Long.parseLong(visitor[5]));
 
                 this.visitorRegistry.put(Long.parseLong(visitor[5]), tempVisitor);
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
-        try{
+        try // This try catch obtains data from the fines log and stores the fines data to the system
+        {
             Scanner loadFines = new Scanner(new File("fines.log"));
 
-            if(loadFines.hasNextLine())
+            if (loadFines.hasNextLine())
                 this.finesCollected = Double.parseDouble(loadFines.nextLine());
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        try{
+        try { //This try catch obtains the length of visits and stores it into the visit length arrayList
             Scanner loadVisitorLengths = new Scanner(new File("visitLengths.log"));
 
-            while(loadVisitorLengths.hasNextLine()){
+            while (loadVisitorLengths.hasNextLine()) {
                 visitLength.add(loadVisitorLengths.nextLine());
             }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-//        try {
-//            FileInputStream fileIn = new FileInputStream("accounts.ser");
-//            ObjectInputStream in = new ObjectInputStream(fileIn);
-//            String tempaccount = (String) in.readObject();
-//            while (tempaccount != null) {
-//                String[] account = tempaccount.split(":");
-//                String username = account[0];
-//                Account user = new Account(account[1],account[2],account[3], Long.parseLong(account[4]));
-//                activeAccounts.put(username,user);
-//                tempaccount = (String) in.readObject();
-//            }
-//            in.close();
-//            fileIn.close();
-//        }catch(IOException i) {
-//            return;
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
     }
 
+    /**
+     * loads persistent accounts in to the system by reading from accounts.ser which is a serialized text file
+     */
+    public void loadAccounts(){
+        try {
+            FileInputStream fileIn = new FileInputStream("accounts.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            String tempaccount = (String) in.readObject();
+            while (tempaccount != null) {
+                String[] account = tempaccount.split(":");
+                visitorOperations.persistentCreateAccount(account[1],account[2],account[3], Long.parseLong(account[4].trim()));
+                tempaccount = (String) in.readObject();
+            }
+            in.close();
+            fileIn.close();
+        }catch(IOException i) {
+            return;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    /*
+    Getters for the Visitor_Operations class as well as the fines Collected Double
+     */
+
     public static Visitor_Operations getInstance(){
-        return visitorKeeper;
+        return visitorOperations;
     }
 
     public Double getFinesCollected(){
         return finesCollected;
     }
 
-    private long average = 0;
-
+    /**
+     *
+     * @return Average Length of visits
+     *
+     * This method obtains the average length of visits from input given by the end visit and begin visit Commands.
+     */
     public String getAvgVisit(){
         DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        for(int i = 0; i < visitLength.size(); i+=2) {
+        for(int i = 0; i < visitLength.size(); i+=2) { // loops through each hour,minute,and second and determines average time.
             Date start = null;
             try {
                 start = dateFormat.parse(visitLength.get(i));
@@ -140,13 +155,15 @@ public class Visitor_Operations
         String output = String.format("%02d:%02d:%02d",hours,minutes,seconds);
         return output;
     }
-
+    /*
+    Getters hashmaps used within Visitor_Operations
+     */
     public static HashMap<Long,Date> getActiveVisitors(){ return activeVisitor;}
     /**
      *
      * @return visitor registry
      */
-    public static HashMap<Long, Visitor> getVisitorRegistry()
+    public HashMap<Long, Visitor> getVisitorRegistry()
     {
         return visitorRegistry;
     }
@@ -176,6 +193,9 @@ public class Visitor_Operations
      * @param address
      * @param phoneNumber
      * @return registers a new visitor to the system
+     *
+     * This method is used for the register command. The register command creates new visitor object. Visitor objects
+     * cannot have the same first name, last name, address and phone numbers present in the same visitor objects.
      */
     public Visitor registerVisitor(String firstName, String lastName, String address, String phoneNumber) throws Exception
     {
@@ -186,7 +206,8 @@ public class Visitor_Operations
             newID = Long.max(newID, key);
 
         Visitor temporaryNewVisitor = new Visitor(firstName, lastName, address, 0.0, phoneNumber, newID);
-        for ( Visitor value : visitorRegistry.values()){
+        for ( Visitor value : visitorRegistry.values()) //loops through each visitor and sees if they match the visitor in which the user attempts to create
+        {
             if(value.getFirst_name().equals(temporaryNewVisitor.getFirst_name())
                     && value.getLast_name().equals(temporaryNewVisitor.getLast_name())
                     && value.getAddress().equals(temporaryNewVisitor.getAddress())
@@ -199,7 +220,13 @@ public class Visitor_Operations
         System.out.println("register," + id + "," + time.substring(0,10));
         return temporaryNewVisitor;
     }
-    public Long incrementID(){
+
+    /**
+     *
+     * @return IncrementingID for when you register an account.
+     */
+    public Long incrementID()
+    {
         newID++;
         return newID;
     }
@@ -208,16 +235,20 @@ public class Visitor_Operations
      *
      * @param visitorID
      * @throws Exception
+     *
+     * This method is used to begin a visit for a visitor. It also accounts for whether the library is open
+     * as well as stores the initial data for determining the visit length.
      */
     public String beginVisit(Long visitorID) throws Exception
     {
         String time = Time_Operations.Get_Time();
-       // if(!Time_Operations.getIsopen(Time_Operations.Get_Time())){
-         //   throw new Exception("Library is currently closed.");
-        //}
-        if(this.visitorRegistry.containsKey(visitorID))
+        if(!Time_Operations.getIsopen(Time_Operations.Get_Time()))
+        { //Checks if library is open
+           throw new Exception("Library is currently closed.");
+        }
+        if(this.visitorRegistry.containsKey(visitorID)) // checks if visitor is valid
         {
-            if(! this.activeVisitor.containsKey(visitorID)) {
+            if(! this.activeVisitor.containsKey(visitorID)) { //checks if visitor has already arrived
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
                 DateFormat dateFormat2 = new SimpleDateFormat("HH:mm:ss");
@@ -239,7 +270,9 @@ public class Visitor_Operations
             throw new Exception("arrive,invalid-id;");
     }
 
-
+    /**
+     * These values are for figuring out average length of visits
+     */
     long second = 1000l;
     long minute = 60l * second;
     long hour = 60l * minute;
@@ -248,17 +281,22 @@ public class Visitor_Operations
      *
      * @param visitorID
      * @throws Exception
+     *
+     * This Method is used for the end visit command. Its purpose is to check for the visitor in question
+     * is in the library and depart them.
      */
     public String endVisit(Long visitorID) throws Exception
     {
-        if(this.activeVisitor.containsKey(visitorID))
+        if(this.activeVisitor.containsKey(visitorID)) //checks if visitor is in the library
         {
             String time = Time_Operations.Get_Time();
             String currentTime = time.split(",")[1];
             DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
             Date start = activeVisitor.get(visitorID);
             Date end =  dateFormat.parse(currentTime);
-
+            /*
+            Determines average length of visits.
+             */
             long difference = end.getTime() - start.getTime();
             long hours = difference/hour;
             difference -= hours*hour;
@@ -268,7 +306,8 @@ public class Visitor_Operations
 
             this.activeVisitor.remove(visitorID);
             String output = String.format("depart," + visitorID + "," + currentTime + ",%02d:%02d:%02d",hours,minutes,seconds);
-            if(eVisit) {
+            if(eVisit)
+            { //checks if this command is being used an an undo.
                 System.out.print(output);
             }
             visitLength.add(currentTime);
@@ -283,6 +322,10 @@ public class Visitor_Operations
      * @param visitorID
      * @param ISBNS
      * @throws Exception
+     *
+     * This method handles events occuring in the return command. Furthermore, this
+     * method also carries out the functionality of giving fines to the visitor had they
+     * returned the book late.
      */
     public void returnBook(Long visitorID, ArrayList<String> ISBNS) throws Exception {
         String errormessage1 = "return,invalid-book-id,";
@@ -291,10 +334,11 @@ public class Visitor_Operations
         double visitor_balance = 0;
         int index = 0;
         ArrayList<Book> booklist = new ArrayList<>();
-        if (!this.visitorRegistry.containsKey(visitorID)) {
+        if (!this.visitorRegistry.containsKey(visitorID))
+        { //error handles for invalid visitor id
             throw new Exception("return,invalid-visitor-id;");
         }
-        for(String isbn : ISBNS){
+        for(String isbn : ISBNS){ //checks if book id's are invalid
             if(Book_Operations.getInstance().getBookRegistry().containsKey(isbn)){
                 booklist.add(Book_Operations.getInstance().getBookRegistry().get(isbn));
                 if(! Book_Operations.getInstance().getPurchasedBooks().containsKey(booklist.get(index))){
@@ -308,24 +352,24 @@ public class Visitor_Operations
             }
         }
         if (!errormessage1.endsWith("return,invalid-book-id,"))
-        {
+        {//finishes checking if book id's are invalid
             errormessage1 = errormessage1.substring(0, errormessage1.length() - 1);
             errormessage1 += ";";
             throw new Exception(errormessage1);
         }
         Visitor visitor = this.visitorRegistry.get(visitorID);
         for (int i = 0; i < booklist.size(); i++)
-        {
+        {//if visitor id's arent invalid, then go on with the returning book proccess
             for (int j = 0; j < visitor.getBorrowed_books().size(); j++)
             {
                 double book_balance = 0;
 
                 if (booklist.get(i).equals(visitor.getBorrowed_books().get(j).getBook()))
-                {
+                { //looks for books that have been borrowed
                     DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
                     Date time = dateFormat.parse(Time_Operations.Get_Time());
                     if (time.after(dateFormat.parse(visitor.getBorrowed_books().get(j).getDue_date())))
-                    { // check if due date is before current date
+                    { // check if due date is before current date (this is where we handle fines)
                         book_balance += 8;
                         visitor.getBorrowed_books().get(j).setBalance(book_balance);
                     }
@@ -333,6 +377,10 @@ public class Visitor_Operations
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(time);
                     Date futureDate = calendar.getTime();
+
+                    /*
+                    More fines handling below.
+                     */
                     while (futureDate.after(dateFormat.parse(visitor.getBorrowed_books().get(j).getDue_date())))
                     {// if the date is a week past the due date  (current date + week is after the due date)
                         if (book_balance == 30)
@@ -359,14 +407,14 @@ public class Visitor_Operations
                     break;
                 }
                 if (!booklist.get(i).equals(visitor.getBorrowed_books().get(j)) && j == visitor.getBorrowed_books().size())
-                {
+                { //more invalid book handling
                     errormessage1 += visitorID + ",";
                 }
             }
         }
         visitor.setBalance(visitor_balance);
         for (int i = 0; i < ISBNS.size(); i++)
-        {
+        { //removes books from borrowed list
             for (int j = 0; j < visitor.getBorrowed_books().size(); j++)
             {
                 if (ISBNS.get(i).equals(visitor.getBorrowed_books().get(j)))
@@ -377,12 +425,13 @@ public class Visitor_Operations
             }
         }
         if (visitor_balance > 0)
-        {
+        { //prints error message if visitor owes dues.
             errormessage2b = errormessage2b.substring(0, errormessage2b.length() - 1);
             errormessage2b += ";";
             System.out.println(errormessage2a + "$" + visitor_balance + "," + errormessage2b);
         }else {
-            if(Visitor_Operations.rBook) {
+            if(Visitor_Operations.rBook)
+            {// checks if command is being used as an undo.
                 System.out.println("return,success");
             }
         }
@@ -393,16 +442,22 @@ public class Visitor_Operations
      * @param visitorID
      * @param amount
      * @throws Exception
+     *
+     * This method is used for the pay fine command. Visitor would call this method in order to
+     * pay their dues.
      */
     public void payFine(double amount,Long visitorID)throws Exception
     {
-        if (!this.visitorRegistry.containsKey(visitorID)) {
+        if (!this.visitorRegistry.containsKey(visitorID))
+        {//Error handling invalid visitor
             throw new Exception("pay,invalid-visitor-id;");
         }
         Visitor visitor = this.visitorRegistry.get(visitorID);
-        if ( amount < 0 || amount > visitor.getBalance()){
+        if ( amount < 0 || amount > visitor.getBalance())
+        { //Handles if visitor pays an invalid amount of money
             throw new Exception("pay,invalid-amount," + amount + "," + visitor.getBalance() + ";");
         }
+        //pays fine
         double new_visitor_balance = visitor.getBalance() - amount;
         visitor.setBalance(new_visitor_balance);
         System.out.println("pay,success," + visitor.getBalance() + ";");
@@ -413,17 +468,22 @@ public class Visitor_Operations
      * @param visitorID
      * @return
      * @throws Exception
+     *
+     * This method is used for the borrowed book command. It is used to print out borrowed books in the correct
+     * format.
      */
-   public String borrowedBooks(Long visitorID) throws Exception{
+
+   public String borrowedBooks(Long visitorID) throws Exception
+   {
        if (!this.visitorRegistry.containsKey(visitorID))
-       {
+       {// Error Handling invalid visitor ID's
            throw new Exception("borrowed,invalid-visitor-id;");
        }
        Visitor visitor = this.visitorRegistry.get(visitorID);
        ArrayList visitorsbooks = visitor.getBorrowed_books();
        String response = "borrowed," + visitorsbooks.size() + "," + "\n";
        for(int i = 0;i < visitorsbooks.size();i++ )
-       {
+       {//gets list of borrowed books in correct format
             Book_Loan book = (Book_Loan) visitorsbooks.get(i);
             response += book.getBook().getBookIsbn() + "," + book.getBook().getBookIsbn()+ "," +
                     book.getBook().getBookName() + "," + book.getStart_date().substring(0,10) + "\n";
@@ -435,6 +495,10 @@ public class Visitor_Operations
     // Accounts
     //================================================================================
 
+    private void persistentCreateAccount(String username, String password, String role, long visitorID) throws Exception {
+        Account newAccount = new Account(username,password,role,visitorID);
+        activeAccounts.put(newAccount.getUsername(),newAccount);
+    }
 
     /**
      * This method takes in a username string, a password string, a role (0 for visitor, 1 for employee),
@@ -557,10 +621,6 @@ public class Visitor_Operations
     // Clients
     //================================================================================
 
-    private static HashMap<Integer,Account> activeConnections = new HashMap<>();
-    public static HashMap<Integer,Account> getActiveConnections(){return activeConnections; }
-
-
 
     /**
      * This method uses Random.nextInt in order to generate a random number with a minimum of 1
@@ -619,7 +679,7 @@ public class Visitor_Operations
     }
 
     /**
-     * this function shuts down the system
+     * this function shuts down the system and saves all persistent data.
      *
      */
     public void shutdown()
@@ -636,23 +696,6 @@ public class Visitor_Operations
         {
             e.printStackTrace();
         }
-    }
-
-        /**
-         *
-         * @param args
-         * main function used for testing purposes
-         */
-
-    /*public static void main(String[] args)
-    {
-        Visitor_Operations mainTest = new Visitor_Operations();
-
-        //Validate that Client.Visitor.Client.Visitor File was Read Correctly//
-        System.out.println(mainTest.getVisitorRegistry().get(2365153268L));
-        System.out.println(mainTest.getVisitorRegistry().get(4561235867L));
-
-        //Validate Registering User//
         try {
             PrintStream saveState = new PrintStream(new FileOutputStream(new File("fines.log")));
             saveState.flush();
@@ -675,15 +718,13 @@ public class Visitor_Operations
             FileOutputStream fileOut = new FileOutputStream("accounts.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             for(Map.Entry<String, Account> entry : this.getActiveAccounts().entrySet())
-            out.writeObject(entry.getKey() + ":" + entry.getValue().getUsername() + ":" + entry.getValue().getPassword() + ":" +
-                    entry.getValue().getRole() + ":" + entry.getValue().getVisitorID() + "\n");
+                out.writeObject(entry.getKey() + ":" + entry.getValue().getUsername() + ":" + entry.getValue().getPassword() + ":" +
+                        entry.getValue().getRole() + ":" + entry.getValue().getVisitorID() + "\n");
             out.flush();
             out.close();
             fileOut.close();
         }catch(IOException i) {
             i.printStackTrace();
         }
-
     }
-    }*/
 }

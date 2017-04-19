@@ -17,6 +17,7 @@ import java.util.*;
 public class Book_Operations
 {
     private static final Book_Operations bookKeeper = new Book_Operations();
+    private Visitor_Operations visitorOperations = Visitor_Operations.getInstance();
     private final String bookListURI = "books.txt";
     private HashMap<Book, Integer> purchasedBooks;
     private HashMap<String, Book> bookRegistry;
@@ -153,17 +154,16 @@ public class Book_Operations
         String time = Time_Operations.Get_Time();
         Visitor_Operations visitKeeper = Visitor_Operations.getInstance();
         HashMap<Long,Visitor> visitorlist = visitKeeper.getVisitorRegistry();
-        Visitor visitor = Visitor_Operations.getVisitorRegistry().get(visitorID);
+        Visitor visitor = visitorOperations.getVisitorRegistry().get(visitorID);
         String errorString = "borrow,invalid-book-id,{";
 
         int index = 0;
         if(!visitorlist.containsKey(visitorID)) {
             throw new Exception("borrow,invalid-visitor-id;");
         }
-        //Book listofbooks = bookRegistry.get(bookISBNS);
-        //if(!Time_Operations.getIsopen(time)) {
-          //  throw new Exception("Library is currently closed.");
-        //}
+        if(!Time_Operations.getIsopen(time)) {
+            throw new Exception("Library is currently closed.");
+        }
         if(bookISBNS.size() > 5 - visitor.getBorrowed_books().size()) {
             throw new Exception("borrow,book-limit-exceeded;");
         }

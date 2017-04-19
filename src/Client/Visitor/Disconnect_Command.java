@@ -2,10 +2,12 @@ package Client.Visitor;
 
 import Network.Command;
 
-//FILE::Disconnect.java
+//FILE:Client.Visitor.Disconnect.java
 //AUTHOR:: Adam Nowak
 //DATE::Apr.16.2017
-public class Disconnect_Command implements Command{
+
+public class Disconnect_Command implements Command
+{
     Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
     private int clientID;
 
@@ -13,10 +15,13 @@ public class Disconnect_Command implements Command{
         this.clientID = clientID;
     }
     @Override
-    public String execute() {
-        try {
+    public String execute()
+    {
+        try
+        {
             System.out.println(visitorKeeper.disconnectConnection(this.clientID));
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return "";

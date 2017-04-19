@@ -2,7 +2,7 @@
 ////AUTHOR::Kevin.P.Barnett
 ////DATE::Mar.29.2017
 //
-//import Network.Main;
+//import Network.Client_Access_View;
 //import javafx.application.Application;
 //import javafx.event.Event;
 //import javafx.scene.Group;
@@ -25,7 +25,7 @@
 //
 //public class Graphics_View extends Application
 //{
-//    private static Main bootInstance;
+//    private static Client_Access_View bootInstance;
 //    private Stage primaryStage;
 //    private Scene primaryScene;
 //
@@ -77,7 +77,7 @@
 //        return command;
 //    }
 //
-//    public static void load(String[] args, Main main)
+//    public static void load(String[] args, Client_Access_View main)
 //    {
 //        arguments = args;
 //        bootInstance = main;

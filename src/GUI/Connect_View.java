@@ -17,93 +17,111 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+//FILE::GUI.Connect_View.java
+//AUTHOR::Justin Liu
+//DATE::Apr.17.2017
 
-/**
- * Created by Justin on 4/17/17.
- */
 public class Connect_View extends Application{
 
     private String clientMessage;
     private Integer clientID;
-    Stage prevStage;
     String visitorNumber;
 
-
+    //main method used for testing
     public static void main(String[] args) {
         launch(args);
-    }
-
-    public void setPrevStage(Stage stage){
-        prevStage = stage;
     }
 
     @Override
     public void start(Stage primaryStage) {
         visitorNumber = null;
         Stage stage = primaryStage;
-        Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
+        Visitor_Operations visitorOperations = Visitor_Operations.getInstance();
         BorderPane root = new BorderPane();
         primaryStage.setTitle("LBMS");
-        Button btn = new Button();
-        btn.setText("Connect");
-        Button btn2 = new Button();
-        btn2.setText("Disconnect");
-        Button btn3 = new Button();
-        btn3.setText("SearchToBuy");
-        Button btn4 = new Button();
-        btn4.setText("Arrive");
-        Button btn5 = new Button();
-        btn5.setText("SearchToBorrow");
-        Button borrowed = new Button();
-        borrowed.setText("Borrowed");
-        Button btn6 = new Button();
-        btn6.setText("Advance");
-        VBox client = new VBox();
+        //Creates buttons for connect,disconnect,searchtobuy,arrive,searchtoborrow,borrowed,advance and depart.
+        Button connectButton = new Button();
+        connectButton.setText("Connect");
+        Button disconnectButton = new Button();
+        disconnectButton.setText("Disconnect");
+        Button searchBuyButton = new Button();
+        searchBuyButton.setText("SearchToBuy");
+        Button arriveButton = new Button();
+        arriveButton.setText("Arrive");
+        Button searchBorrowButton = new Button();
+        searchBorrowButton.setText("SearchToBorrow");
+        Button borrowedButton = new Button();
+        borrowedButton.setText("Borrowed");
+        Button advanceButton = new Button();
+        advanceButton.setText("Advance");
+        Button depart = new Button("Depart");
+
+        //Creates a VBox for the buttons called clientView
+        VBox clientView = new VBox();
+        clientView.maxHeight(Double.MAX_VALUE);
+        clientView.maxWidth(Double.MAX_VALUE);
         Label clientText = new Label();
         Label visitorText = new Label();
+
+        //Creates a textField for the client to put in a visitorID
         TextField visitorTextField = new TextField();
-        client.maxHeight(Double.MAX_VALUE);
-        client.maxWidth(Double.MAX_VALUE);
-        btn3.setDisable(true);
-        btn4.setDisable(true);
-        btn5.setDisable(true);
-        btn6.setDisable(true);
-        borrowed.setDisable(true);
+
+        //Disables all the buttons by default because the user needs to connect as a client first
+        searchBuyButton.setDisable(true);
+        arriveButton.setDisable(true);
+        searchBorrowButton.setDisable(true);
+        advanceButton.setDisable(true);
+        borrowedButton.setDisable(true);
         visitorTextField.setDisable(true);
-        Button depart = new Button("Depart");
-        VBox mainBox = new VBox();
-        VBox visitorBox = new VBox();
+
+        //Create VBoxes for when a button is pressed so the buttons will always be on the left side for all GUI operations
+        VBox searchBox = new VBox();
         VBox borrowBox = new VBox();
-        VBox clientBox = client;
+        VBox clientBox = clientView;
         VBox borrowedBox = new VBox();
+
+        //Create a timeGUI that will show the system time always
         timeGUI timer = new timeGUI();
         HBox currentTime = timer.start();
 
-        Scene home = new Scene(mainBox);
-        Scene scene1 = new Scene(visitorBox,1700,1000);
+        //Create new scenes for searching, borrowing, and showing borrowed for visitor
+        Scene scene1 = new Scene(searchBox,1700,1000);
         Scene scene2 = new Scene(borrowBox,1700,1000);
         Scene scene3 = new Scene(borrowedBox,1700,1000);
 
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        //Connect Button handler
+        connectButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                btn.setDisable(true);
-                clientMessage = visitorKeeper.startConnection();
+                //After the button is pressed, it is disabled so the user can only connect once
+                connectButton.setDisable(true);
+
+                //start a connection through visitorOperations class and displays on the GUI what the client number is.
+                clientMessage = visitorOperations.startConnection();
                 clientText.setText(clientMessage);
+
+                //sets the clientID so it can be used later on for disconnect.
                 clientID = Integer.parseInt(clientMessage.split(",|\\;")[1]);
-                btn3.setDisable(false);
-                btn4.setDisable(false);
-                btn6.setDisable(false);
+
+                //enables some of the buttons because there is a connected client now
+                searchBuyButton.setDisable(false);
+                arriveButton.setDisable(false);
+                advanceButton.setDisable(false);
                 visitorTextField.setDisable(false);
-                client.getChildren().addAll(clientText);
+                clientView.getChildren().addAll(clientText);
             }
         });
-        btn2.setOnAction(new EventHandler<ActionEvent>() {
+
+        //Disconnect button handler
+        disconnectButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
+                //Try catch to disconnect the client and end the visit for the visitor that the client
+                //may have arrived for. Then it will call the restart method to reset the stage.
                 try {
-                    visitorKeeper.disconnectConnection(clientID);
-                    visitorKeeper.endVisit(Long.parseLong(visitorNumber));
+                    visitorOperations.disconnectConnection(clientID);
+                    visitorOperations.endVisit(Long.parseLong(visitorNumber));
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -112,27 +130,38 @@ public class Connect_View extends Application{
                 }
             }
         });
-        btn3.setOnAction(new EventHandler<ActionEvent>() {
+
+        //Search to Buy books button handler
+        searchBuyButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Book_Search_View bsv = new Book_Search_View();
-                GridPane gp = bsv.order();
-                gp.add(clientBox,0,1);
-                if(visitorBox.getChildren().contains(gp)){
 
+                //Creates a new Book Search View and calls the start method within all the while setting it to a new GridPane.
+                Book_Search_View bookSearchView = new Book_Search_View();
+                GridPane gridPane = bookSearchView.start();
+                gridPane.add(clientBox,0,1);
+
+                //Checks if the gridpane is already added to the searchBox VBox and if it is, don't do anything. Else,
+                //add it into the searchBox VBox.
+                if(searchBox.getChildren().contains(gridPane)){
                 }
                 else{
-                    visitorBox.getChildren().addAll(currentTime, gp);
+                    searchBox.getChildren().addAll(currentTime, gridPane);
                 }
                 stage.setScene(scene1);
             }
         });
-        btn4.setOnAction(new EventHandler<ActionEvent>() {
+
+        //Arriving a visitor button handler
+        arriveButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
+                //parses for the visitorID
                 String visitorID;
-                btn3.setDisable(false);
                 long visitor = Long.parseLong(visitorTextField.getText());
+
+                //Creates a new Begin Visit Command while passing in the required parameters and executing it
                 Begin_Visit_Command bvc = new Begin_Visit_Command(visitor,false);
                 String result = bvc.execute();
                 String[] visitorString = result.split(",");
@@ -141,54 +170,71 @@ public class Connect_View extends Application{
                     visitorText.setText(visitorID);
                 }
                 else {
-                    visitorID = visitorString[1];
-                    visitorNumber = visitorID;
-                    visitorText.setText("Visitor: " + visitorID);
+                    //If it does begin a visit, then enable the searchtoBuy method.
+                    //Also enables searchtoBorrow as well as borrowed and disables
+                    //buttons for arriving and putting in text into the visitor TextField.
+                    searchBuyButton.setDisable(false);
+                    searchBorrowButton.setDisable(false);
+                    borrowedButton.setDisable(false);
                     visitorText.setDisable(true);
                     visitorTextField.setDisable(true);
-                    btn4.setDisable(true);
-                    btn5.setDisable(false);
-                    borrowed.setDisable(false);
+                    arriveButton.setDisable(true);
+                    visitorID = visitorString[1];
+                    visitorNumber = visitorID;
+
+                    //Displays visitor's ID on the GUI
+                    visitorText.setText("Visitor: " + visitorID);
+
+                    //Creates a depart button handler
                     depart.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
+
+                            //enables the depart button and creates a new End Visitor Command which will, if the button is pressed,
+                            //depart the visitor and then disable the depart button.
                             depart.setDisable(false);
                             End_Visit_Command evc = new End_Visit_Command(Long.parseLong(visitorID), false);
                             evc.execute();
                             depart.setDisable(true);
                         }
                     });
-                    client.getChildren().add(depart);
+                    clientView.getChildren().add(depart);
                 }
             }
         });
-        btn5.setOnAction(new EventHandler<ActionEvent>() {
+
+        //Create a search to borrow books button handler
+        searchBorrowButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                setPrevStage(stage);
-                btn3.setDisable(false);
-                Book_Info_View ifv = new Book_Info_View();
-                GridPane gp = ifv.order(visitorNumber);
-                gp.add(clientBox,0,3);
-                borrowBox.getChildren().addAll(currentTime, gp);
+                //Create a new Book Info View and call the start method which will set it to a GridPane variable.
+                //Then it will add the clientBox which are the all the button operations to the gridpane and then
+                //add time and the gridpane to the new scene and set the new scene.
+                Book_Info_View bookInfoView = new Book_Info_View();
+                GridPane gridPane = bookInfoView.start(visitorNumber);
+                gridPane.add(clientBox,0,3);
+                borrowBox.getChildren().addAll(currentTime, gridPane);
                 stage.setScene(scene2);
             }
         });
 
-        borrowed.setOnAction(new EventHandler<ActionEvent>() {
+        //Create a borrow button handler
+        borrowedButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                setPrevStage(stage);
-                Borrowed_View bv = new Borrowed_View();
-                GridPane gp = null;
-                cleanup();
-                gp = bv.order(Long.parseLong(visitorNumber));
-                gp.add(clientBox,0,0);
-                borrowedBox.getChildren().addAll(currentTime, gp);
+
+                //Create a new Borrowed View and calls the start method which will set it to a GridPane variable.
+                //Then it will add the clientBox which are the all the button operations to the gridpane and then
+                //add time and the gridpane to the new scene and set the new scene.
+                Borrowed_View borrowedView = new Borrowed_View();
+                GridPane gridPane = borrowedView.start(Long.parseLong(visitorNumber));
+                gridPane.add(clientBox,0,0);
+                borrowedBox.getChildren().addAll(currentTime, gridPane);
                 stage.setScene(scene3);
             }
         });
 
+        //create advance time labels and a button handler
         Label advance = new Label("Advance Time");
         Label days = new Label("Days:");
         ComboBox daysToAdvance = new ComboBox();
@@ -200,18 +246,22 @@ public class Connect_View extends Application{
         for(int i = 0; i < 24; i++)
             hoursToAdd.getItems().add(i);
         hoursToAdd.setValue(0);
-        btn6.setOnAction(new EventHandler<ActionEvent>() {
+
+        //this button handler creates advance time command and executes it with the neccessary parameters.
+        advanceButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 Advance_Time_Command atc = new Advance_Time_Command(Integer.parseInt(daysToAdvance.getValue().toString()),Integer.parseInt(hoursToAdd.getValue().toString()));
                 atc.execute();
             }
         });
-        client.getChildren().addAll(currentTime,btn,btn2,btn3,btn4,visitorTextField,borrowed,btn5,visitorText,clientText,advance,days,daysToAdvance,hours,hoursToAdd,btn6);
+        clientView.getChildren().addAll(currentTime,connectButton,disconnectButton,searchBuyButton,arriveButton,visitorTextField,borrowedButton,searchBorrowButton,visitorText,clientText,advance,days,daysToAdvance,hours,hoursToAdd,advanceButton);
         root.setLeft(clientBox);
         root.setTop(currentTime);
         primaryStage.setScene(new Scene(root, 3000, 3000));
         primaryStage.show();
+
+        //end the program if the GUI window is closed
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
@@ -220,9 +270,19 @@ public class Connect_View extends Application{
             }
         });
     }
+
+    /**
+     * This method is used to reset the stage
+     */
     void cleanup(){
 
     }
+
+    /**
+     * The restart method used to reset the stage from scratch. Used for disconnect when 
+     * disconnecting a client and departing all visitors.
+     * @param stage
+     */
     void restart(Stage stage) {
         cleanup();
         start(stage);

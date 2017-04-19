@@ -15,7 +15,7 @@ import javafx.stage.Stage;
  * Created by Ryan on 4/16/2017.
  */
 public class Create_Account_View extends Application {
-    //private static Main bootInstance;
+    //private static Client_Access_View bootInstance;
     private Stage primaryStage;
     private Scene primaryScene;
 
@@ -40,7 +40,7 @@ public class Create_Account_View extends Application {
 
     }
 
-    /**  public static void load(String[] args, Main main)
+    /**  public static void load(String[] args, Client_Access_View main)
      {
      arguments = args;
      //bootInstance = main;

@@ -12,15 +12,20 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
 import java.util.ArrayList;
 
-/**
- * Created by Justin on 4/18/2017.
- */
+//FILE::GUI.Book_Info_View.java
+//AUTHOR::Justin Liu
+//DATE::Apr.17.2017
+
 public class Book_Info_View extends Connect_View {
 
-    public GridPane order(String visitorID){
+    /**
+     * The GUI subclass for showing the Book_Info view which creates and returns a GridPane.
+     * @param visitorID
+     * @return
+     */
+    public GridPane start(String visitorID){
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER_LEFT);
         grid.setHgap(10);
@@ -30,6 +35,7 @@ public class Book_Info_View extends Connect_View {
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
         grid.add(scenetitle, 0, 0, 4, 1);
 
+        //Creating a bunch of labels and text fields for the parameters needed search for books
         Label title = new Label("Title:");
         grid.add(title, 1, 2);
 
@@ -60,15 +66,20 @@ public class Book_Info_View extends Connect_View {
         TextField sortOrderTextField = new TextField();
         grid.add(sortOrderTextField, 2, 6);
 
+        //Creating a search button and adding the button into a hBox
         Button btn = new Button("Search");
         HBox hbBtn = new HBox(10);
         hbBtn.setAlignment(Pos.BOTTOM_LEFT);
         hbBtn.getChildren().add(btn);
         grid.add(hbBtn, 1, 7);
 
+        //Search button event handler method
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
+                //For all the parameters, if the user does not put in anything, it will assume that
+                //there is no input so it will be default set to *.
                 String title = String.valueOf(titleTextField.getText());
                 if(title.equals("")){
                     title = "*";
@@ -95,13 +106,17 @@ public class Book_Info_View extends Connect_View {
                 if(sortOrder.equals("")){
                     sortOrder = "*";
                 }
-                Book_Operations bookKeeper = Book_Operations.getInstance();
+
+                //Create a bookOperations instance and calls the SearchForInfo method while passing in the parameters for searching for a book
+                Book_Operations bookOperations = Book_Operations.getInstance();
                 SearchForInfo.initializeSearch();
-                ArrayList result = SearchForInfo.search(title,authorList,isbn, publisher, sortOrder, bookKeeper.getPurchasedBooks());
+                ArrayList result = SearchForInfo.search(title,authorList,isbn, publisher, sortOrder, bookOperations.getPurchasedBooks());
                 for(Object s : result){
                     System.out.println(s);
                 }
                 SearchForInfo.setLastInfoSearch(result);
+
+                //This will in turn show all the books that the library currently has that is borrowable
                 Label bookText = new Label("Books:");
                 grid.add(bookText,3,2);
                 for(int i = 0;i < result.size();i++){
@@ -112,15 +127,21 @@ public class Book_Info_View extends Connect_View {
                     Button borrow = new Button("Borrow");
                     grid.add(borrow, 4, i+3);
                     borrow.setDisable(false);
+
+                    //Borrow button event handler
                     borrow.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(ActionEvent event) {
                             ArrayList ISBN = new ArrayList();
                             ISBN.add(getISBN[0]);
+
+                            //disables the borrow button if there is no visitor in the library that has arrived
                             if (visitorID == null) {
                                 borrow.setDisable(true);
                             }
                             else{
+
+                                //Create a borrow command object and executes it for the visitor which in turn borrows the book for that specific visitor
                                 Borrow_Command bc = new Borrow_Command(Long.parseLong(visitorID), ISBN, false);
                                 bc.execute();
                             }
