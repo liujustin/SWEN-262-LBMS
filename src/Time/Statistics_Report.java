@@ -9,7 +9,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 //FILE:: Statistics_Report.java
-//AUTHOR::Adam Nowak
+//AUTHOR::Justin Liu, Adam Nowak
 //DATE::Apr.15.2017
 
 public class Statistics_Report {
