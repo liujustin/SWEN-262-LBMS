@@ -47,7 +47,7 @@ public class Statistics_Report {
         numberofvisitors = registeredVisitors.size();
         reportString += "Number of Visitors: " + numberofvisitors + "\n";
 
-        //gets average legnth of visits
+        //gets average length of visits
         reportString += "Average Length of Visits: " + visitorKeeper.getAvgVisit() + "\n";
 
         //Number of Books Purchased

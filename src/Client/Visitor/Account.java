@@ -6,7 +6,7 @@ package Client.Visitor;
 public class Account
 {
 
-    Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
+    Visitor_Operations visitorOperations = Visitor_Operations.getInstance();
     private String username;
     private String password;
     private String role;
@@ -26,7 +26,7 @@ public class Account
         this.password = password;
         this.role = role;
         this.visitorID = visitorID;
-        this.v = visitorKeeper.getVisitorRegistry().get(this.visitorID);
+        this.v = visitorOperations.getVisitorRegistry().get(this.visitorID);
     }
     // getter methods for Account
     public String getUsername(){

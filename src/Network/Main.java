@@ -1,5 +1,7 @@
 package Network;
 
+import Client.Visitor.Visitor;
+import Client.Visitor.Visitor_Operations;
 import GUI.Connect_View;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ public class Main
     public void startLoop()
     {
         String command;
+        Visitor_Operations visitorOperations = Visitor_Operations.getInstance();
 
         while(true)
         {

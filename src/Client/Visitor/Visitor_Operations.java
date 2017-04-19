@@ -15,9 +15,7 @@ import java.util.*;
 
 public class Visitor_Operations
 {
-    public byte version = 100;
-    public byte count = 0;
-    private static final Visitor_Operations visitorKeeper = new Visitor_Operations();
+    private static final Visitor_Operations visitorOperations = new Visitor_Operations();
     private static HashMap<Long, Visitor> visitorRegistry;
     private static HashMap<Long, Date> activeVisitor;
     private static ArrayList<String> visitLength;
@@ -29,13 +27,15 @@ public class Visitor_Operations
     public static boolean pFine = true;
     public static boolean rBook = true;
     public static boolean bBook = true;
+    private long average = 0;
+    private static HashMap<Integer,Account> activeConnections = new HashMap<>();
+    public static HashMap<Integer,Account> getActiveConnections(){return activeConnections; }
+
     //================================================================================
     // Visitors
     //================================================================================
 
-
-    public Visitor_Operations()
-    {
+    public Visitor_Operations() {
         //This stores all visitors that have ever been registered//
         this.visitorRegistry = new HashMap<>();
 
@@ -51,16 +51,13 @@ public class Visitor_Operations
         {
             Scanner loadVisitorReg = new Scanner(new File("visitor.log"));
 
-            while(loadVisitorReg.hasNextLine())
-            {
+            while (loadVisitorReg.hasNextLine()) {
                 String[] visitor = loadVisitorReg.nextLine().split(":");
                 Visitor tempVisitor = new Visitor(visitor[0], visitor[1], visitor[2], Double.parseDouble(visitor[3]), visitor[4], Long.parseLong(visitor[5]));
 
                 this.visitorRegistry.put(Long.parseLong(visitor[5]), tempVisitor);
             }
-        }
-        catch(Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -68,42 +65,47 @@ public class Visitor_Operations
         {
             Scanner loadFines = new Scanner(new File("fines.log"));
 
-            if(loadFines.hasNextLine())
+            if (loadFines.hasNextLine())
                 this.finesCollected = Double.parseDouble(loadFines.nextLine());
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
-        try{ //This try catch obtains the length of visits and stores it into the visit length arrayList
+        try { //This try catch obtains the length of visits and stores it into the visit length arrayList
             Scanner loadVisitorLengths = new Scanner(new File("visitLengths.log"));
 
-            while(loadVisitorLengths.hasNextLine()){
+            while (loadVisitorLengths.hasNextLine()) {
                 visitLength.add(loadVisitorLengths.nextLine());
             }
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
 
-//        try {
-//            FileInputStream fileIn = new FileInputStream("accounts.ser");
-//            ObjectInputStream in = new ObjectInputStream(fileIn);
-//            String tempaccount = (String) in.readObject();
-//            while (tempaccount != null) {
-//                String[] account = tempaccount.split(":");
-//                String username = account[0];
-//                Account user = new Account(account[1],account[2],account[3], Long.parseLong(account[4]));
-//                activeAccounts.put(username,user);
-//                tempaccount = (String) in.readObject();
-//            }
-//            in.close();
-//            fileIn.close();
-//        }catch(IOException i) {
-//            return;
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
+    /**
+     * loads persistent accounts in to the system by reading from accounts.ser which is a serialized text file
+     */
+    public void loadAccounts(){
+        try {
+            FileInputStream fileIn = new FileInputStream("accounts.ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            String tempaccount = (String) in.readObject();
+            while (tempaccount != null) {
+                String[] account = tempaccount.split(":");
+                visitorOperations.persistentCreateAccount(account[1],account[2],account[3], Long.parseLong(account[4].trim()));
+                tempaccount = (String) in.readObject();
+            }
+            in.close();
+            fileIn.close();
+        }catch(IOException i) {
+            return;
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -112,14 +114,12 @@ public class Visitor_Operations
      */
 
     public static Visitor_Operations getInstance(){
-        return visitorKeeper;
+        return visitorOperations;
     }
 
     public Double getFinesCollected(){
         return finesCollected;
     }
-
-    private long average = 0;
 
     /**
      *
@@ -162,7 +162,7 @@ public class Visitor_Operations
      *
      * @return visitor registry
      */
-    public static HashMap<Long, Visitor> getVisitorRegistry()
+    public HashMap<Long, Visitor> getVisitorRegistry()
     {
         return visitorRegistry;
     }
@@ -494,6 +494,10 @@ public class Visitor_Operations
     // Accounts
     //================================================================================
 
+    private void persistentCreateAccount(String username, String password, String role, long visitorID) throws Exception {
+        Account newAccount = new Account(username,password,role,visitorID);
+        activeAccounts.put(newAccount.getUsername(),newAccount);
+    }
 
     /**
      * This method takes in a username string, a password string, a role (0 for visitor, 1 for employee),
@@ -616,10 +620,6 @@ public class Visitor_Operations
     // Clients
     //================================================================================
 
-    private static HashMap<Integer,Account> activeConnections = new HashMap<>();
-    public static HashMap<Integer,Account> getActiveConnections(){return activeConnections; }
-
-
 
     /**
      * This method uses Random.nextInt in order to generate a random number with a minimum of 1
@@ -678,7 +678,7 @@ public class Visitor_Operations
     }
 
     /**
-     * this function shuts down the system
+     * this function shuts down the system and saves all persistent data.
      *
      */
     public void shutdown()
@@ -695,23 +695,6 @@ public class Visitor_Operations
         {
             e.printStackTrace();
         }
-    }
-
-        /**
-         *
-         * @param args
-         * main function used for testing purposes
-         */
-
-    /*public static void main(String[] args)
-    {
-        Visitor_Operations mainTest = new Visitor_Operations();
-
-        //Validate that Client.Visitor.Client.Visitor File was Read Correctly//
-        System.out.println(mainTest.getVisitorRegistry().get(2365153268L));
-        System.out.println(mainTest.getVisitorRegistry().get(4561235867L));
-
-        //Validate Registering User//
         try {
             PrintStream saveState = new PrintStream(new FileOutputStream(new File("fines.log")));
             saveState.flush();
@@ -734,15 +717,13 @@ public class Visitor_Operations
             FileOutputStream fileOut = new FileOutputStream("accounts.ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             for(Map.Entry<String, Account> entry : this.getActiveAccounts().entrySet())
-            out.writeObject(entry.getKey() + ":" + entry.getValue().getUsername() + ":" + entry.getValue().getPassword() + ":" +
-                    entry.getValue().getRole() + ":" + entry.getValue().getVisitorID() + "\n");
+                out.writeObject(entry.getKey() + ":" + entry.getValue().getUsername() + ":" + entry.getValue().getPassword() + ":" +
+                        entry.getValue().getRole() + ":" + entry.getValue().getVisitorID() + "\n");
             out.flush();
             out.close();
             fileOut.close();
         }catch(IOException i) {
             i.printStackTrace();
         }
-
     }
-    }*/
 }

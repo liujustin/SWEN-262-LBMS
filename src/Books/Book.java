@@ -1,4 +1,5 @@
-package Books;//FILE::Books.Book.java
+package Books;
+//FILE::Books.Book.java
 //AUTHOR::Kevin.P.Barnett, Justin Liu
 //DATE::Feb.25.2017
 
@@ -17,7 +18,7 @@ public class Book
     private String bookID;
     private ArrayList<String> authors = new ArrayList<String>();
 
-    //Initial Constructor for each book
+    //Initial Constructor for each book object
     public Book(String bookIsbn, String bookName, String bookPublisher, String publishDate){
         if ((bookIsbn.length()) > 0 && (bookIsbn.matches("^[0-9]*$"))) {
             this.bookIsbn = bookIsbn;
@@ -34,12 +35,16 @@ public class Book
         this.borrowingStatus = true;
     }
 
+    /**
+     * Sets the author for each book
+     * @param authors
+     */
     public void setAuthors(ArrayList<String> authors) {
         this.authors = authors;
     }
 
     /**
-     *
+     *Sets the BookID for each book
      * @param bookID
      */
     public void setBookID(String bookID) {
@@ -47,7 +52,7 @@ public class Book
     }
 
     /**
-     *
+     * Sets the borrowing status for the book
      * @param borrowingStatus
      */
     public void setBorrowing(boolean borrowingStatus) {
@@ -58,7 +63,7 @@ public class Book
     }
 
     /**
-     *
+     * Gets the ISBN for the book object
      * @return bookIsbn
      */
     public String getBookIsbn() {
@@ -66,7 +71,7 @@ public class Book
     }
 
     /**
-     *
+     * Gets the book title for the book object
      * @return bookIsbn
      */
     public String getBookName() {
@@ -74,7 +79,7 @@ public class Book
     }
 
     /**
-     *
+     * Gets the publisher for the book
      * @return bookPublisher
      */
     public String getBookPublisher() {
@@ -82,7 +87,7 @@ public class Book
     }
 
     /**
-     *
+     * Gets the date it was published
      * @return publishDate
      */
     public String getPublishDate() {
@@ -90,7 +95,7 @@ public class Book
     }
 
     /**
-     *
+     * Gets the borrowing status for the book
      * @return borrowingstatus
      */
     public boolean getBorrowingStatus() {
@@ -98,7 +103,7 @@ public class Book
     }
 
     /**
-     *
+     * Gets the list of authors for the book
      * @return authors
      */
     public ArrayList<String> getAuthors() {
@@ -106,12 +111,15 @@ public class Book
     }
 
     /**
-     *
+     * Gets the book ID for the book object
      * @return bookID
      */
     public String getBookID() { return bookID; }
 
-
+    /**
+     * A toString method that returns an string of authors
+     * @return
+     */
     private String buildAuthorString()
     {
         String out = "";
@@ -120,6 +128,9 @@ public class Book
         return out;
     }
 
+    /**
+     * A comparator used for sorting books by their title
+     */
     public static Comparator<Book> BookTitleComparator = new Comparator<Book>() {
 
         public int compare(Book b1, Book b2) {
@@ -128,7 +139,10 @@ public class Book
             return Book1.compareTo(Book2);
         }};
 
-    /*Comparator for sorting the list by roll no*/
+
+    /**
+     * Comparator for sorting the book by publish date
+     */
     public static Comparator<Book> BookDateComparator = new Comparator<Book>() {
 
         public int compare(Book b1, Book b2) {
@@ -147,6 +161,10 @@ public class Book
             }
         }};
 
+    /**
+     * A toString method for the book Object
+     * @return
+     */
     public String toString()
     {
         return String.format("%s,%s,{%s},%s\n", this.bookIsbn, this.bookName, buildAuthorString(), this.publishDate);

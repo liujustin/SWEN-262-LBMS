@@ -24,6 +24,15 @@ public class Book_Loan {
     private String start_date;
     private String due_date;
 
+    /**
+     * Book loan constructor that takes in parameters and creates a Book_Loan
+     * @param loaned_to
+     * @param book
+     * @param balance
+     * @param is_active
+     * @param start_date
+     * @param due_date
+     */
     public Book_Loan(Visitor loaned_to, Book book, double balance, boolean is_active, String start_date, String due_date) {
         this.loaned_to = loaned_to;
         this.book = book;
@@ -34,6 +43,7 @@ public class Book_Loan {
     }
 
     /**
+     * A getter method for returning the visitor the Book_Loan is loaned to
      * @return loaned_to
      */
     public Visitor getLoaned_to() {
@@ -41,6 +51,7 @@ public class Book_Loan {
     }
 
     /**
+     * A setter method that sets the visitor the book_loan is loaned to
      * @param loaned_to
      */
     public void setLoaned_to(Visitor loaned_to) {
@@ -48,6 +59,7 @@ public class Book_Loan {
     }
 
     /**
+     * A getter method that returns the book for the book_loan
      * @return book
      */
     public Book getBook() {
@@ -55,6 +67,7 @@ public class Book_Loan {
     }
 
     /**
+     * A setter method that sets what book applied to the book_loan
      * @param book
      */
     public void setBook(Book book) {
@@ -62,6 +75,7 @@ public class Book_Loan {
     }
 
     /**
+     * A getter that returns the fine/balance for the book that's loaned out
      * @return balance
      */
     public double getBalance() {
@@ -69,54 +83,55 @@ public class Book_Loan {
     }
 
     /**
+     * A setter that sets the fine/balance for the book that's loaned out
      * @param balance
      */
     public void setBalance(double balance) {
         this.balance = balance;
     }
 
+
     /**
-     * @return active_balance
-     *
-     * @return is_active
+     * A boolean that returns whether or not the book_loan is active
+     * @return
      */
     public boolean getIs_Active(){ return is_active;}
 
     /**
-     *
+     * A setter that sets a boolean for whether or not the book_loan is active
      * @param is_active
      */
     public void setIs_Active(boolean is_active){ this.is_active = is_active;}
 
     /**
-     *
-     * @return start date
+     * A getter that returns a string for the start date of the book_loan
+     * @return
      */
-
     public String getStart_date(){ return start_date;}
 
     /**
-     *
+     * A setter that sets a string for the start date of the book_loan
      * @param start_date
      */
     public void setStart_date(String start_date){ this.start_date = start_date;}
 
     /**
-     *
+     * A getter that gets the due date for the book_loan
      * @return due_date
      */
     public String getDue_date(){ return due_date;}
 
     /**
-     *
+     * A setter that sets the due date for the book_loan
      * @param due_date
      */
     public void setDue_date(String due_date){ this.due_date = due_date;}
 
     /**
-     * @param
+     * A getter that returns the fines on the book
      * @param v
-     * @return Total fines for a visitor
+     * @return
+     * @throws ParseException
      */
     public double getFine(Visitor v) throws ParseException {
         double visitor_balance = 0;
@@ -146,6 +161,10 @@ public class Book_Loan {
         return visitor_balance;
     }
 
+    /**
+     * Shutdown method to save the book_loans in a persistent state
+     * @param visitorRegistry
+     */
     public static void saveBookLoans(HashMap<Integer, Visitor> visitorRegistry)
     {
         try
@@ -163,6 +182,10 @@ public class Book_Loan {
         }
     }
 
+    /**
+     * A toSTring method for the Book_loan object
+     * @return
+     */
     public String toString() {
         String book_loanString = String.format("%s:%s:%s:%f:%s:%d",
                 this.loaned_to.getVisitor_ID(),
