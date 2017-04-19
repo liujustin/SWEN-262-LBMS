@@ -2,7 +2,7 @@ package Client.Visitor;
 
 import Network.Command;
 
-//FILE::Disconnect.java
+//FILE:Client.Visitor.Disconnect.java
 //AUTHOR:: Adam Nowak
 //DATE::Apr.16.2017
 

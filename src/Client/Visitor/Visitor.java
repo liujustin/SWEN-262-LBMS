@@ -1,4 +1,5 @@
-package Client.Visitor;//FILE::Client.Visitor.java
+package Client.Visitor;
+//FILE::Client.Visitor.java
 //AUTHOR::Ryan Connors
 //DATE::Feb.25.2017
 

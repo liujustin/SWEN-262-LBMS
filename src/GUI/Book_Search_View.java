@@ -16,12 +16,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-
 import java.util.ArrayList;
 
-/**
- * Created by Justin on 4/18/2017.
- */
+//FILE::GUI.Book_Search_View.java
+//AUTHOR::Justin Liu
+//DATE::Apr.17.2017
 public class Book_Search_View extends Connect_View {
 
     /**

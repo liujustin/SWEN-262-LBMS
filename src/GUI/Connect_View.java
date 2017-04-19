@@ -17,10 +17,10 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+//FILE::GUI.Connect_View.java
+//AUTHOR::Justin Liu
+//DATE::Apr.17.2017
 
-/**
- * Created by Justin on 4/17/17.
- */
 public class Connect_View extends Application{
 
     private String clientMessage;
@@ -234,7 +234,7 @@ public class Connect_View extends Application{
             }
         });
 
-        //Create labels for
+        //create advance time labels and a button handler
         Label advance = new Label("Advance Time");
         Label days = new Label("Days:");
         ComboBox daysToAdvance = new ComboBox();
@@ -246,6 +246,8 @@ public class Connect_View extends Application{
         for(int i = 0; i < 24; i++)
             hoursToAdd.getItems().add(i);
         hoursToAdd.setValue(0);
+
+        //this button handler creates advance time command and executes it with the neccessary parameters.
         advanceButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -258,6 +260,8 @@ public class Connect_View extends Application{
         root.setTop(currentTime);
         primaryStage.setScene(new Scene(root, 3000, 3000));
         primaryStage.show();
+
+        //end the program if the GUI window is closed
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {

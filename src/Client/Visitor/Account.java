@@ -1,6 +1,6 @@
 package Client.Visitor;
 
-//FILE::Account.java
+//FILE::Client.Visitor.Account.java
 //AUTHOR::Ryan Connors
 //DATE::Apr.7.2017
 public class Account

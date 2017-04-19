@@ -1,7 +1,7 @@
 package Client.Visitor;
 
 import Network.Command;
-//FILE::Memento.java
+//FILE::Client.Visitor.Memento.java
 //AUTHOR::Ryan Connors
 //DATE::Apr.12.2017
 public class Memento {

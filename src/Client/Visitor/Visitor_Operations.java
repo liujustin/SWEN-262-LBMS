@@ -1,5 +1,6 @@
-package Client.Visitor;//FILE::Client.Visitor.Visitor_Operations.java
-//AUTHOR::Kevin.P.Barnett, Adam Nowak
+package Client.Visitor;
+//FILE::Client.Visitor.Visitor_Operations.java
+//AUTHOR::Kevin.P.Barnett, Adam Nowak, Justin Liu
 //DATE::Mar.04.2017
 
 import Books.Book;

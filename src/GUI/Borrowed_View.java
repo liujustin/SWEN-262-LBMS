@@ -9,9 +9,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
-/**
- * Created by Justin on 4/17/17.
- */
+//FILE::GUI.Borrowed_View.java
+//AUTHOR::Justin Liu
+//DATE::Apr.17.2017
+
 public class Borrowed_View extends Connect_View{
     /**
      * The GUI subclass for showing the Borrowed_View which creates and returns a GridPane. This GUI view will show the
