@@ -35,6 +35,9 @@ public class Visitor
         this.visitor_ID = visitor_ID;
     }
 
+
+    //Getters and Setters for the visitor class
+
     /**
      *
      * @return first name

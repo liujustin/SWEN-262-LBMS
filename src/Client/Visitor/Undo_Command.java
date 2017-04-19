@@ -11,11 +11,15 @@ import java.util.ArrayList;
 public class Undo_Command implements Command{
     private Memento command;
 
+
+    // This command executes redo commands which got its state in the memento class
+
     public Undo_Command() {
         this.command = UndoRedoCaretaker.getCaretaker().getUndoStack().pop();
     }
-
-    public String execute() {
+    @Override
+    public String execute()
+    {
         this.command.getState().execute();
         return "undo,success;";
     }
