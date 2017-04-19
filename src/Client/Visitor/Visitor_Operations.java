@@ -257,9 +257,6 @@ public class Visitor_Operations
                 activeVisitor.put(visitorID, dateFormat2.parse(currentTime));
 
                 String output = "arrive,"+ visitorID + "," + currentTime;
-                if(bVisit) {
-                    System.out.print(output);
-                }
                 visitLength.add(currentTime);
                 return output;
             }

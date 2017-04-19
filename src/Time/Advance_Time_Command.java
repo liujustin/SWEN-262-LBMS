@@ -1,4 +1,5 @@
-package Time;//FILE::Time.Advance_Time_Command.java
+package Time;
+//FILE::Time.Advance_Time_Command.java
 //AUTHOR::Ryan Connors, Justin Liu
 //DATE::Feb.25.2017
 

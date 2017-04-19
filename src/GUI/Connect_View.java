@@ -165,6 +165,7 @@ public class Connect_View extends Application{
                 Begin_Visit_Command bvc = new Begin_Visit_Command(visitor,false);
                 String result = bvc.execute();
                 String[] visitorString = result.split(",");
+                System.out.println(result);
                 if (visitorString.length == 1){
                     visitorID = visitorString[0];
                     visitorText.setText(visitorID);

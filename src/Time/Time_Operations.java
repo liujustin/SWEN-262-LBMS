@@ -1,4 +1,5 @@
-package Time;//FILE::Time.Time_Operations.java
+package Time;
+//FILE::Time.Time_Operations.java
 //AUTHOR::Justin Liu, Adam Nowak
 //DATE::Mar.04.2017
 
