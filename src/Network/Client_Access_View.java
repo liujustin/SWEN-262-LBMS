@@ -30,7 +30,6 @@ public class Client_Access_View
     public void startLoop()
     {
         String command;
-        Visitor_Operations visitorOperations = Visitor_Operations.getInstance();
 
         while(true)
         {//This loop allows the system to continually ask for input by the user. The data input will be parsed into commands.

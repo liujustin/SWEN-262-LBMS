@@ -1,4 +1,5 @@
-package Books;//FILE::Books.GoogleAPI_Search.java
+package Books;
+//FILE::Books.GoogleAPI_Search.java
 //AUTHOR::Kevin.P.Barnett
 //DATE::Apr.08.2017
 
@@ -11,7 +12,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 public class GoogleAPI_Search
 {

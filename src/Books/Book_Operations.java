@@ -1,4 +1,5 @@
-package Books;//FILE::Books.Book_Operations.java
+package Books;
+//FILE::Books.Book_Operations.java
 //AUTHOR::Kevin.P.Barnett
 //DATE::Feb.25.2017
 
@@ -23,7 +24,9 @@ public class Book_Operations
     private HashMap<String, Book> bookRegistry;
     private static int bookTotal;
 
-
+    /**
+     * Book Operations constructor
+     */
     public Book_Operations()
     {
         this.purchasedBooks = new HashMap<>();
@@ -39,9 +42,10 @@ public class Book_Operations
         return bookKeeper;
     }
     public HashMap<String,Book> getBookRegistry(){ return this.bookRegistry; }
+
     /**
      *
-     * gets the available list of books for the library to purchase
+     * Gets the available list of books for the library to purchase and loads book loans
      */
     private void getBookList()
     {
@@ -88,7 +92,32 @@ public class Book_Operations
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        try //This try catch obtains data from the borrowBooks log and stores bookloan data to the system.
+        {
+            Scanner loadBookReg = new Scanner(new File("borrowBooks.log"));
+
+            while (loadBookReg.hasNextLine()) {
+                String tempLine = loadBookReg.nextLine();
+                if(tempLine.equals("")){
+                    continue;
+                }
+                String[] books = tempLine.split(":");
+                Book bookObject = bookRegistry.get(books[1]);
+                Visitor visitor = visitorOperations.getVisitorRegistry().get(Long.parseLong(books[0]));
+                visitor.add_book(new Book_Loan(visitor,bookObject,Double.parseDouble(books[2].trim()),true,books[3],books[4].trim()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
+    /**
+     * Undo buy book command
+     * @param quantity
+     * @param ISBNS
+     * @throws Exception
+     */
     public void undoBuyBook(Integer quantity, ArrayList<String> ISBNS)throws Exception
     {
         ArrayList<Book> removebooks = new ArrayList<>();
@@ -111,7 +140,7 @@ public class Book_Operations
     }
 
     /**
-     *
+     * Buy book method that calls SearchToBuy
      * @param quantity
      * @param ISBNS
      */
@@ -141,12 +170,11 @@ public class Book_Operations
         System.out.println(String.format("buy,success,%d,\n%s", amount , out));
     }
     /**
-     *
+     *Borrow book method that borrows a book for a visitor
      * @param visitorID
      * @param bookISBNS
      * @throws Exception
      *
-     * allows the visitor to borrow a book
      */
     public void borrowBook(Long visitorID, ArrayList<String> bookISBNS) throws Exception
     {
@@ -216,6 +244,9 @@ public class Book_Operations
 
     public HashMap<Book, Integer> getPurchasedBooks(){return this.purchasedBooks;}
 
+    /**
+     * shutdown method that saves persistent state in text file
+     */
     public void shutdown()
     {
         //Store Purchased Books

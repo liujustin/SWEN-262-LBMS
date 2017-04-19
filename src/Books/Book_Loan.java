@@ -1,4 +1,5 @@
-package Books;//FILE::Books.Book_Loan.java
+package Books;
+//FILE::Books.Book_Loan.java
 //AUTHOR::Ryan Connors, Adam Nowak
 //DATE::Feb.25.2017
 
@@ -40,6 +41,7 @@ public class Book_Loan {
         this.is_active = is_active;
         this.start_date = start_date;
         this.due_date = due_date;
+
     }
 
     /**
@@ -173,8 +175,9 @@ public class Book_Loan {
             saveState.flush();
 
             for(Visitor v: visitorRegistry.values())
-                for(Book_Loan b: v.getBorrowed_books())
+                for(Book_Loan b: v.getBorrowed_books()) {
                     saveState.println(b.toString());
+                }
         }
         catch(Exception e)
         {
@@ -187,13 +190,12 @@ public class Book_Loan {
      * @return
      */
     public String toString() {
-        String book_loanString = String.format("%s:%s:%s:%s:%d",
+        String book_loanString = String.format("%s:%s:%s:%s:%s\n",
                 this.loaned_to.getVisitor_ID(),
                 this.book.getBookIsbn(),
+                Double.toString(this.balance),
                 this.start_date,
-                this.due_date,
-                this.balance);
-          //      this.active_balance);
+                this.due_date);
 
         return book_loanString;
     }

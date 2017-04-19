@@ -12,7 +12,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
-
+//FILE::Network.Client_Access_Point.java
+//AUTHOR::Ryan Connors, Adam Nowak, Kevin Barnett, Justin Liu
+//DATE::Feb.25.2017
 public class Client_Access_Point {
     Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();
     Book_Operations bookKeeper = Book_Operations.getInstance();
@@ -488,7 +490,7 @@ public class Client_Access_Point {
                             }
                         }
                     }
-                    arraylistparameter = (ArrayList) parsedcommand.get(2);
+                    arraylistparameter = (ArrayList) parsedcommand.get(3);
                     if(parsedcommand.size() < 4)
                     {
                         for (Integer key : connections.keySet())
@@ -500,7 +502,7 @@ public class Client_Access_Point {
                         }
                     }else
                     {
-                        visitorID = Long.parseLong(parsedcommand.get(3).toString());
+                        visitorID = Long.parseLong(parsedcommand.get(2).toString());
                     }
                     cmd = new Borrow_Command(visitorID, arraylistparameter, false);
                     break;
