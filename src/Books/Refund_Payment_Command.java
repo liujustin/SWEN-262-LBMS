@@ -41,7 +41,7 @@ public class Refund_Payment_Command implements Command {
                 UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
             }
             visitorKeeper.getVisitorRegistry().get(this.visitorID).setBalance
-                    (visitorKeeper.getVisitorRegistry().get(this.visitorID).getBalance()- this.amount);
+                    (visitorKeeper.getVisitorRegistry().get(this.visitorID).getBalance() + this.amount);
             Visitor_Operations.pFine = true;
         } catch (Exception e) {
             e.printStackTrace();

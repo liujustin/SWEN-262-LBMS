@@ -167,8 +167,10 @@ public class Book_Operations
         if(bookISBNS.size() > 5 - visitor.getBorrowed_books().size()) {
             throw new Exception("borrow,book-limit-exceeded;");
         }
-        if(visitor.getBalance() > 0) {
-            throw new Exception("borrow,outstanding-fine," + visitor.getBalance() + ';');
+        if(!Visitor_Operations.pFine) {
+            if (visitor.getBalance() > 0) {
+                throw new Exception("borrow,outstanding-fine," + visitor.getBalance() + ';');
+            }
         }
         Calendar calendar = Calendar.getInstance();
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd,HH:mm:ss");
@@ -202,8 +204,9 @@ public class Book_Operations
                 break;
             }
         }
-
-        System.out.println("borrow," + futDate.substring(0,10));
+        if(Visitor_Operations.bBook) {
+            System.out.println("borrow," + futDate.substring(0, 10));
+        }
     }
 
     public HashMap<String, Book> getBooksForPurchase()

@@ -2,6 +2,7 @@ package Books;
 
 import Client.Visitor.Memento;
 import Client.Visitor.UndoRedoCaretaker;
+import Client.Visitor.Visitor_Operations;
 import Network.Command;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class Borrow_Command implements Command {
     public String execute(){
         try {
             if (this.isUndo) {
+                Visitor_Operations.bBook = false;
                 Return_Command r = new Return_Command(this.visitorID,this.bookISBNS,false);
                 Memento m = new Memento(r);
                 UndoRedoCaretaker.getCaretaker().getRedoStack().add(m);
@@ -41,6 +43,7 @@ public class Borrow_Command implements Command {
                 UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
             }
             bookKeeper.borrowBook(this.visitorID,this.bookISBNS);
+            Visitor_Operations.bBook = true;
         } catch (Exception e) {
             e.printStackTrace();
         }

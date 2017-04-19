@@ -31,7 +31,7 @@ public class Book_Purchase_Command implements Command {
         System.out.println("quantity" + this.ISBNS);
         try {
             if (this.isUndo) {
-                Visitor_Operations.pBook = false;
+                Visitor_Operations.bBook = false;
                 Undo_Book_Purchase_Command u = new Undo_Book_Purchase_Command(this.quantity,this.ISBNS,false);
                 Memento m = new Memento(u);
                 UndoRedoCaretaker.getCaretaker().getRedoStack().add(m);
@@ -42,7 +42,7 @@ public class Book_Purchase_Command implements Command {
                 UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
             }
             bookKeeper.buyBook(this.quantity,this.ISBNS);
-            Visitor_Operations.pBook = true;
+            Visitor_Operations.bBook = true;
         } catch (Exception e) {
             e.printStackTrace();
         }

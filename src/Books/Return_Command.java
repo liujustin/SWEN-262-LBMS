@@ -27,6 +27,7 @@ public class Return_Command implements Command {
     public String execute() {
         try {
             if (this.isUndo) {
+                Visitor_Operations.rBook = false;
                 Borrow_Command b = new Borrow_Command(this.visitor_ID,this.ISBNS,false);
                 Memento m = new Memento(b);
                 UndoRedoCaretaker.getCaretaker().getRedoStack().add(m);
@@ -38,6 +39,7 @@ public class Return_Command implements Command {
             }
 
             visitorKeeper.returnBook(this.visitor_ID,this.ISBNS);
+            Visitor_Operations.rBook = true;
         } catch (Exception e) {
             e.printStackTrace();
         }

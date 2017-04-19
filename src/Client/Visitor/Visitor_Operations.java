@@ -28,7 +28,7 @@ public class Visitor_Operations
     public static boolean eVisit = true;
     public static boolean pFine = true;
     public static boolean rBook = true;
-    public static boolean pBook = true;
+    public static boolean bBook = true;
     //================================================================================
     // Visitors
     //================================================================================
@@ -294,7 +294,6 @@ public class Visitor_Operations
         if (!this.visitorRegistry.containsKey(visitorID)) {
             throw new Exception("return,invalid-visitor-id;");
         }
-        System.out.println(ISBNS);
         for(String isbn : ISBNS){
             if(Book_Operations.getInstance().getBookRegistry().containsKey(isbn)){
                 booklist.add(Book_Operations.getInstance().getBookRegistry().get(isbn));
@@ -383,7 +382,9 @@ public class Visitor_Operations
             errormessage2b += ";";
             System.out.println(errormessage2a + "$" + visitor_balance + "," + errormessage2b);
         }else {
-            System.out.println("return,success");
+            if(Visitor_Operations.rBook) {
+                System.out.println("return,success");
+            }
         }
     }
 

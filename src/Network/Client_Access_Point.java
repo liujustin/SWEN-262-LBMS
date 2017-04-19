@@ -328,7 +328,7 @@ public class Client_Access_Point {
         /*
          *  Fixes parsing for buy and return command
          */
-        if (parsedcommand.get(1).equals("buy") || parsedcommand.get(1).equals("return")) {
+        if (parsedcommand.get(1).equals("buy")) {
             firstindex = parsedcommand.get(0);
             secondindex = parsedcommand.get(1);
             thirdindex = parsedcommand.get(2);
@@ -348,7 +348,7 @@ public class Client_Access_Point {
     {
         Command cmd;
         ArrayList arraylistparameter;
-        Long visitorID = 0L;
+        long visitorID = 0L;
         HashMap<Integer,Account> connections = Visitor_Operations.getActiveConnections();
         if(parsedcommand.get(0).equals("connect")) {
             cmd = new Connect_Command();
@@ -491,7 +491,7 @@ public class Client_Access_Point {
                         }
                     }
                     if(parsedcommand.size() < 4) {
-                        arraylistparameter = (ArrayList) parsedcommand.get(2);
+                        arraylistparameter = (ArrayList<String>) parsedcommand.get(2);
                         for (Integer key : connections.keySet()) {
                             if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
                                 visitorID = connections.get(key).getVisitorID();
@@ -499,7 +499,7 @@ public class Client_Access_Point {
                         }
                     }else{
                         visitorID = Long.parseLong(parsedcommand.get(2).toString());
-                        arraylistparameter = (ArrayList) parsedcommand.get(3);
+                        arraylistparameter = (ArrayList<String>) parsedcommand.get(3);
                     }
                     cmd = new Return_Command(visitorID, arraylistparameter, false);
                     break;
