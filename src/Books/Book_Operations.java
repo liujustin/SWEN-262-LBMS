@@ -90,18 +90,22 @@ public class Book_Operations
     }
     public void undoBuyBook(Integer quantity, ArrayList<String> ISBNS)throws Exception
     {
+        ArrayList<Book> removebooks = new ArrayList<>();
         // loop through all purchased books and remove those books with corresponding quantity
-        for (Book bookToRemove : SearchToBuy.getLastSearched()) {
-            for(Book purchasedbook : getPurchasedBooks().keySet()) {
-                if (bookToRemove.equals(purchasedbook)) {
+        for (Book bookToRemove : SearchToBuy.getLastSearched()) { //last searched books
+            for(Book purchasedbook : getPurchasedBooks().keySet()) { //books inside library
+                if (bookToRemove.equals(purchasedbook)) { // if books matches
                     int bookvalue = this.purchasedBooks.get(purchasedbook);
-                    bookvalue -= quantity;
+                    bookvalue -= quantity; // subtract number of copies
                     this.purchasedBooks.put(bookToRemove, bookvalue);
-                   if (this.purchasedBooks.get(bookToRemove) == 0) {
-                        this.purchasedBooks.remove(purchasedbook);
+                   if (this.purchasedBooks.get(bookToRemove) == 0) { // if number of copies reaches 0 delete
+                        removebooks.add(purchasedbook);
                     }
                 }
             }
+        }
+        for(Book books : removebooks){
+            this.purchasedBooks.remove(books);
         }
     }
 

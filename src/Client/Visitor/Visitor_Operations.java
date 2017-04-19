@@ -24,7 +24,11 @@ public class Visitor_Operations
     private Long newID = 999999999L;
     private Double finesCollected;
     private static HashMap<String, Account> activeAccounts = new HashMap<>();
-
+    public static boolean bVisit = true;
+    public static boolean eVisit = true;
+    public static boolean pFine = true;
+    public static boolean rBook = true;
+    public static boolean pBook = true;
     //================================================================================
     // Visitors
     //================================================================================
@@ -106,7 +110,6 @@ public class Visitor_Operations
     public Double getFinesCollected(){
         return finesCollected;
     }
-
 
     private long average = 0;
 
@@ -223,7 +226,9 @@ public class Visitor_Operations
                 activeVisitor.put(visitorID, dateFormat2.parse(currentTime));
 
                 String output = "arrive,"+ visitorID + "," + currentTime;
-//                System.out.print(output);
+                if(bVisit) {
+                    System.out.print(output);
+                }
                 visitLength.add(currentTime);
                 return output;
             }
@@ -233,6 +238,8 @@ public class Visitor_Operations
         else
             throw new Exception("arrive,invalid-id;");
     }
+
+
     long second = 1000l;
     long minute = 60l * second;
     long hour = 60l * minute;
@@ -261,7 +268,9 @@ public class Visitor_Operations
 
             this.activeVisitor.remove(visitorID);
             String output = String.format("depart," + visitorID + "," + currentTime + ",%02d:%02d:%02d",hours,minutes,seconds);
-            System.out.print(output);
+            if(eVisit) {
+                System.out.print(output);
+            }
             visitLength.add(currentTime);
             return output;
         }

@@ -2,6 +2,7 @@ package Books;
 
 import Client.Visitor.Memento;
 import Client.Visitor.UndoRedoCaretaker;
+import Client.Visitor.Visitor_Operations;
 import Network.Command;
 
 import java.util.ArrayList;

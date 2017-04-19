@@ -30,6 +30,7 @@ public class Refund_Payment_Command implements Command {
     public String execute() {
         try {
             if (this.isUndo) {
+                Visitor_Operations.pFine = false;
                 Pay_Fine_Command p = new Pay_Fine_Command(this.amount,this.visitorID,false);
                 Memento m = new Memento(p);
                 UndoRedoCaretaker.getCaretaker().getRedoStack().add(m);
@@ -41,6 +42,7 @@ public class Refund_Payment_Command implements Command {
             }
             visitorKeeper.getVisitorRegistry().get(this.visitorID).setBalance
                     (visitorKeeper.getVisitorRegistry().get(this.visitorID).getBalance()- this.amount);
+            Visitor_Operations.pFine = true;
         } catch (Exception e) {
             e.printStackTrace();
         }

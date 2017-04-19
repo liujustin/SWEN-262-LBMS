@@ -18,6 +18,7 @@ public class Begin_Visit_Command implements Command {
     public String execute() {
         try {
             if (this.isUndo) {
+                Visitor_Operations.bVisit = false;
                 End_Visit_Command e = new End_Visit_Command(this.visitorID,false);
                 Memento m = new Memento(e);
                 UndoRedoCaretaker.getCaretaker().getRedoStack().add(m);
@@ -27,10 +28,12 @@ public class Begin_Visit_Command implements Command {
                 Memento m = new Memento(e);
                 UndoRedoCaretaker.getCaretaker().getUndoStack().add(m);
             }
-            return visitorKeeper.beginVisit(this.visitorID);
+            visitorKeeper.beginVisit(this.visitorID);
+            Visitor_Operations.bVisit = true;
         } catch (Exception e) {
             return e.getMessage();
         }
+        return "";
     }
 
 }

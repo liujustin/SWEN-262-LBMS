@@ -592,9 +592,25 @@ public class Client_Access_Point {
                     cmd = new Statistics_Report_Command(days);
                     break;
                 case "undo":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null ){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     cmd = new Undo_Command();
                     break;
                 case "redo":
+                    for (Integer key : connections.keySet()) {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                            if(connections.get(key) == null ){
+                                String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
+                                throw new Exception(errormessage);
+                            }
+                        }
+                    }
                     cmd = new Redo_Command();
                     break;
                 case "shutdown":
