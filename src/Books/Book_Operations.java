@@ -16,6 +16,7 @@ import java.util.*;
 
 public class Book_Operations
 {
+    private static boolean searchState;
     private static final Book_Operations bookKeeper = new Book_Operations();
     private Visitor_Operations visitorOperations = Visitor_Operations.getInstance();
     private final String bookListURI = "books.txt";
@@ -236,6 +237,13 @@ public class Book_Operations
         }
     }
 
+    public static void setSearchState(boolean searchState) {
+        Book_Operations.searchState = searchState;
+    }
+
+    public static boolean isSearchState() {
+        return searchState;
+    }
 
     /**
      *
