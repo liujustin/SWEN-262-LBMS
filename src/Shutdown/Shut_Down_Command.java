@@ -22,7 +22,7 @@ public class Shut_Down_Command implements Command {
     @Override
     public String execute()
     {
-        Book_Loan.saveBookLoans(Visitor_Operations.getVisitorRegistry());
+        Book_Loan.saveBookLoans(vk.getVisitorRegistry());
         bk.shutdown();
         vk.shutdown();
 
