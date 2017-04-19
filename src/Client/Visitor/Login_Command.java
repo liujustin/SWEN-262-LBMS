@@ -2,7 +2,7 @@ package Client.Visitor;
 
 import Network.Command;
 
-//FILE:: Login_Command.java
+//FILE::Client.Visitor.Login_Command.java
 //AUTHOR::Adam Nowak
 //DATE::Apr.16.2017
 public class Login_Command implements Command

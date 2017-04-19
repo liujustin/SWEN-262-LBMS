@@ -2,7 +2,7 @@ package Client.Visitor;
 
 import Network.Command;
 
-//FILE::CreateAccount_Command.java
+//FILE::Client.Visitor.CreateAccount_Command.java
 //AUTHOR::Adam Nowak
 //DATE::Apr.16.2017
 

@@ -1,6 +1,6 @@
 package Client.Visitor;
 
-//FILE:: Logout_Command.java
+//FILE::Client.Visitor.Logout_Command.java
 //AUTHOR::Adam Nowak
 //DATE::Apr.16.2017
 
