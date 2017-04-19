@@ -5,9 +5,10 @@ import Client.Visitor.Memento;
 import Client.Visitor.UndoRedoCaretaker;
 import Network.Command;
 
-/**
- * Created by Ryan on 4/13/2017.
- */
+//FILE::Books.Refund_Payment_Command.java
+//AUTHOR::Ryan Connors
+//DATE::Apr.15.2017
+
 public class Refund_Payment_Command implements Command {
 
     Visitor_Operations visitorKeeper = Visitor_Operations.getInstance();

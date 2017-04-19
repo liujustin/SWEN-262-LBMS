@@ -31,7 +31,9 @@ public class Time_Operations
 		this.calendar = Calendar.getInstance();
 		this.date = new Date();
 	}
-
+	/*
+	Getter for the class object.
+ 	*/
 	public static Time_Operations getInstance(){
 		return statisticsKeeper;
 	}
@@ -57,25 +59,6 @@ public class Time_Operations
 		return output;
 	}
 
-	public static boolean check_Time(){
-		Timer timer = new Timer();
-		long interval = (1000);
-		timer.scheduleAtFixedRate(new TimerTask(){
-			public void run(){
-				String currentTime = Get_Time().split(",")[1];
-				if (currentTime.compareTo( "19:00:00") > 0 || currentTime.compareTo("08:00:00") < 0){
-					isOpen = false;
-				}
-				else {
-					isOpen = true;
-				}
-			}
-		},date,interval);
-
-		return isOpen;
-	}
-
-
 	/**
 	 * Prints the GUI.timeGUI for the datetime command
 	 */
@@ -99,6 +82,15 @@ public class Time_Operations
 		date.setTime(c.getTimeInMillis());
 	}
 
+	/**
+	 *
+	 * @param time
+	 * @return LibraryIsOpen
+	 * @throws ParseException
+	 *
+	 * This method uses the current hours minutes seconds time format to determine whether the
+	 * time is between opening and closing hours.
+     */
 	public static boolean getIsopen(String time)throws ParseException{
 
 		time = time.substring(11,19);

@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+//FILE::Books.SearchByAPIForBuy_Command.java
+//AUTHOR::Kevin Barnett
+//DATE::Apr.05.2017
+
 public class SearchByAPIForBuy
 {
     /*

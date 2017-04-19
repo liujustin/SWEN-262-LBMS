@@ -1,4 +1,5 @@
-package Books;//FILE::Books.Pay_Fine_Command.java
+package Books;
+//FILE::Books.Pay_Fine_Command.java
 //AUTHOR::Ryan Connors, Adam Nowak
 //DATE::Feb.25.2017
 

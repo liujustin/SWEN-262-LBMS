@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
+//FILE::Books.SearchForInfo.java
+//AUTHOR::Kevin Barnett,Justin Liu
+//DATE::Apr.10.2017
+
 public class SearchForInfo
 {
     private static ArrayList<Book> lastSearched;
@@ -35,6 +39,12 @@ public class SearchForInfo
         return allIn;
     }
 
+    /**
+     * Search method that accounts for only the title parameter being passed in.
+     * @param title
+     * @param purchasedBooks
+     * @return
+     */
     public static ArrayList<Book> search(String title, HashMap<Book, Integer> purchasedBooks)
     {
         ArrayList<Book> searchedBooks = new ArrayList<>();
@@ -46,6 +56,13 @@ public class SearchForInfo
         return searchedBooks;
     }
 
+    /**
+     * Search method that accounts for only the title and author parameter being passed in.
+     * @param title
+     * @param authors
+     * @param purchasedBooks
+     * @return
+     */
     public static ArrayList<Book> search(String title, ArrayList<String> authors, HashMap<Book, Integer> purchasedBooks)
     {
         ArrayList<Book> tempBookBuffer = search(title, purchasedBooks);
@@ -58,6 +75,14 @@ public class SearchForInfo
         return searchedBooks;
     }
 
+    /**
+     * Search method that accounts for only the title, author and isbn parameter being passed in.
+     * @param title
+     * @param authors
+     * @param isbn
+     * @param purchasedBooks
+     * @return
+     */
     public static ArrayList<Book> search(String title, ArrayList<String> authors, String isbn, HashMap<Book, Integer> purchasedBooks)
     {
         ArrayList<Book> tempBookBuffer = search(title, authors, purchasedBooks);
@@ -70,6 +95,15 @@ public class SearchForInfo
         return searchedBooks;
     }
 
+    /**
+     * Search method that accounts for only the title,author,isbn and publisher parameter being passed in.
+     * @param title
+     * @param authors
+     * @param isbn
+     * @param publisher
+     * @param purchasedBooks
+     * @return
+     */
     public static ArrayList<Book> search(String title, ArrayList<String> authors, String isbn, String publisher, HashMap<Book, Integer> purchasedBooks)
     {
         ArrayList<Book> tempBookBuffer = search(title, authors, isbn, purchasedBooks);
@@ -82,7 +116,16 @@ public class SearchForInfo
         return searchedBooks;
     }
 
-
+    /**
+     * Search method that accounts for all parameters being passed in and sorts the arraylist of books sorted.
+     * @param title
+     * @param authors
+     * @param isbn
+     * @param publisher
+     * @param sortOrder
+     * @param purchasedBooks
+     * @return
+     */
     public static ArrayList<Book> search(String title, ArrayList<String> authors, String isbn, String publisher, String sortOrder, HashMap<Book, Integer> purchasedBooks)
     {
         ArrayList<Book> tempBookBuffer = search(title, authors, isbn, publisher, purchasedBooks);
