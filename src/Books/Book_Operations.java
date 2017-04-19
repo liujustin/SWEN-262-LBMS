@@ -161,10 +161,9 @@ public class Book_Operations
         if(!visitorlist.containsKey(visitorID)) {
             throw new Exception("borrow,invalid-visitor-id;");
         }
-        //Book listofbooks = bookRegistry.get(bookISBNS);
-        //if(!Time_Operations.getIsopen(time)) {
-          //  throw new Exception("Library is currently closed.");
-        //}
+        if(!Time_Operations.getIsopen(time)) {
+            throw new Exception("Library is currently closed.");
+        }
         if(bookISBNS.size() > 5 - visitor.getBorrowed_books().size()) {
             throw new Exception("borrow,book-limit-exceeded;");
         }

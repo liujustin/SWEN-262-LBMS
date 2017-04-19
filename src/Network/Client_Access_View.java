@@ -33,7 +33,7 @@ public class Client_Access_View
         Visitor_Operations visitorOperations = Visitor_Operations.getInstance();
 
         while(true)
-        {
+        {//This loop allows the system to continually ask for input by the user. The data input will be parsed into commands.
             command = clientPoint.getCommand();
             if(!command.equals(""))
             {
@@ -75,14 +75,7 @@ public class Client_Access_View
         }
         else{
             System.out.println("Welcome to the Library Book Management System!");
-            System.out.println("Here are the available commands!");
-            System.out.println("Commands:");
-            System.out.println();
-            System.out.println("register, \t arrive, \t depart");
-            System.out.println("info, \t     borrow, \t borrowed");
-            System.out.println("return, \t pay, \t     search");
-            System.out.println("buy, \t     advance, \t datetime");
-            System.out.println("report, \t shutdown");
+            System.out.println("Please connect and then login.");
             System.out.println();
             clientAccessView.startLoop();
         }

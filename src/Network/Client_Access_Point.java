@@ -72,7 +72,7 @@ public class Client_Access_Point {
                 i += 2;
                 n = i;
             }else if(command.charAt(i) == ',' && command.charAt(i + 1) == '"')
-            {
+            { //handles when a title is in quotes
                 parsedcommand.add(command.substring(n, i));
                 i += 2;
                 n = i;
@@ -94,7 +94,7 @@ public class Client_Access_Point {
             }
 
             if(command.charAt(i) == '{')
-            {
+            {//handles for parsing an arraylist
                 i++;
                 n = i;
                 ArrayList<String> parsedids = new ArrayList<>();
@@ -130,19 +130,19 @@ public class Client_Access_Point {
          */
 
         if(! command.endsWith("}"))
-        {
+        { //handles when the parsed string ends in a arraylist and is the last character
 
             parsedcommand.add(command.substring(n, command.length()));
         }
 
         /*
-        * Parameter error handling until end of function.
+        * Parameter error handling to see if parsed data is valid.
         */
         if(parsedcommand.size() == 1){
             parsedcommand.add("whoops");
         }
         if(parsedcommand.get(1).equals("register"))
-        {
+        { //format used throughout each error check. Missing parameters are only those which aren't optional.
             if(parsedcommand.size() < 5)
             {
                 commandsize = parsedcommand.size();
@@ -344,20 +344,35 @@ public class Client_Access_Point {
         return parsedcommand;
     }
 
+    /**
+     *
+     * @param parsedcommand
+     * @return Command Objects
+     * @throws Exception
+     *
+     * This method creates command objects that are used within the Client_Access_View and Client_Access_Invoker.
+     * How command objects are made begins with the connect command. The connect command must be made to have
+     * access in creating other command objects. Once the connection has been made, user must login to have partial or full
+     * use of all the commands. All commands check if the user is using a valid client id as well as checking to
+     * see if their role grants them access to a specific command.
+     */
     public Command ConcreteCommand(ArrayList parsedcommand) throws Exception
     {
         Command cmd;
         ArrayList arraylistparameter;
         long visitorID = 0L;
         HashMap<Integer,Account> connections = Visitor_Operations.getActiveConnections();
-        if(parsedcommand.get(0).equals("connect")) {
+        if(parsedcommand.get(0).equals("connect"))
+        { // User must connect to system first.
             cmd = new Connect_Command();
             return cmd;
-        }else {
+        }else
+        {
             if (!connections.containsKey(Integer.parseInt(parsedcommand.get(0).toString()))) {
-                throw new Exception("invalid-client-id;");
+                throw new Exception("invalid-client-id;"); //checks if client id is valid before going into any command.
             }
-            switch (parsedcommand.get(1).toString()) {
+            switch (parsedcommand.get(1).toString())
+            {// first three commands: disconnect,login and logout dont require correct account roles.
                 case "disconnect":
                     cmd = new Disconnect_Command(Integer.parseInt(parsedcommand.get(0).toString()));
                     break;
@@ -368,9 +383,12 @@ public class Client_Access_Point {
                     cmd = new Logout_Command(Integer.parseInt(parsedcommand.get(0).toString()));
                     break;
                 case "create":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                    for (Integer key : connections.keySet())
+                    {//this block of code represents a check to see if an account is an employee. If so it grants access to creating the command object.
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee"))
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
@@ -379,8 +397,10 @@ public class Client_Access_Point {
                     cmd = new CreateAccount_Command(Integer.parseInt(parsedcommand.get(0).toString()), parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), Long.parseLong(parsedcommand.get(5).toString()));
                     break;
                 case "register":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
+                    for (Integer key : connections.keySet())
+                    { //copy of employee check as used in the create case above
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
                             if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
@@ -390,49 +410,66 @@ public class Client_Access_Point {
                     cmd = new Register_Command(parsedcommand.get(2).toString(), parsedcommand.get(3).toString(), parsedcommand.get(4).toString(), parsedcommand.get(5).toString());
                     break;
                 case "arrive":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null ){
+                    for (Integer key : connections.keySet())
+                    { // this role check only checks to see if the user is logged in.
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null )
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
                         }
                     }
-                    if(parsedcommand.size() < 3) {
-                        for (Integer key : connections.keySet()) {
-                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
+                    if(parsedcommand.size() < 3)
+                    { //this block handles for the command to obtain the visitor id from the client id. (makes visitor id optional)
+                        for (Integer key : connections.keySet())
+                        {
+                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString())))
+                            {
                                 visitorID = connections.get(key).getVisitorID();
                             }
                         }
-                    }else{
+                    }else
+                    {
                         visitorID = Long.parseLong(parsedcommand.get(2).toString());
                     }
                     cmd = new Begin_Visit_Command(visitorID, false);
                     break;
                 case "depart":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null ){
+                    for (Integer key : connections.keySet())
+                    {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null )
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
                         }
                     }
-                    if(parsedcommand.size() < 3) {
-                        for (Integer key : connections.keySet()) {
-                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
+                    if(parsedcommand.size() < 3)
+                    {
+                        for (Integer key : connections.keySet())
+                        {
+                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString())))
+                            {
                                 visitorID = connections.get(key).getVisitorID();
                             }
                         }
-                    }else{
+                    }else
+                    {
                         visitorID = Long.parseLong(parsedcommand.get(2).toString());
                     }
                     cmd = new End_Visit_Command(visitorID, false);
                     break;
                 case "info":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null ){
+                    for (Integer key : connections.keySet())
+                    {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null )
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
@@ -441,92 +478,121 @@ public class Client_Access_Point {
                     cmd = new Book_Search_Command(parsedcommand);
                     break;
                 case "borrow":
-                    for (Integer key : connections.keySet()) {
+                    for (Integer key : connections.keySet())
+                    {
                         if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null ){
+                            if(connections.get(key) == null )
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
                         }
                     }
                     arraylistparameter = (ArrayList) parsedcommand.get(2);
-                    if(parsedcommand.size() < 4) {
-                        for (Integer key : connections.keySet()) {
-                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
+                    if(parsedcommand.size() < 4)
+                    {
+                        for (Integer key : connections.keySet())
+                        {
+                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString())))
+                            {
                                 visitorID = connections.get(key).getVisitorID();
                             }
                         }
-                    }else{
+                    }else
+                    {
                         visitorID = Long.parseLong(parsedcommand.get(3).toString());
                     }
                     cmd = new Borrow_Command(visitorID, arraylistparameter, false);
                     break;
                 case "borrowed":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                    for (Integer key : connections.keySet())
+                    {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee"))
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
                         }
                     }
-                    if(parsedcommand.size() < 3) {
-                        for (Integer key : connections.keySet()) {
-                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
+                    if(parsedcommand.size() < 3)
+                    {
+                        for (Integer key : connections.keySet())
+                        {
+                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString())))
+                            {
                                 visitorID = connections.get(key).getVisitorID();
                             }
                         }
-                    }else{
+                    }else
+                    {
                         visitorID = Long.parseLong(parsedcommand.get(2).toString());
                     }
                     cmd = new Find_Borrowed_Command(visitorID);
                     break;
                 case "return":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                    for (Integer key : connections.keySet())
+                    {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee"))
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
                         }
                     }
-                    if(parsedcommand.size() < 4) {
+                    if(parsedcommand.size() < 4)
+                    {
                         arraylistparameter = (ArrayList<String>) parsedcommand.get(2);
-                        for (Integer key : connections.keySet()) {
+                        for (Integer key : connections.keySet())
+                        {
                             if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
                                 visitorID = connections.get(key).getVisitorID();
                             }
                         }
-                    }else{
+                    }else
+                    {
                         visitorID = Long.parseLong(parsedcommand.get(2).toString());
                         arraylistparameter = (ArrayList<String>) parsedcommand.get(3);
                     }
                     cmd = new Return_Command(visitorID, arraylistparameter, false);
                     break;
                 case "pay":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                    for (Integer key : connections.keySet())
+                    {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee"))
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
                         }
                     }
-                    if(parsedcommand.size() < 4) {
-                        for (Integer key : connections.keySet()) {
-                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString()))) {
+                    if(parsedcommand.size() < 4)
+                    {
+                        for (Integer key : connections.keySet())
+                        {
+                            if (key.equals(Integer.parseInt(parsedcommand.get(0).toString())))
+                            {
                                 visitorID = connections.get(key).getVisitorID();
                             }
                         }
-                    }else{
+                    }else
+                    {
                         visitorID = Long.parseLong(parsedcommand.get(3).toString());
                     }
                     cmd = new Pay_Fine_Command(Double.parseDouble(parsedcommand.get(2).toString()),visitorID, false);
                     break;
                 case "search":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                    for (Integer key : connections.keySet())
+                    {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee"))
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
@@ -535,9 +601,12 @@ public class Client_Access_Point {
                     cmd = new Book_Store_Command(parsedcommand);
                     break;
                 case "buy":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                    for (Integer key : connections.keySet())
+                    {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee"))
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
@@ -546,14 +615,17 @@ public class Client_Access_Point {
                     cmd = new Book_Purchase_Command(Integer.parseInt(parsedcommand.get(2).toString()), (ArrayList) parsedcommand.get(3), false);
                     break;
                 case "advance":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                    for (Integer key : connections.keySet())
+                    {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee"))
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
                         }
-                    }
+                    } // extra handling for optional fields
                     int day = Integer.parseInt(parsedcommand.get(2).toString());
                     int hour;
                     if (parsedcommand.size() < 4)
@@ -564,9 +636,12 @@ public class Client_Access_Point {
                     cmd = new Advance_Time_Command(day, hour);
                     break;
                 case "datetime":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                    for (Integer key : connections.keySet())
+                    {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee"))
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
@@ -575,26 +650,34 @@ public class Client_Access_Point {
                     cmd = new Current_Time_Command();
                     break;
                 case "report":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                    for (Integer key : connections.keySet())
+                    {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee"))
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
                         }
-                    }
+                    } // extra handling for optional fields
                     int days;
-                    if (parsedcommand.size() < 2) {
+                    if (parsedcommand.size() < 2)
+                    {
                         days = 100000;
-                    } else {
+                    } else
+                    {
                         days = Integer.parseInt(parsedcommand.get(2).toString());
                     }
                     cmd = new Statistics_Report_Command(days);
                     break;
                 case "undo":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null ){
+                    for (Integer key : connections.keySet())
+                    {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null )
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
@@ -603,9 +686,12 @@ public class Client_Access_Point {
                     cmd = new Undo_Command();
                     break;
                 case "redo":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null ){
+                    for (Integer key : connections.keySet())
+                    {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null )
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }
@@ -614,9 +700,12 @@ public class Client_Access_Point {
                     cmd = new Redo_Command();
                     break;
                 case "shutdown":
-                    for (Integer key : connections.keySet()) {
-                        if(key == Integer.parseInt(parsedcommand.get(0).toString())){
-                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee")){
+                    for (Integer key : connections.keySet())
+                    {
+                        if(key == Integer.parseInt(parsedcommand.get(0).toString()))
+                        {
+                            if(connections.get(key) == null || !connections.get(key).getRole().equals("employee"))
+                            {
                                 String errormessage = parsedcommand.get(0).toString() + ",<" + parsedcommand.get(1).toString() + ">,not-authorized;";
                                 throw new Exception(errormessage);
                             }

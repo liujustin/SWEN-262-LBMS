@@ -13,10 +13,6 @@ public class Shut_Down_Command implements Command {
     private Visitor_Operations vk = Visitor_Operations.getInstance();
     private Book_Operations bk = Book_Operations.getInstance();
 
-    /**
-     *
-     * @param
-     */
     public Shut_Down_Command(){}
 
     @Override
