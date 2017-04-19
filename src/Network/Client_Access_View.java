@@ -7,10 +7,10 @@ import GUI.Connect_View;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-//FILE::Network.Main.java
+//FILE::Network.Client_Access_View.java
 //AUTHOR::Ryan Connors, Adam Nowak, Kevin Barnett, Justin Liu
 //DATE::Feb.25.2017
-public class Main
+public class Client_Access_View
 {
 
     private Client_Access_Point clientPoint = new Client_Access_Point();
@@ -65,7 +65,7 @@ public class Main
      */
     public static void main(String[] args)
     {
-        Main main = new Main();
+        Client_Access_View clientAccessView = new Client_Access_View();
 
         System.out.println("Would you like to use the gui?");
         Scanner sc = new Scanner(System.in);
@@ -84,7 +84,7 @@ public class Main
             System.out.println("buy, \t     advance, \t datetime");
             System.out.println("report, \t shutdown");
             System.out.println();
-            main.startLoop();
+            clientAccessView.startLoop();
         }
     }
 }

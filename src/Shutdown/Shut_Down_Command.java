@@ -1,6 +1,8 @@
 package Shutdown;
 
+import Books.Book_Loan;
 import Books.Book_Operations;
+import Client.Visitor.Visitor;
 import Network.Command;
 import Client.Visitor.Visitor_Operations;
 
@@ -20,7 +22,7 @@ public class Shut_Down_Command implements Command {
     @Override
     public String execute()
     {
-        //Book_Loan.saveBookLoans(vk.getVisitorRegistry());
+        Book_Loan.saveBookLoans(Visitor_Operations.getVisitorRegistry());
         bk.shutdown();
         vk.shutdown();
 

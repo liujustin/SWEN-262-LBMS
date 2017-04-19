@@ -165,7 +165,7 @@ public class Book_Loan {
      * Shutdown method to save the book_loans in a persistent state
      * @param visitorRegistry
      */
-    public static void saveBookLoans(HashMap<Integer, Visitor> visitorRegistry)
+    public static void saveBookLoans(HashMap<Long, Visitor> visitorRegistry)
     {
         try
         {
@@ -187,9 +187,11 @@ public class Book_Loan {
      * @return
      */
     public String toString() {
-        String book_loanString = String.format("%s:%s:%s:%f:%s:%d",
+        String book_loanString = String.format("%s:%s:%s:%s:%d",
                 this.loaned_to.getVisitor_ID(),
                 this.book.getBookIsbn(),
+                this.start_date,
+                this.due_date,
                 this.balance);
           //      this.active_balance);
 
